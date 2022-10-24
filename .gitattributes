@@ -1,2 +1,7 @@
 # Declare files that will always have UNIX line endings on checkout.
 *.sh text eol=lf
+
+*.xml linguist-language=Java
+*.json linguist-language=Java
+*.properties linguist-language=Java
+*.yaml linguist-language=Java
