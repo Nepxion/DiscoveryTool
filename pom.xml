@@ -83,7 +83,7 @@
                         <configuration>
                             <resources>
                                 <resource>
-                                    <directory>/</directory>
+                                    <directory>/src/assembly</directory>
                                     <includes>
                                         <include>startup.*</include>
                                     </includes>
@@ -118,6 +118,27 @@
                         <configuration>
                             <attach>false</attach>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/assembly/dist.xml</descriptor>
+                    </descriptors>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <testFailureIgnore>true</testFailureIgnore>
+                    <skip>true</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
