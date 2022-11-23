@@ -23,13 +23,13 @@ import com.nepxion.discovery.common.util.StringUtil;
 
 public abstract class ConsoleResourceImpl implements ConsoleResource {
     @Autowired
-    private ThreadPoolTaskExecutor poolTaskExecutor;
+    private ThreadPoolTaskExecutor taskExecutor;
 
     @PostConstruct
     private void initialize() {
         String testThreadNamePrefix = getTestThreadNamePrefix();
 
-        poolTaskExecutor.setThreadNamePrefix(testThreadNamePrefix);
+        taskExecutor.setThreadNamePrefix(testThreadNamePrefix);
     }
 
     @Override
@@ -42,7 +42,7 @@ public abstract class ConsoleResourceImpl implements ConsoleResource {
             throw new DiscoveryException("Test config must consists of " + testConfigPartsCount + " parts");
         }
 
-        poolTaskExecutor.execute(new Runnable() {
+        taskExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 runTest(testConfigList, testCaseConfigWithYaml);

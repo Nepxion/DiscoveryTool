@@ -46,7 +46,7 @@ public class InspectorConsoleResourceImpl extends ConsoleResourceImpl implements
             testRunner.testInspection(testStrategy);
             InspectorTestRunner.afterTest();
         } catch (Exception e) {
-            LOG.error("Inspector test faild", e);
+            LOG.error("Inspector test failed", e);
 
             e.printStackTrace();
         }
