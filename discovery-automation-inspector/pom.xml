@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <artifactId>discovery-automation-inspector</artifactId>
+    <name>Nepxion Discovery Automation Inspector</name>
+    <packaging>pom</packaging>
+    <modelVersion>4.0.0</modelVersion>
+    <description>Nepxion Discovery Automation is a tool for Spring Cloud with blue green, gray inspection and simulation testing</description>
+    <url>http://www.nepxion.com</url>
+
+    <parent>
+        <groupId>com.nepxion</groupId>
+        <artifactId>discovery-automation</artifactId>
+        <version>1.1.0</version>
+    </parent>
+
+    <modules>
+        <module>discovery-automation-inspector-starter</module>
+        <module>discovery-automation-inspector-starter-console</module>
+        <module>discovery-automation-inspector-application</module>
+    </modules>
+</project>

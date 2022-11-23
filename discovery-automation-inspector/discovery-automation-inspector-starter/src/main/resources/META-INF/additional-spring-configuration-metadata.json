@@ -1,0 +1,32 @@
+{
+	"properties": [
+		{
+			"name": "testcase.inspect.url",
+			"type": "java.lang.String",
+			"description": "Testcase inspect url, it can be gateway or service portal url."
+		},
+		{
+			"name": "testcase.inspect.context.service",
+			"type": "java.lang.String",
+			"description": "Testcase inspect context service, it only be apply to gateway."
+		},
+		{
+			"name": "testcase.sample.count",
+			"type": "java.lang.Integer",
+			"defaultValue": 10,
+			"description": "Testcase sample count."
+		},
+		{
+			"name": "testcase.result.filter",
+			"type": "java.lang.String",
+			"defaultValue": "ID,V",
+			"description": "Testcase result filter."
+		},
+		{
+			"name": "testcase.debug.enabled",
+			"type": "java.lang.Boolean",
+			"defaultValue": false,
+			"description": "Whether testcase for debug is enabled."
+		}
+	]
+}

@@ -1,0 +1,5 @@
+service:
+  - discovery-guide-service-a
+  - discovery-guide-service-b
+header:
+  xyz: 1
