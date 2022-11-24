@@ -34,14 +34,14 @@ public class SimulatorConsoleEndpoint {
     @RequestMapping(path = "/test-config-yaml", method = RequestMethod.POST)
     @ApiOperation(value = "全链路自动化模拟流程测试", notes = "", response = ResponseEntity.class, httpMethod = "POST")
     @ResponseBody
-    public ResponseEntity<?> testConfigYaml(@RequestBody @ApiParam(value = "测试配置文本，按照次序，由application.yaml、version-release-basic.yaml、version-release-1.yaml、version-release-2.yaml组成，中间用10个\"-\"组成换行分隔", required = true) String testConfig) {
+    public ResponseEntity<?> testConfigYaml(@RequestBody @ApiParam(value = "测试配置文本，按照次序，由application.yaml、mock-version-release-basic.yaml、mock-version-release-1.yaml、mock-version-release-2.yaml组成，中间用10个\"-\"组成换行分隔", required = true) String testConfig) {
         return doTest(testConfig, true);
     }
 
     @RequestMapping(path = "/test-config-properties", method = RequestMethod.POST)
     @ApiOperation(value = "全链路自动化模拟流程测试", notes = "", response = ResponseEntity.class, httpMethod = "POST")
     @ResponseBody
-    public ResponseEntity<?> testConfigProperties(@RequestBody @ApiParam(value = "测试配置文本，按照次序，由application.properties、version-release-basic.yaml、version-release-1.yaml、version-release-2.yaml组成，中间用10个\"-\"组成换行分隔", required = true) String testConfig) {
+    public ResponseEntity<?> testConfigProperties(@RequestBody @ApiParam(value = "测试配置文本，按照次序，由application.properties、mock-version-release-basic.yaml、mock-version-release-1.yaml、mock-version-release-2.yaml组成，中间用10个\"-\"组成换行分隔", required = true) String testConfig) {
         return doTest(testConfig, false);
     }
 
