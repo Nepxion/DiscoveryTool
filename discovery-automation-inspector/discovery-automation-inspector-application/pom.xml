@@ -22,7 +22,7 @@
     </dependencies>
 
     <build>
-        <finalName>discovery-automation-inspector-${project.version}</finalName>	
+        <finalName>discovery-automation-inspector-${project.version}</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>

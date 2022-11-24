@@ -1,0 +1,4 @@
+service:
+  - discovery-guide-service-a
+  - discovery-guide-service-b
+sort: version
