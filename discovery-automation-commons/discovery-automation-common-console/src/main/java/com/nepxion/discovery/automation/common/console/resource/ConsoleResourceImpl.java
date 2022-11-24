@@ -20,6 +20,7 @@ import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import com.nepxion.discovery.automation.common.console.entity.ConsoleThreadPoolProperties;
 import com.nepxion.discovery.automation.common.constant.TestConstant;
 import com.nepxion.discovery.common.exception.DiscoveryException;
 import com.nepxion.discovery.common.util.StringUtil;
@@ -31,11 +32,36 @@ public abstract class ConsoleResourceImpl implements ConsoleResource {
     @Autowired
     private ThreadPoolTaskExecutor taskExecutor;
 
+    @Autowired
+    private ConsoleThreadPoolProperties consoleThreadPoolProperties;
+
     @PostConstruct
     private void initialize() {
         String testThreadNamePrefix = getTestName() + "-Thread-";
 
         taskExecutor.setThreadNamePrefix(testThreadNamePrefix);
+
+        int corePoolSize = consoleThreadPoolProperties.getCorePoolSize();
+        int maxPoolSize = consoleThreadPoolProperties.getMaxPoolSize();
+        int queueCapacity = consoleThreadPoolProperties.getQueueCapacity();
+        int keepAliveSeconds = consoleThreadPoolProperties.getKeepAliveSeconds();
+        int awaitTerminationSeconds = consoleThreadPoolProperties.getAwaitTerminationSeconds();
+
+        if (corePoolSize > 0) {
+            taskExecutor.setCorePoolSize(corePoolSize);
+        }
+        if (maxPoolSize > 0) {
+            taskExecutor.setMaxPoolSize(maxPoolSize);
+        }
+        if (queueCapacity > 0) {
+            taskExecutor.setQueueCapacity(queueCapacity);
+        }
+        if (keepAliveSeconds > 0) {
+            taskExecutor.setKeepAliveSeconds(keepAliveSeconds);
+        }
+        if (awaitTerminationSeconds > 0) {
+            taskExecutor.setAwaitTerminationSeconds(awaitTerminationSeconds);
+        }
     }
 
     @Override

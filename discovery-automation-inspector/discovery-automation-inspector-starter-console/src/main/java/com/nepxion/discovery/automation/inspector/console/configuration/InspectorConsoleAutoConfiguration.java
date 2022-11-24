@@ -13,13 +13,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import com.nepxion.discovery.automation.common.console.configuration.ConsoleCorsRegistryConfiguration;
 import com.nepxion.discovery.automation.inspector.console.endpoint.InspectorConsoleEndpoint;
 import com.nepxion.discovery.automation.inspector.console.resource.InspectorConsoleResource;
 import com.nepxion.discovery.automation.inspector.console.resource.InspectorConsoleResourceImpl;
 
 @Configuration
-@Import({ InspectorConsoleSwaggerConfiguration.class, ConsoleCorsRegistryConfiguration.class })
+@Import({ InspectorConsoleSwaggerConfiguration.class })
 public class InspectorConsoleAutoConfiguration {
     protected static class ConsoleEndpointConfiguration {
         @Bean
