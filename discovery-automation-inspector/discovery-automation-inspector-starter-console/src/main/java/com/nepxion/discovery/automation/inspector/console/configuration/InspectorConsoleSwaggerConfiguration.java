@@ -40,7 +40,7 @@ import com.nepxion.discovery.common.constant.DiscoverySwaggerConstant;
 @EnableSwagger2
 @ConditionalOnProperty(value = DiscoverySwaggerConstant.SWAGGER_ENABLED, matchIfMissing = true)
 public class InspectorConsoleSwaggerConfiguration {
-    private String discoveryGroup = "Nepxion Discovery Inspector Test";
+    private String discoveryGroup = "Nepxion Discovery Inspector";
     private String discoveryPackages = "com.nepxion.discovery.automation.inspector.console.endpoint";
     private String discoveryDescription = "Console Restful APIs";
     private String discoveryVersion = DiscoverySwaggerConstant.SWAGGER_DEFAULT_VERSION_VALUE;
