@@ -18,12 +18,12 @@ import com.nepxion.discovery.automation.inspector.entity.InspectorTestCaseProper
 @Configuration
 public class InspectorAutoConfiguration {
     @Bean
-    public InspectorTestCaseProperty testCaseProperty() {
+    public InspectorTestCaseProperty inspectorTestCaseProperty() {
         return new InspectorTestCaseProperty();
     }
 
     @Bean
-    public InspectorTestCaseCondition testCaseCondition() {
+    public InspectorTestCaseCondition inspectorTestCaseCondition() {
         return InspectorTestCaseCondition.fromInspectorFile();
     }
 }
