@@ -1,0 +1,77 @@
+{
+	"properties": [
+		{
+			"name": "console.url",
+			"type": "java.lang.String",
+			"description": "Console url."
+		},
+		{
+			"name": "console.operation.await.time",
+			"type": "java.lang.Integer",
+			"defaultValue": 5000,
+			"description": "Console operation await time."
+		},
+		{
+			"name": "testcase.group",
+			"type": "java.lang.String",
+			"description": "Testcase group to subscribe."
+		},
+		{
+			"name": "testcase.service",
+			"type": "java.lang.String",
+			"description": "Testcase service to subscribe."
+		},
+		{
+			"name": "testcase.inspect.url",
+			"type": "java.lang.String",
+			"description": "Testcase inspect url, it can be gateway or service portal url."
+		},
+		{
+			"name": "testcase.inspect.context.service",
+			"type": "java.lang.String",
+			"description": "Testcase inspect context service, it only be apply to gateway."
+		},
+		{
+			"name": "testcase.loop.count",
+			"type": "java.lang.Integer",
+			"defaultValue": 1,
+			"description": "Testcase loop count."
+		},
+		{
+			"name": "testcase.bluegreen.sample.count",
+			"type": "java.lang.Integer",
+			"defaultValue": 100,
+			"description": "Testcase bluegreen sample count."
+		},
+		{
+			"name": "testcase.gray.sample.count",
+			"type": "java.lang.Integer",
+			"defaultValue": 1000,
+			"description": "Testcase gray sample count."
+		},
+		{
+			"name": "testcase.gray.weight.offset",
+			"type": "java.lang.Integer",
+			"defaultValue": 5,
+			"description": "Testcase gray weight offset."
+		},
+		{
+			"name": "testcase.version.prefer.enabled",
+			"type": "java.lang.Boolean",
+			"defaultValue": false,
+			"description": "Whether testcase for version prefer is enabled."
+		},
+		{
+			"name": "testcase.second.release.enabled",
+			"type": "java.lang.Boolean",
+			"defaultValue": false,
+			"description": "Whether testcase for second release is enabled."
+		},
+		{
+			"name": "testcase.debug.enabled",
+			"type": "java.lang.Boolean",
+			"defaultValue": false,
+			"description": "Whether testcase for debug is enabled."
+		}
+	]
+}

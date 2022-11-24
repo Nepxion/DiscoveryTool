@@ -9,15 +9,9 @@ package com.nepxion.discovery.automation.inspector.entity;
  * @version 1.0
  */
 
-public interface InspectorTestCaseEntity {
-    String getInspectUrl();
+import com.nepxion.discovery.automation.common.entity.TestCaseEntity;
 
-    void setInspectUrl(String inspectUrl);
-
-    String getInspectContextService();
-
-    void setInspectContextService(String inspectContextService);
-
+public interface InspectorTestCaseEntity extends TestCaseEntity {
     int getSampleCount();
 
     void setSampleCount(int sampleCount);
@@ -25,8 +19,4 @@ public interface InspectorTestCaseEntity {
     String getResultFilter();
 
     void setResultFilter(String resultFilter);
-
-    boolean isDebugEnabled();
-
-    void setDebugEnabled(boolean debugEnabled);
 }

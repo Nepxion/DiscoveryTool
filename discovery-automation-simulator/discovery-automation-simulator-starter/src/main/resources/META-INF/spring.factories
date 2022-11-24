@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.nepxion.discovery.automation.simulator.configuration.SimulatorTestAutoConfiguration

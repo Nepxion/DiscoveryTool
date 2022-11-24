@@ -18,12 +18,12 @@ import com.nepxion.discovery.automation.inspector.runner.InspectorTestRunner;
 @Configuration
 public class InspectorTestAutoConfiguration {
     @Bean
-    public InspectorTestCases testCases() {
+    public InspectorTestCases inspectorTestCases() {
         return new InspectorTestCases();
     }
 
     @Bean
-    public InspectorTestRunner testRunner() {
+    public InspectorTestRunner inspectorTestRunner() {
         return new InspectorTestRunner();
     }
 }

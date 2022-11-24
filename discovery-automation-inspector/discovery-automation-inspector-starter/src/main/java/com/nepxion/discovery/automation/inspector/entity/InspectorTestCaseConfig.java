@@ -9,46 +9,19 @@ package com.nepxion.discovery.automation.inspector.entity;
  * @version 1.0
  */
 
-import java.io.Serializable;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
+import com.nepxion.discovery.automation.common.entity.TestCaseConfig;
 import com.nepxion.discovery.automation.common.util.TestParserUtil;
 import com.nepxion.discovery.automation.inspector.constant.InspectorTestConstant;
 
-public class InspectorTestCaseConfig implements InspectorTestCaseEntity, Serializable {
+public class InspectorTestCaseConfig extends TestCaseConfig implements InspectorTestCaseEntity {
     private static final long serialVersionUID = -8654886373593752202L;
 
-    private String inspectUrl;
-    private String inspectContextService = StringUtils.EMPTY;
     private int sampleCount = 10;
     private String resultFilter = InspectorTestConstant.ID + "," + InspectorTestConstant.V;
-    private boolean debugEnabled = false;
-
-    @Override
-    public String getInspectUrl() {
-        return inspectUrl;
-    }
-
-    @Override
-    public void setInspectUrl(String inspectUrl) {
-        this.inspectUrl = inspectUrl;
-    }
-
-    @Override
-    public String getInspectContextService() {
-        return inspectContextService;
-    }
-
-    @Override
-    public void setInspectContextService(String inspectContextService) {
-        this.inspectContextService = inspectContextService;
-    }
 
     @Override
     public int getSampleCount() {
@@ -68,16 +41,6 @@ public class InspectorTestCaseConfig implements InspectorTestCaseEntity, Seriali
     @Override
     public void setResultFilter(String resultFilter) {
         this.resultFilter = resultFilter;
-    }
-
-    @Override
-    public boolean isDebugEnabled() {
-        return debugEnabled;
-    }
-
-    @Override
-    public void setDebugEnabled(boolean debugEnabled) {
-        this.debugEnabled = debugEnabled;
     }
 
     public static InspectorTestCaseConfig fromText(String input, boolean testCaseConfigWithYaml) throws Exception {
@@ -135,20 +98,5 @@ public class InspectorTestCaseConfig implements InspectorTestCaseEntity, Seriali
         }
 
         return testCaseConfig;
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(this, object);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 }

@@ -1,0 +1,5 @@
+org.springframework.context.ApplicationContextInitializer=\
+com.nepxion.discovery.automation.simulator.console.context.SimulatorConsoleApplicationContextInitializer
+
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.nepxion.discovery.automation.simulator.console.configuration.SimulatorConsoleAutoConfiguration
