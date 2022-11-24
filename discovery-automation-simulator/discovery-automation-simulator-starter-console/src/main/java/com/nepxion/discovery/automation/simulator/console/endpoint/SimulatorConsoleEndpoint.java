@@ -47,9 +47,9 @@ public class SimulatorConsoleEndpoint {
 
     private ResponseEntity<?> doTest(String testConfig, boolean testCaseConfigWithYaml) {
         try {
-            simulatorConsoleResource.test(testConfig, testCaseConfigWithYaml);
+            String result = simulatorConsoleResource.test(testConfig, testCaseConfigWithYaml);
 
-            return ResponseUtil.getSuccessResponse(true);
+            return ResponseUtil.getSuccessResponse(result);
         } catch (Exception e) {
             return ResponseUtil.getFailureResponse(e);
         }

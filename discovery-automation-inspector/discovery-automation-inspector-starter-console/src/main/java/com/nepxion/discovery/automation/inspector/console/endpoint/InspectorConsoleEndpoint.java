@@ -47,9 +47,9 @@ public class InspectorConsoleEndpoint {
 
     private ResponseEntity<?> doTest(String testConfig, boolean testCaseConfigWithYaml) {
         try {
-            inspectorConsoleResource.test(testConfig, testCaseConfigWithYaml);
+            String result = inspectorConsoleResource.test(testConfig, testCaseConfigWithYaml);
 
-            return ResponseUtil.getSuccessResponse(true);
+            return ResponseUtil.getSuccessResponse(result);
         } catch (Exception e) {
             return ResponseUtil.getFailureResponse(e);
         }

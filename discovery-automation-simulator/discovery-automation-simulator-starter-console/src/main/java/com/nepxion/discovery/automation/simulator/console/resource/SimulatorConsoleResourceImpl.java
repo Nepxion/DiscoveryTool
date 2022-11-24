@@ -11,8 +11,6 @@ package com.nepxion.discovery.automation.simulator.console.resource;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nepxion.discovery.automation.common.console.resource.ConsoleResourceImpl;
@@ -20,14 +18,12 @@ import com.nepxion.discovery.automation.simulator.runner.SimulatorTestRunner;
 import com.nepxion.discovery.automation.simulator.strategy.SimulatorTestStrategy;
 
 public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements SimulatorConsoleResource {
-    private static final Logger LOG = LoggerFactory.getLogger(SimulatorConsoleResourceImpl.class);
-
     @Autowired
     private SimulatorTestRunner testRunner;
 
     @Override
-    public String getTestThreadNamePrefix() {
-        return "Simulator-Thread-";
+    public String getTestName() {
+        return "Simulator";
     }
 
     @Override
@@ -36,27 +32,21 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
     }
 
     @Override
-    public void runTest(List<String> testConfigList, boolean testCaseConfigWithYaml) {
+    public void runTest(List<String> testConfigList, boolean testCaseConfigWithYaml) throws Exception {
         String testCaseConfig = testConfigList.get(0);
         String testCaseReleaseBasicCondition = testConfigList.get(1);
         String testCaseReleaseFirstCondition = testConfigList.get(2);
         String testCaseReleaseSecondCondition = testConfigList.get(3);
 
-        try {
-            SimulatorTestRunner.beforeTest();
-            SimulatorTestStrategy testStrategy = testRunner.testInitialization(testCaseConfig, testCaseReleaseBasicCondition, testCaseReleaseFirstCondition, testCaseReleaseSecondCondition, testCaseConfigWithYaml);
-            testRunner.testNormal(testStrategy);
-            testRunner.testFirstVersionBasicRelease(testStrategy);
-            testRunner.testFirstVersionBlueGreenGrayRelease(testStrategy);
-            testRunner.testFirstResetRelease(testStrategy);
-            testRunner.testSecondVersionBasicRelease(testStrategy);
-            testRunner.testSecondVersionBlueGreenGrayRelease(testStrategy);
-            testRunner.testSecondResetRelease(testStrategy);
-            SimulatorTestRunner.afterTest();
-        } catch (Exception e) {
-            LOG.error("Simulator test failed", e);
-
-            e.printStackTrace();
-        }
+        SimulatorTestRunner.beforeTest();
+        SimulatorTestStrategy testStrategy = testRunner.testInitialization(testCaseConfig, testCaseReleaseBasicCondition, testCaseReleaseFirstCondition, testCaseReleaseSecondCondition, testCaseConfigWithYaml);
+        testRunner.testNormal(testStrategy);
+        testRunner.testFirstVersionBasicRelease(testStrategy);
+        testRunner.testFirstVersionBlueGreenGrayRelease(testStrategy);
+        testRunner.testFirstResetRelease(testStrategy);
+        testRunner.testSecondVersionBasicRelease(testStrategy);
+        testRunner.testSecondVersionBlueGreenGrayRelease(testStrategy);
+        testRunner.testSecondResetRelease(testStrategy);
+        SimulatorTestRunner.afterTest();
     }
 }

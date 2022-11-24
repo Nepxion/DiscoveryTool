@@ -15,6 +15,8 @@ public class TestConstant {
 
     public static final String TESTCASE_DEBUG_ENABLED = "testcase.debug.enabled";
 
+    public static final String TESTCASE_ID = "testcase-id";
+
     public static final String ID = "ID";
     public static final String V = "V";
 

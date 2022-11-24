@@ -11,8 +11,6 @@ package com.nepxion.discovery.automation.inspector.console.resource;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nepxion.discovery.automation.common.console.resource.ConsoleResourceImpl;
@@ -20,14 +18,12 @@ import com.nepxion.discovery.automation.inspector.runner.InspectorTestRunner;
 import com.nepxion.discovery.automation.inspector.strategy.InspectorTestStrategy;
 
 public class InspectorConsoleResourceImpl extends ConsoleResourceImpl implements InspectorConsoleResource {
-    private static final Logger LOG = LoggerFactory.getLogger(InspectorConsoleResourceImpl.class);
-
     @Autowired
     private InspectorTestRunner testRunner;
 
     @Override
-    public String getTestThreadNamePrefix() {
-        return "Inspector-Thread-";
+    public String getTestName() {
+        return "Inspector";
     }
 
     @Override
@@ -36,19 +32,13 @@ public class InspectorConsoleResourceImpl extends ConsoleResourceImpl implements
     }
 
     @Override
-    public void runTest(List<String> testConfigList, boolean testCaseConfigWithYaml) {
+    public void runTest(List<String> testConfigList, boolean testCaseConfigWithYaml) throws Exception {
         String testCaseConfig = testConfigList.get(0);
         String testCaseCondition = testConfigList.get(1);
 
-        try {
-            InspectorTestRunner.beforeTest();
-            InspectorTestStrategy testStrategy = testRunner.testInitialization(testCaseConfig, testCaseCondition, testCaseConfigWithYaml);
-            testRunner.testInspection(testStrategy);
-            InspectorTestRunner.afterTest();
-        } catch (Exception e) {
-            LOG.error("Inspector test failed", e);
-
-            e.printStackTrace();
-        }
+        InspectorTestRunner.beforeTest();
+        InspectorTestStrategy testStrategy = testRunner.testInitialization(testCaseConfig, testCaseCondition, testCaseConfigWithYaml);
+        testRunner.testInspection(testStrategy);
+        InspectorTestRunner.afterTest();
     }
 }

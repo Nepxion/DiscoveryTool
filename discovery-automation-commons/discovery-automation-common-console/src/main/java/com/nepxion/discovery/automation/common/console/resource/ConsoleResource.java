@@ -10,5 +10,5 @@ package com.nepxion.discovery.automation.common.console.resource;
  */
 
 public interface ConsoleResource {
-    void test(String testConfig, boolean testCaseConfigWithYaml);
+    String test(String testConfig, boolean testCaseConfigWithYaml);
 }
