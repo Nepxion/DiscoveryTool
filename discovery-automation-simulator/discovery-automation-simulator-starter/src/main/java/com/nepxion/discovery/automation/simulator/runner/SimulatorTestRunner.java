@@ -45,7 +45,6 @@ public class SimulatorTestRunner {
 
     public SimulatorTestStrategy testInitialization(String testCaseEntityContent, String basicTestCaseConditionContent, String releaseTestCaseConditionContent, String releaseTestCaseConditionRouteContent, boolean testCaseConfigWithYaml) throws Exception {
         SimulatorTestCaseContext testCaseContext = new SimulatorTestCaseContext();
-
         SimulatorTestStrategyHolder testStrategyHolder = new SimulatorTestStrategyHolder();
 
         new SimulatorTestCaseRunner(testCaseContext) {
@@ -64,7 +63,6 @@ public class SimulatorTestRunner {
 
     public SimulatorTestStrategy testInitialization(SimulatorTestCaseEntity testCaseEntity, SimulatorTestCaseCondition basicTestCaseCondition, SimulatorTestCaseCondition releaseTestCaseCondition, SimulatorTestCaseConditionRoute releaseTestCaseConditionRoute) throws Exception {
         SimulatorTestCaseContext testCaseContext = new SimulatorTestCaseContext();
-
         SimulatorTestStrategyHolder testStrategyHolder = new SimulatorTestStrategyHolder();
 
         new SimulatorTestCaseRunner(testCaseContext) {
@@ -130,9 +128,7 @@ public class SimulatorTestRunner {
     public void testSecondVersionBasicRelease(SimulatorTestStrategy testStrategy) throws Exception {
         SimulatorTestCaseContext testCaseContext = testStrategy.getTestCaseContext();
         String basicTestCaseConditionContent = testStrategy.getBasicTestCaseConditionContent();
-
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
-
         boolean secondReleaseEnabled = testCaseEntity.isSecondReleaseEnabled();
 
         new SimulatorTestCaseRunner(testCaseContext, secondReleaseEnabled) {
@@ -146,9 +142,7 @@ public class SimulatorTestRunner {
     public void testSecondVersionBlueGreenGrayRelease(SimulatorTestStrategy testStrategy) throws Exception {
         SimulatorTestCaseContext testCaseContext = testStrategy.getTestCaseContext();
         String releaseTestCaseConditionRouteContent = testStrategy.getReleaseTestCaseConditionRouteContent();
-
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
-
         boolean secondReleaseEnabled = testCaseEntity.isSecondReleaseEnabled();
 
         new SimulatorTestCaseRunner(testCaseContext, secondReleaseEnabled) {
@@ -162,7 +156,6 @@ public class SimulatorTestRunner {
     public void testSecondResetRelease(SimulatorTestStrategy testStrategy) throws Exception {
         SimulatorTestCaseContext testCaseContext = testStrategy.getTestCaseContext();
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
-
         boolean secondReleaseEnabled = testCaseEntity.isSecondReleaseEnabled();
 
         new SimulatorTestCaseRunner(testCaseContext, secondReleaseEnabled) {
@@ -205,7 +198,6 @@ public class SimulatorTestRunner {
 
     public void testNormal(int sceneIndex, SimulatorTestStrategy testStrategy) throws Exception {
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
-
         int loopCount = testCaseEntity.getLoopCount();
         boolean versionPreferEnabled = testCaseEntity.isVersionPreferEnabled();
 
@@ -234,7 +226,6 @@ public class SimulatorTestRunner {
 
     public void testVersionBasicRelease(int sceneIndex, int releaseIndex, String input, SimulatorTestStrategy testStrategy) throws Exception {
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
-
         int loopCount = testCaseEntity.getLoopCount();
 
         LOG.info("-------------------------------------------------");
@@ -265,9 +256,7 @@ public class SimulatorTestRunner {
         List<String> blueParameter = testStrategy.getBlueParameter();
         List<String> grayParameter0 = testStrategy.getGrayParameter0();
         List<String> grayParameter1 = testStrategy.getGrayParameter1();
-
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
-
         int loopCount = testCaseEntity.getLoopCount();
 
         LOG.info("【模拟场景{}】第{}次蓝绿灰度发布场景，启动蓝绿灰度发布策略...", sceneIndex, releaseIndex);
@@ -326,7 +315,6 @@ public class SimulatorTestRunner {
 
     public void testResetRelease(int sceneIndex, int releaseIndex, SimulatorTestStrategy testStrategy) throws Exception {
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
-
         int loopCount = testCaseEntity.getLoopCount();
         boolean versionPreferEnabled = testCaseEntity.isVersionPreferEnabled();
 

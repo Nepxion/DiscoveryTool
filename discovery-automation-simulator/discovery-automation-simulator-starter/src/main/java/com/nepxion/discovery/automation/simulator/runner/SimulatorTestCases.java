@@ -41,7 +41,6 @@ public class SimulatorTestCases {
     // 测试无蓝绿灰度场景
     public void testNormal(SimulatorTestStrategy testStrategy) {
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
-
         int blueGreenSampleCount = testCaseEntity.getBlueGreenSampleCount();
 
         Map<String, Integer> countMap = testInspection(testStrategy, blueGreenSampleCount, null, null, false, false);
@@ -61,9 +60,7 @@ public class SimulatorTestCases {
     // 测试蓝绿灰度兜底场景
     public void testBasic(SimulatorTestStrategy testStrategy) {
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
-
         int blueGreenSampleCount = testCaseEntity.getBlueGreenSampleCount();
-
         List<String> oldVersionList = testStrategy.getOldVersionList();
         List<String> newVersionList = testStrategy.getNewVersionList();
 
@@ -90,12 +87,9 @@ public class SimulatorTestCases {
     // 测试蓝绿场景
     public void testBlueGreen(SimulatorTestStrategy testStrategy, String headerName, String headerValue) {
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
-
         int blueGreenSampleCount = testCaseEntity.getBlueGreenSampleCount();
-
         List<String> oldVersionList = testStrategy.getOldVersionList();
         List<String> newVersionList = testStrategy.getNewVersionList();
-
         List<String> blueParameter = testStrategy.getBlueParameter();
 
         Map<String, Integer> countMap = testInspection(testStrategy, blueGreenSampleCount, headerName, headerValue, true, false);
@@ -132,10 +126,8 @@ public class SimulatorTestCases {
     // 测试灰度场景
     public void testGray(SimulatorTestStrategy testStrategy, String headerName, String headerValue) {
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
-
         int graySampleCount = testCaseEntity.getGraySampleCount();
         int grayWeightOffset = testCaseEntity.getGrayWeightOffset();
-
         Map<String, List<String>> allVersionMap = testStrategy.getAllVersionMap();
 
         Map<String, Integer> countMap = testInspection(testStrategy, graySampleCount, headerName, headerValue, true, true);
@@ -210,7 +202,6 @@ public class SimulatorTestCases {
 
     private Map<String, Integer> testInspection(SimulatorTestStrategy testStrategy, int sampleCount, String headerName, String headerValue, boolean isolationAssert, boolean progressShown) {
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
-
         String inspectUrl = testCaseEntity.getInspectUrl();
 
         LOG.info("侦测次数 : {}", sampleCount);

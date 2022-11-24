@@ -35,7 +35,6 @@ public class InspectorTestCases {
     // 测试侦测场景
     public void testInspection(InspectorTestStrategy testStrategy) throws Exception {
         InspectorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
-
         int sampleCount = testCaseEntity.getSampleCount();
         String inspectUrl = testCaseEntity.getInspectUrl();
         String resultFilter = testCaseEntity.getResultFilter();
