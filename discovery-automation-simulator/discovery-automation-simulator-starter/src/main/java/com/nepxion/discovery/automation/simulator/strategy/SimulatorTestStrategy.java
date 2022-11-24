@@ -27,10 +27,11 @@ import com.nepxion.discovery.automation.common.logger.TestAssertLogger;
 import com.nepxion.discovery.automation.common.strategy.TestStrategy;
 import com.nepxion.discovery.automation.common.util.TestUtil;
 import com.nepxion.discovery.automation.simulator.constant.SimulatorTestConstant;
-import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseCondition;
-import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseConditionRoute;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseConfig;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseEntity;
+import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseBasicCondition;
+import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseFirstCondition;
+import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseSecondCondition;
 import com.nepxion.discovery.common.constant.DiscoveryConstant;
 import com.nepxion.discovery.common.entity.ConditionBlueGreenEntity;
 import com.nepxion.discovery.common.entity.ConditionBlueGreenRoute;
@@ -48,15 +49,15 @@ public class SimulatorTestStrategy extends TestStrategy {
     private TestRestTemplate testRestTemplate;
 
     private String testCaseEntityContent;
-    private String basicTestCaseConditionContent;
-    private String releaseTestCaseConditionContent;
-    private String releaseTestCaseConditionRouteContent;
+    private String testCaseReleaseBasicConditionContent;
+    private String testCaseReleaseFirstConditionContent;
+    private String testCaseReleaseSecondConditionContent;
     private boolean testCaseConfigWithYaml;
 
     private SimulatorTestCaseEntity testCaseEntity;
-    private SimulatorTestCaseCondition basicTestCaseCondition;
-    private SimulatorTestCaseCondition releaseTestCaseCondition;
-    private SimulatorTestCaseConditionRoute releaseTestCaseConditionRoute;
+    private SimulatorTestCaseReleaseBasicCondition testCaseReleaseBasicCondition;
+    private SimulatorTestCaseReleaseFirstCondition testCaseReleaseFirstCondition;
+    private SimulatorTestCaseReleaseSecondCondition testCaseReleaseSecondCondition;
 
     private List<String> serviceIdList;
 
@@ -78,21 +79,21 @@ public class SimulatorTestStrategy extends TestStrategy {
     private List<String> grayParameter1;
     private List<Integer> grayWeight1;
 
-    public void testInitialization(String testCaseEntityContent, String basicTestCaseConditionContent, String releaseTestCaseConditionContent, String releaseTestCaseConditionRouteContent, boolean testCaseConfigWithYaml) throws Exception {
+    public void testInitialization(String testCaseEntityContent, String testCaseReleaseBasicConditionContent, String testCaseReleaseFirstConditionContent, String testCaseReleaseSecondConditionContent, boolean testCaseConfigWithYaml) throws Exception {
         this.testCaseEntityContent = testCaseEntityContent;
-        this.basicTestCaseConditionContent = basicTestCaseConditionContent;
-        this.releaseTestCaseConditionContent = releaseTestCaseConditionContent;
-        this.releaseTestCaseConditionRouteContent = releaseTestCaseConditionRouteContent;
+        this.testCaseReleaseBasicConditionContent = testCaseReleaseBasicConditionContent;
+        this.testCaseReleaseFirstConditionContent = testCaseReleaseFirstConditionContent;
+        this.testCaseReleaseSecondConditionContent = testCaseReleaseSecondConditionContent;
         this.testCaseConfigWithYaml = testCaseConfigWithYaml;
 
-        testInitialization(SimulatorTestCaseConfig.fromText(testCaseEntityContent, testCaseConfigWithYaml), SimulatorTestCaseCondition.fromText(basicTestCaseConditionContent), SimulatorTestCaseCondition.fromText(releaseTestCaseConditionContent), SimulatorTestCaseConditionRoute.fromText(releaseTestCaseConditionRouteContent));
+        testInitialization(SimulatorTestCaseConfig.fromText(testCaseEntityContent, testCaseConfigWithYaml), SimulatorTestCaseReleaseBasicCondition.fromText(testCaseReleaseBasicConditionContent), SimulatorTestCaseReleaseFirstCondition.fromText(testCaseReleaseFirstConditionContent), SimulatorTestCaseReleaseSecondCondition.fromText(testCaseReleaseSecondConditionContent));
     }
 
-    public void testInitialization(SimulatorTestCaseEntity testCaseEntity, SimulatorTestCaseCondition basicTestCaseCondition, SimulatorTestCaseCondition releaseTestCaseCondition, SimulatorTestCaseConditionRoute releaseTestCaseConditionRoute) throws Exception {
+    public void testInitialization(SimulatorTestCaseEntity testCaseEntity, SimulatorTestCaseReleaseBasicCondition testCaseReleaseBasicCondition, SimulatorTestCaseReleaseFirstCondition testCaseReleaseFirstCondition, SimulatorTestCaseReleaseSecondCondition testCaseReleaseSecondCondition) throws Exception {
         this.testCaseEntity = testCaseEntity;
-        this.basicTestCaseCondition = basicTestCaseCondition;
-        this.releaseTestCaseCondition = releaseTestCaseCondition;
-        this.releaseTestCaseConditionRoute = releaseTestCaseConditionRoute;
+        this.testCaseReleaseBasicCondition = testCaseReleaseBasicCondition;
+        this.testCaseReleaseFirstCondition = testCaseReleaseFirstCondition;
+        this.testCaseReleaseSecondCondition = testCaseReleaseSecondCondition;
 
         LOG.info("控制台地址 : {}", testCaseEntity.getConsoleUrl());
         LOG.info("控制台等待生效时间 : {} 毫秒", testCaseEntity.getConsoleOperationAwaitTime());
@@ -120,7 +121,7 @@ public class SimulatorTestStrategy extends TestStrategy {
 
         LOG.info("初始化服务版本列表...");
         initializeVersionContext();
-        LOG.info("服务版本排序依据 : {}", releaseTestCaseCondition.getSort());
+        LOG.info("服务版本排序依据 : {}", testCaseReleaseFirstCondition.getSort());
         LOG.info("服务全部版本列表 : {}", allVersionMap);
         LOG.info("服务旧版本列表 : {}", oldVersionMap);
         LOG.info("服务新版本列表 : {}", newVersionMap);
@@ -134,7 +135,7 @@ public class SimulatorTestStrategy extends TestStrategy {
     }
 
     private void initializeServiceIdList() throws Exception {
-        serviceIdList = releaseTestCaseCondition.getService();
+        serviceIdList = testCaseReleaseFirstCondition.getService();
         TestAssertLogger.assertThat(LOG, "初始化失败，服务列表为空", CollectionUtils.isNotEmpty(serviceIdList) ? serviceIdList.size() : 0, OrderingComparison.greaterThanOrEqualTo(1));
     }
 
@@ -146,7 +147,7 @@ public class SimulatorTestStrategy extends TestStrategy {
             List<InstanceEntity> instanceList = retrieveInstanceList(serviceId);
             TestAssertLogger.assertThat(LOG, "初始化失败，服务【" + serviceId + "】的实例列表为空", CollectionUtils.isNotEmpty(instanceList) ? instanceList.size() : 0, OrderingComparison.greaterThanOrEqualTo(1));
 
-            String sort = releaseTestCaseCondition.getSort();
+            String sort = testCaseReleaseFirstCondition.getSort();
             VersionSortType versionSortType = VersionSortType.fromString(sort);
 
             List<String> versionList = VersionSortUtil.assembleVersionList(instanceList, versionSortType);
@@ -187,7 +188,7 @@ public class SimulatorTestStrategy extends TestStrategy {
     }
 
     private void initializeParameter() {
-        List<ConditionBlueGreenEntity> blueGreen = releaseTestCaseCondition.getBlueGreen();
+        List<ConditionBlueGreenEntity> blueGreen = testCaseReleaseFirstCondition.getBlueGreen();
         for (ConditionBlueGreenEntity conditionBlueGreenEntity : blueGreen) {
             String blueGreenExpression = conditionBlueGreenEntity.getExpression();
             String bludGreenRoute = conditionBlueGreenEntity.getRoute();
@@ -205,7 +206,7 @@ public class SimulatorTestStrategy extends TestStrategy {
 
         }
 
-        List<ConditionGrayEntity> gray = releaseTestCaseCondition.getGray();
+        List<ConditionGrayEntity> gray = testCaseReleaseFirstCondition.getGray();
         ConditionGrayEntity conditionGrayEntity0 = gray.get(0);
         grayExpression0 = conditionGrayEntity0.getExpression();
         grayParameter0 = extractParameter(grayExpression0);
@@ -240,16 +241,16 @@ public class SimulatorTestStrategy extends TestStrategy {
         return testCaseEntityContent;
     }
 
-    public String getBasicTestCaseConditionContent() {
-        return basicTestCaseConditionContent;
+    public String getTestCaseReleaseBasicConditionContent() {
+        return testCaseReleaseBasicConditionContent;
     }
 
-    public String getReleaseTestCaseConditionContent() {
-        return releaseTestCaseConditionContent;
+    public String getTestCaseReleaseFirstConditionContent() {
+        return testCaseReleaseFirstConditionContent;
     }
 
-    public String getReleaseTestCaseConditionRouteContent() {
-        return releaseTestCaseConditionRouteContent;
+    public String getTestCaseReleaseSecondConditionContent() {
+        return testCaseReleaseSecondConditionContent;
     }
 
     public boolean isTestCaseConfigWithYaml() {
@@ -260,16 +261,16 @@ public class SimulatorTestStrategy extends TestStrategy {
         return testCaseEntity;
     }
 
-    public SimulatorTestCaseCondition getBasicTestCaseCondition() {
-        return basicTestCaseCondition;
+    public SimulatorTestCaseReleaseBasicCondition getTestCaseReleaseBasicCondition() {
+        return testCaseReleaseBasicCondition;
     }
 
-    public SimulatorTestCaseCondition getReleaseTestCaseCondition() {
-        return releaseTestCaseCondition;
+    public SimulatorTestCaseReleaseFirstCondition getTestCaseReleaseFirstCondition() {
+        return testCaseReleaseFirstCondition;
     }
 
-    public SimulatorTestCaseConditionRoute getReleaseTestCaseConditionRoute() {
-        return releaseTestCaseConditionRoute;
+    public SimulatorTestCaseReleaseSecondCondition getTestCaseReleaseSecondCondition() {
+        return testCaseReleaseSecondCondition;
     }
 
     public List<String> getServiceIdList() {

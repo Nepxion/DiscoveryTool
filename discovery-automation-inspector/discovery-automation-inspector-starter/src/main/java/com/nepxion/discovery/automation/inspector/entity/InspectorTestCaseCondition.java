@@ -17,13 +17,13 @@ import com.nepxion.discovery.common.util.YamlUtil;
 public class InspectorTestCaseCondition extends ConditionStrategy {
     private static final long serialVersionUID = -7987731761366380912L;
 
-    public static InspectorTestCaseCondition fromInspectorFile() {
-        String input = getInspectorFile();
+    public static InspectorTestCaseCondition fromFile() {
+        String input = getFile();
 
         return fromText(input);
     }
 
-    public static String getInspectorFile() {
+    public static String getFile() {
         return getFile(InspectorTestConstant.FILE_PATH_INSPECTOR);
     }
 

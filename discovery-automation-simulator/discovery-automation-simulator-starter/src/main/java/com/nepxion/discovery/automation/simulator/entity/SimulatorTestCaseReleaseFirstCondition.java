@@ -14,37 +14,27 @@ import com.nepxion.discovery.automation.simulator.constant.SimulatorTestConstant
 import com.nepxion.discovery.common.entity.ConditionStrategy;
 import com.nepxion.discovery.common.util.YamlUtil;
 
-public class SimulatorTestCaseCondition extends ConditionStrategy {
-    private static final long serialVersionUID = -1234485339530269667L;
+public class SimulatorTestCaseReleaseFirstCondition extends ConditionStrategy {
+    private static final long serialVersionUID = 4347083629171827044L;
 
-    public static SimulatorTestCaseCondition fromBasicFile() {
-        String input = getBasicFile();
-
-        return fromText(input);
-    }
-
-    public static String getBasicFile() {
-        return getFile(SimulatorTestConstant.FILE_PATH_VERSION_RELEASE_BASIC);
-    }
-
-    public static SimulatorTestCaseCondition fromReleaseFile() {
-        String input = getReleaseFile();
+    public static SimulatorTestCaseReleaseFirstCondition fromFile() {
+        String input = getFile();
 
         return fromText(input);
     }
 
-    public static String getReleaseFile() {
+    public static String getFile() {
         return getFile(SimulatorTestConstant.FILE_PATH_VERSION_RELEASE_1);
     }
 
-    public static SimulatorTestCaseCondition fromFile(String file) {
+    public static SimulatorTestCaseReleaseFirstCondition fromFile(String file) {
         String input = getFile(file);
 
         return fromText(input);
     }
 
-    public static SimulatorTestCaseCondition fromText(String input) {
-        return YamlUtil.fromYaml(input, SimulatorTestCaseCondition.class);
+    public static SimulatorTestCaseReleaseFirstCondition fromText(String input) {
+        return YamlUtil.fromYaml(input, SimulatorTestCaseReleaseFirstCondition.class);
     }
 
     public static String getFile(String file) {

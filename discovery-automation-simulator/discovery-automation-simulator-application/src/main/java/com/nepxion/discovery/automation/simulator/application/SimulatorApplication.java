@@ -13,9 +13,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseCondition;
-import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseConditionRoute;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseProperty;
+import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseBasicCondition;
+import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseFirstCondition;
+import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseSecondCondition;
 import com.nepxion.discovery.automation.simulator.runner.SimulatorTestRunner;
 import com.nepxion.discovery.automation.simulator.strategy.SimulatorTestStrategy;
 
@@ -25,13 +26,13 @@ public class SimulatorApplication {
         ConfigurableApplicationContext applicationContext = SpringApplication.run(SimulatorApplication.class, args);
 
         SimulatorTestCaseProperty testCaseProperty = applicationContext.getBean(SimulatorTestCaseProperty.class);
-        SimulatorTestCaseCondition basicTestCaseCondition = (SimulatorTestCaseCondition) applicationContext.getBean("simulatorBasicTestCaseCondition");
-        SimulatorTestCaseCondition releaseTestCaseCondition = (SimulatorTestCaseCondition) applicationContext.getBean("simulatorReleaseTestCaseCondition");
-        SimulatorTestCaseConditionRoute releaseTestCaseConditionRoute = applicationContext.getBean(SimulatorTestCaseConditionRoute.class);
+        SimulatorTestCaseReleaseBasicCondition testCaseReleaseBasicCondition = applicationContext.getBean(SimulatorTestCaseReleaseBasicCondition.class);
+        SimulatorTestCaseReleaseFirstCondition testCaseReleaseFirstCondition = applicationContext.getBean(SimulatorTestCaseReleaseFirstCondition.class);
+        SimulatorTestCaseReleaseSecondCondition testCaseReleaseSecondCondition = applicationContext.getBean(SimulatorTestCaseReleaseSecondCondition.class);
         SimulatorTestRunner testRunner = applicationContext.getBean(SimulatorTestRunner.class);
         try {
             SimulatorTestRunner.beforeTest();
-            SimulatorTestStrategy testStrategy = testRunner.testInitialization(testCaseProperty, basicTestCaseCondition, releaseTestCaseCondition, releaseTestCaseConditionRoute);
+            SimulatorTestStrategy testStrategy = testRunner.testInitialization(testCaseProperty, testCaseReleaseBasicCondition, testCaseReleaseFirstCondition, testCaseReleaseSecondCondition);
             testRunner.testNormal(testStrategy);
             testRunner.testFirstVersionBasicRelease(testStrategy);
             testRunner.testFirstVersionBlueGreenGrayRelease(testStrategy);

@@ -18,9 +18,10 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 
 import com.nepxion.discovery.automation.common.runner.TestCaseContext;
 import com.nepxion.discovery.automation.common.runner.TestCaseRunner;
-import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseCondition;
-import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseConditionRoute;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseEntity;
+import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseBasicCondition;
+import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseFirstCondition;
+import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseSecondCondition;
 import com.nepxion.discovery.automation.simulator.strategy.SimulatorTestStrategy;
 import com.nepxion.discovery.common.constant.DiscoveryConstant;
 import com.nepxion.discovery.common.util.StringUtil;
@@ -44,13 +45,13 @@ public class SimulatorTestRunner {
         LOG.info("* Finished all automation testcases in {} seconds", (System.currentTimeMillis() - startTime) / 1000);
     }
 
-    public SimulatorTestStrategy testInitialization(String testCaseEntityContent, String basicTestCaseConditionContent, String releaseTestCaseConditionContent, String releaseTestCaseConditionRouteContent, boolean testCaseConfigWithYaml) throws Exception {
+    public SimulatorTestStrategy testInitialization(String testCaseEntityContent, String testCaseReleaseBasicConditionContent, String testCaseReleaseFirstConditionContent, String testCaseReleaseSecondConditionContent, boolean testCaseConfigWithYaml) throws Exception {
         TestCaseContext testCaseContext = new TestCaseContext();
 
         SimulatorTestStrategy testStrategy = new TestCaseRunner<SimulatorTestStrategy>(testCaseContext) {
             @Override
             public SimulatorTestStrategy run() throws Exception {
-                return testInitialization(0, testCaseEntityContent, basicTestCaseConditionContent, releaseTestCaseConditionContent, releaseTestCaseConditionRouteContent, testCaseConfigWithYaml);
+                return testInitialization(0, testCaseEntityContent, testCaseReleaseBasicConditionContent, testCaseReleaseFirstConditionContent, testCaseReleaseSecondConditionContent, testCaseConfigWithYaml);
             }
         }.start();
 
@@ -59,13 +60,13 @@ public class SimulatorTestRunner {
         return testStrategy;
     }
 
-    public SimulatorTestStrategy testInitialization(SimulatorTestCaseEntity testCaseEntity, SimulatorTestCaseCondition basicTestCaseCondition, SimulatorTestCaseCondition releaseTestCaseCondition, SimulatorTestCaseConditionRoute releaseTestCaseConditionRoute) throws Exception {
+    public SimulatorTestStrategy testInitialization(SimulatorTestCaseEntity testCaseEntity, SimulatorTestCaseReleaseBasicCondition testCaseReleaseBasicCondition, SimulatorTestCaseReleaseFirstCondition testCaseReleaseFirstCondition, SimulatorTestCaseReleaseSecondCondition testCaseReleaseSecondCondition) throws Exception {
         TestCaseContext testCaseContext = new TestCaseContext();
 
         SimulatorTestStrategy testStrategy = new TestCaseRunner<SimulatorTestStrategy>(testCaseContext) {
             @Override
             public SimulatorTestStrategy run() throws Exception {
-                return testInitialization(0, testCaseEntity, basicTestCaseCondition, releaseTestCaseCondition, releaseTestCaseConditionRoute);
+                return testInitialization(0, testCaseEntity, testCaseReleaseBasicCondition, testCaseReleaseFirstCondition, testCaseReleaseSecondCondition);
             }
         }.start();
 
@@ -89,12 +90,12 @@ public class SimulatorTestRunner {
 
     public void testFirstVersionBasicRelease(SimulatorTestStrategy testStrategy) throws Exception {
         TestCaseContext testCaseContext = testStrategy.getTestCaseContext();
-        String basicTestCaseConditionContent = testStrategy.getBasicTestCaseConditionContent();
+        String testCaseReleaseBasicConditionContent = testStrategy.getTestCaseReleaseBasicConditionContent();
 
         new TestCaseRunner<Void>(testCaseContext) {
             @Override
             public Void run() throws Exception {
-                testVersionBasicRelease(2, 1, basicTestCaseConditionContent != null ? basicTestCaseConditionContent : SimulatorTestCaseCondition.getBasicFile(), testStrategy);
+                testVersionBasicRelease(2, 1, testCaseReleaseBasicConditionContent != null ? testCaseReleaseBasicConditionContent : SimulatorTestCaseReleaseBasicCondition.getFile(), testStrategy);
 
                 return null;
             }
@@ -103,12 +104,12 @@ public class SimulatorTestRunner {
 
     public void testFirstVersionBlueGreenGrayRelease(SimulatorTestStrategy testStrategy) throws Exception {
         TestCaseContext testCaseContext = testStrategy.getTestCaseContext();
-        String releaseTestCaseConditionContent = testStrategy.getReleaseTestCaseConditionContent();
+        String testCaseReleaseFirstConditionContent = testStrategy.getTestCaseReleaseFirstConditionContent();
 
         new TestCaseRunner<Void>(testCaseContext) {
             @Override
             public Void run() throws Exception {
-                testVersionBlueGreenGrayRelease(3, 1, releaseTestCaseConditionContent != null ? releaseTestCaseConditionContent : SimulatorTestCaseCondition.getReleaseFile(), testStrategy);
+                testVersionBlueGreenGrayRelease(3, 1, testCaseReleaseFirstConditionContent != null ? testCaseReleaseFirstConditionContent : SimulatorTestCaseReleaseFirstCondition.getFile(), testStrategy);
 
                 return null;
             }
@@ -130,14 +131,14 @@ public class SimulatorTestRunner {
 
     public void testSecondVersionBasicRelease(SimulatorTestStrategy testStrategy) throws Exception {
         TestCaseContext testCaseContext = testStrategy.getTestCaseContext();
-        String basicTestCaseConditionContent = testStrategy.getBasicTestCaseConditionContent();
+        String testCaseReleaseBasicConditionContent = testStrategy.getTestCaseReleaseBasicConditionContent();
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
         boolean secondReleaseEnabled = testCaseEntity.isSecondReleaseEnabled();
 
         new TestCaseRunner<Void>(testCaseContext, secondReleaseEnabled) {
             @Override
             public Void run() throws Exception {
-                testVersionBasicRelease(5, 2, basicTestCaseConditionContent != null ? basicTestCaseConditionContent : SimulatorTestCaseConditionRoute.getBasicFile(), testStrategy);
+                testVersionBasicRelease(5, 2, testCaseReleaseBasicConditionContent != null ? testCaseReleaseBasicConditionContent : SimulatorTestCaseReleaseBasicCondition.getFile(), testStrategy);
 
                 return null;
             }
@@ -146,14 +147,14 @@ public class SimulatorTestRunner {
 
     public void testSecondVersionBlueGreenGrayRelease(SimulatorTestStrategy testStrategy) throws Exception {
         TestCaseContext testCaseContext = testStrategy.getTestCaseContext();
-        String releaseTestCaseConditionRouteContent = testStrategy.getReleaseTestCaseConditionRouteContent();
+        String testCaseReleaseSecondConditionContent = testStrategy.getTestCaseReleaseSecondConditionContent();
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
         boolean secondReleaseEnabled = testCaseEntity.isSecondReleaseEnabled();
 
         new TestCaseRunner<Void>(testCaseContext, secondReleaseEnabled) {
             @Override
             public Void run() throws Exception {
-                testVersionBlueGreenGrayRelease(6, 2, releaseTestCaseConditionRouteContent != null ? releaseTestCaseConditionRouteContent : SimulatorTestCaseConditionRoute.getReleaseFile(), testStrategy);
+                testVersionBlueGreenGrayRelease(6, 2, testCaseReleaseSecondConditionContent != null ? testCaseReleaseSecondConditionContent : SimulatorTestCaseReleaseSecondCondition.getFile(), testStrategy);
 
                 return null;
             }
@@ -175,14 +176,14 @@ public class SimulatorTestRunner {
         }.start();
     }
 
-    public SimulatorTestStrategy testInitialization(int sceneIndex, String testCaseEntityContent, String basicTestCaseConditionContent, String releaseTestCaseConditionContent, String releaseTestCaseConditionRouteContent, boolean testCaseConfigWithYaml) throws Exception {
+    public SimulatorTestStrategy testInitialization(int sceneIndex, String testCaseEntityContent, String testCaseReleaseBasicConditionContent, String testCaseReleaseFirstConditionContent, String testCaseReleaseSecondConditionContent, boolean testCaseConfigWithYaml) throws Exception {
         LOG.info("-------------------------------------------------");
 
         LOG.info("【模拟场景{}】初始化上下文...", sceneIndex);
         long startTime = System.currentTimeMillis();
         SimulatorTestStrategy testStrategy = new SimulatorTestStrategy();
         testStrategy.setTestRestTemplate(testRestTemplate);
-        testStrategy.testInitialization(testCaseEntityContent, basicTestCaseConditionContent, releaseTestCaseConditionContent, releaseTestCaseConditionRouteContent, testCaseConfigWithYaml);
+        testStrategy.testInitialization(testCaseEntityContent, testCaseReleaseBasicConditionContent, testCaseReleaseFirstConditionContent, testCaseReleaseSecondConditionContent, testCaseConfigWithYaml);
         LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
         LOG.info("【模拟场景{}】* 测试通过...", sceneIndex);
@@ -190,14 +191,14 @@ public class SimulatorTestRunner {
         return testStrategy;
     }
 
-    public SimulatorTestStrategy testInitialization(int sceneIndex, SimulatorTestCaseEntity testCaseEntity, SimulatorTestCaseCondition basicTestCaseCondition, SimulatorTestCaseCondition releaseTestCaseCondition, SimulatorTestCaseConditionRoute releaseTestCaseConditionRoute) throws Exception {
+    public SimulatorTestStrategy testInitialization(int sceneIndex, SimulatorTestCaseEntity testCaseEntity, SimulatorTestCaseReleaseBasicCondition testCaseReleaseBasicCondition, SimulatorTestCaseReleaseFirstCondition testCaseReleaseFirstCondition, SimulatorTestCaseReleaseSecondCondition testCaseReleaseSecondCondition) throws Exception {
         LOG.info("-------------------------------------------------");
 
         LOG.info("【模拟场景{}】初始化上下文...", sceneIndex);
         long startTime = System.currentTimeMillis();
         SimulatorTestStrategy testStrategy = new SimulatorTestStrategy();
         testStrategy.setTestRestTemplate(testRestTemplate);
-        testStrategy.testInitialization(testCaseEntity, basicTestCaseCondition, releaseTestCaseCondition, releaseTestCaseConditionRoute);
+        testStrategy.testInitialization(testCaseEntity, testCaseReleaseBasicCondition, testCaseReleaseFirstCondition, testCaseReleaseSecondCondition);
         LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
         LOG.info("【模拟场景{}】* 测试通过...", sceneIndex);

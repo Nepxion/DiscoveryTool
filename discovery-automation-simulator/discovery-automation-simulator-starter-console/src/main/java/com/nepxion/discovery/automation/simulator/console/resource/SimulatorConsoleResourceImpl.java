@@ -38,13 +38,13 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
     @Override
     public void runTest(List<String> testConfigList, boolean testCaseConfigWithYaml) {
         String testCaseConfig = testConfigList.get(0);
-        String basicTestCaseCondition = testConfigList.get(1);
-        String releaseTestCaseCondition = testConfigList.get(2);
-        String releaseTestCaseConditionRoute = testConfigList.get(3);
+        String testCaseReleaseBasicCondition = testConfigList.get(1);
+        String testCaseReleaseFirstCondition = testConfigList.get(2);
+        String testCaseReleaseSecondCondition = testConfigList.get(3);
 
         try {
             SimulatorTestRunner.beforeTest();
-            SimulatorTestStrategy testStrategy = testRunner.testInitialization(testCaseConfig, basicTestCaseCondition, releaseTestCaseCondition, releaseTestCaseConditionRoute, testCaseConfigWithYaml);
+            SimulatorTestStrategy testStrategy = testRunner.testInitialization(testCaseConfig, testCaseReleaseBasicCondition, testCaseReleaseFirstCondition, testCaseReleaseSecondCondition, testCaseConfigWithYaml);
             testRunner.testNormal(testStrategy);
             testRunner.testFirstVersionBasicRelease(testStrategy);
             testRunner.testFirstVersionBlueGreenGrayRelease(testStrategy);

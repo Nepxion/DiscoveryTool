@@ -12,9 +12,10 @@ package com.nepxion.discovery.automation.simulator.application.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseCondition;
-import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseConditionRoute;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseProperty;
+import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseBasicCondition;
+import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseFirstCondition;
+import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseSecondCondition;
 
 @Configuration
 public class SimulatorAutoConfiguration {
@@ -24,17 +25,17 @@ public class SimulatorAutoConfiguration {
     }
 
     @Bean
-    public SimulatorTestCaseCondition simulatorBasicTestCaseCondition() {
-        return SimulatorTestCaseCondition.fromBasicFile();
+    public SimulatorTestCaseReleaseBasicCondition simulatorTestCaseReleaseBasicCondition() {
+        return SimulatorTestCaseReleaseBasicCondition.fromFile();
     }
 
     @Bean
-    public SimulatorTestCaseCondition simulatorReleaseTestCaseCondition() {
-        return SimulatorTestCaseCondition.fromReleaseFile();
+    public SimulatorTestCaseReleaseFirstCondition simulatorTestCaseReleaseFirstCondition() {
+        return SimulatorTestCaseReleaseFirstCondition.fromFile();
     }
 
     @Bean
-    public SimulatorTestCaseConditionRoute simulatorReleaseTestCaseConditionRoute() {
-        return SimulatorTestCaseConditionRoute.fromReleaseFile();
+    public SimulatorTestCaseReleaseSecondCondition simulatorTestCaseReleaseSecondCondition() {
+        return SimulatorTestCaseReleaseSecondCondition.fromFile();
     }
 }

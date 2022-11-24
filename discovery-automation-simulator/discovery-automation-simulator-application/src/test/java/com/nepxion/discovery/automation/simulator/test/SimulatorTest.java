@@ -20,9 +20,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.nepxion.discovery.automation.common.application.TestApplication;
-import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseCondition;
-import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseConditionRoute;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseProperty;
+import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseBasicCondition;
+import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseFirstCondition;
+import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseSecondCondition;
 import com.nepxion.discovery.automation.simulator.runner.SimulatorTestRunner;
 import com.nepxion.discovery.automation.simulator.strategy.SimulatorTestStrategy;
 
@@ -34,13 +35,13 @@ public class SimulatorTest {
     private SimulatorTestCaseProperty testCaseProperty;
 
     @Autowired
-    private SimulatorTestCaseCondition basicTestCaseCondition;
+    private SimulatorTestCaseReleaseBasicCondition testCaseReleaseBasicCondition;
 
     @Autowired
-    private SimulatorTestCaseCondition releaseTestCaseCondition;
+    private SimulatorTestCaseReleaseFirstCondition testCaseReleaseFirstCondition;
 
     @Autowired
-    private SimulatorTestCaseConditionRoute releaseTestCaseConditionRoute;
+    private SimulatorTestCaseReleaseSecondCondition testCaseReleaseSecondCondition;
 
     @Autowired
     private SimulatorTestRunner testRunner;
@@ -59,7 +60,7 @@ public class SimulatorTest {
 
     @Test
     public void test0Initialization() throws Exception {
-        testStrategy = testRunner.testInitialization(testCaseProperty, basicTestCaseCondition, releaseTestCaseCondition, releaseTestCaseConditionRoute);
+        testStrategy = testRunner.testInitialization(testCaseProperty, testCaseReleaseBasicCondition, testCaseReleaseFirstCondition, testCaseReleaseSecondCondition);
     }
 
     @Test

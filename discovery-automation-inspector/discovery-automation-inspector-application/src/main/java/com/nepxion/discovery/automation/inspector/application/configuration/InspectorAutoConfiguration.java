@@ -24,6 +24,6 @@ public class InspectorAutoConfiguration {
 
     @Bean
     public InspectorTestCaseCondition inspectorTestCaseCondition() {
-        return InspectorTestCaseCondition.fromInspectorFile();
+        return InspectorTestCaseCondition.fromFile();
     }
 }
