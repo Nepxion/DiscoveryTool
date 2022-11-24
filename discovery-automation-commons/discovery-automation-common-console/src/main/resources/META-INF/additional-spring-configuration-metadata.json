@@ -1,0 +1,47 @@
+{
+	"properties": [
+		{
+			"name": "console.thread.pool.core-pool-size",
+			"type": "java.lang.Integer",
+			"description": "Console threadpool core pool size."
+		},
+		{
+			"name": "console.thread.pool.max-pool-size",
+			"type": "java.lang.Integer",
+			"description": "Console threadpool max pool size."
+		},
+		{
+			"name": "console.thread.pool.queue-capacity",
+			"type": "java.lang.Integer",
+			"description": "Console threadpool queue capacity."
+		},
+		{
+			"name": "console.thread.pool.keep-alive-seconds",
+			"type": "java.lang.Integer",
+			"description": "Console threadpool keep alive seconds."
+		},
+		{
+			"name": "console.thread.pool.await-termination-seconds",
+			"type": "java.lang.Integer",
+			"description": "Console threadpool await termination seconds."
+		},
+		{
+			"name": "console.cache.pool.initial-capacity",
+			"type": "java.lang.Integer",
+			"defaultValue": 10,
+			"description": "Console cachepool initial capacity."
+		},
+		{
+			"name": "console.cache.pool.maximum-size",
+			"type": "java.lang.Integer",
+			"defaultValue": 100,
+			"description": "Console cachepool maximum size."
+		},
+		{
+			"name": "console.cache.pool.expire-seconds",
+			"type": "java.lang.Integer",
+			"defaultValue": 1800,
+			"description": "Console cachepool expire-seconds."
+		}
+	]
+}
