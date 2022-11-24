@@ -9,7 +9,7 @@ package com.nepxion.discovery.automation.simulator.runner;
  * @version 1.0
  */
 
-public abstract class SimulatorTestCaseRunner {
+public abstract class SimulatorTestCaseRunner<T> {
     private SimulatorTestCaseContext testCaseContext;
     private boolean enabled;
 
@@ -22,13 +22,13 @@ public abstract class SimulatorTestCaseRunner {
         this.enabled = enabled;
     }
 
-    public void start() throws Exception {
+    public T start() throws Exception {
         if (!testCaseContext.isPassed() || !enabled) {
-            return;
+            return null;
         }
 
         try {
-            run();
+            return run();
         } catch (Throwable e) {
             testCaseContext.setPassed(false);
 
@@ -36,5 +36,5 @@ public abstract class SimulatorTestCaseRunner {
         }
     }
 
-    public abstract void run() throws Exception;
+    public abstract T run() throws Exception;
 }

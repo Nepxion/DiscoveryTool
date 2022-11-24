@@ -20,7 +20,6 @@ import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseCondit
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseConditionRoute;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseEntity;
 import com.nepxion.discovery.automation.simulator.strategy.SimulatorTestStrategy;
-import com.nepxion.discovery.automation.simulator.strategy.SimulatorTestStrategyHolder;
 import com.nepxion.discovery.common.constant.DiscoveryConstant;
 import com.nepxion.discovery.common.util.StringUtil;
 
@@ -45,47 +44,43 @@ public class SimulatorTestRunner {
 
     public SimulatorTestStrategy testInitialization(String testCaseEntityContent, String basicTestCaseConditionContent, String releaseTestCaseConditionContent, String releaseTestCaseConditionRouteContent, boolean testCaseConfigWithYaml) throws Exception {
         SimulatorTestCaseContext testCaseContext = new SimulatorTestCaseContext();
-        SimulatorTestStrategyHolder testStrategyHolder = new SimulatorTestStrategyHolder();
 
-        new SimulatorTestCaseRunner(testCaseContext) {
+        SimulatorTestStrategy testStrategy = new SimulatorTestCaseRunner<SimulatorTestStrategy>(testCaseContext) {
             @Override
-            public void run() throws Exception {
-                SimulatorTestStrategy testStrategy = testInitialization(0, testCaseEntityContent, basicTestCaseConditionContent, releaseTestCaseConditionContent, releaseTestCaseConditionRouteContent, testCaseConfigWithYaml);
-
-                testStrategy.setTestCaseContext(testCaseContext);
-
-                testStrategyHolder.setTestStrategy(testStrategy);
+            public SimulatorTestStrategy run() throws Exception {
+                return testInitialization(0, testCaseEntityContent, basicTestCaseConditionContent, releaseTestCaseConditionContent, releaseTestCaseConditionRouteContent, testCaseConfigWithYaml);
             }
         }.start();
 
-        return testStrategyHolder.getTestStrategy();
+        testStrategy.setTestCaseContext(testCaseContext);
+
+        return testStrategy;
     }
 
     public SimulatorTestStrategy testInitialization(SimulatorTestCaseEntity testCaseEntity, SimulatorTestCaseCondition basicTestCaseCondition, SimulatorTestCaseCondition releaseTestCaseCondition, SimulatorTestCaseConditionRoute releaseTestCaseConditionRoute) throws Exception {
         SimulatorTestCaseContext testCaseContext = new SimulatorTestCaseContext();
-        SimulatorTestStrategyHolder testStrategyHolder = new SimulatorTestStrategyHolder();
 
-        new SimulatorTestCaseRunner(testCaseContext) {
+        SimulatorTestStrategy testStrategy = new SimulatorTestCaseRunner<SimulatorTestStrategy>(testCaseContext) {
             @Override
-            public void run() throws Exception {
-                SimulatorTestStrategy testStrategy = testInitialization(0, testCaseEntity, basicTestCaseCondition, releaseTestCaseCondition, releaseTestCaseConditionRoute);
-
-                testStrategy.setTestCaseContext(testCaseContext);
-
-                testStrategyHolder.setTestStrategy(testStrategy);
+            public SimulatorTestStrategy run() throws Exception {
+                return testInitialization(0, testCaseEntity, basicTestCaseCondition, releaseTestCaseCondition, releaseTestCaseConditionRoute);
             }
         }.start();
 
-        return testStrategyHolder.getTestStrategy();
+        testStrategy.setTestCaseContext(testCaseContext);
+
+        return testStrategy;
     }
 
     public void testNormal(SimulatorTestStrategy testStrategy) throws Exception {
         SimulatorTestCaseContext testCaseContext = testStrategy.getTestCaseContext();
 
-        new SimulatorTestCaseRunner(testCaseContext) {
+        new SimulatorTestCaseRunner<Void>(testCaseContext) {
             @Override
-            public void run() throws Exception {
+            public Void run() throws Exception {
                 testNormal(1, testStrategy);
+
+                return null;
             }
         }.start();
     }
@@ -94,10 +89,12 @@ public class SimulatorTestRunner {
         SimulatorTestCaseContext testCaseContext = testStrategy.getTestCaseContext();
         String basicTestCaseConditionContent = testStrategy.getBasicTestCaseConditionContent();
 
-        new SimulatorTestCaseRunner(testCaseContext) {
+        new SimulatorTestCaseRunner<Void>(testCaseContext) {
             @Override
-            public void run() throws Exception {
+            public Void run() throws Exception {
                 testVersionBasicRelease(2, 1, basicTestCaseConditionContent != null ? basicTestCaseConditionContent : SimulatorTestCaseCondition.getBasicFile(), testStrategy);
+
+                return null;
             }
         }.start();
     }
@@ -106,10 +103,12 @@ public class SimulatorTestRunner {
         SimulatorTestCaseContext testCaseContext = testStrategy.getTestCaseContext();
         String releaseTestCaseConditionContent = testStrategy.getReleaseTestCaseConditionContent();
 
-        new SimulatorTestCaseRunner(testCaseContext) {
+        new SimulatorTestCaseRunner<Void>(testCaseContext) {
             @Override
-            public void run() throws Exception {
+            public Void run() throws Exception {
                 testVersionBlueGreenGrayRelease(3, 1, releaseTestCaseConditionContent != null ? releaseTestCaseConditionContent : SimulatorTestCaseCondition.getReleaseFile(), testStrategy);
+
+                return null;
             }
         }.start();
     }
@@ -117,10 +116,12 @@ public class SimulatorTestRunner {
     public void testFirstResetRelease(SimulatorTestStrategy testStrategy) throws Exception {
         SimulatorTestCaseContext testCaseContext = testStrategy.getTestCaseContext();
 
-        new SimulatorTestCaseRunner(testCaseContext) {
+        new SimulatorTestCaseRunner<Void>(testCaseContext) {
             @Override
-            public void run() throws Exception {
+            public Void run() throws Exception {
                 testResetRelease(4, 1, testStrategy);
+
+                return null;
             }
         }.start();
     }
@@ -131,10 +132,12 @@ public class SimulatorTestRunner {
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
         boolean secondReleaseEnabled = testCaseEntity.isSecondReleaseEnabled();
 
-        new SimulatorTestCaseRunner(testCaseContext, secondReleaseEnabled) {
+        new SimulatorTestCaseRunner<Void>(testCaseContext, secondReleaseEnabled) {
             @Override
-            public void run() throws Exception {
+            public Void run() throws Exception {
                 testVersionBasicRelease(5, 2, basicTestCaseConditionContent != null ? basicTestCaseConditionContent : SimulatorTestCaseConditionRoute.getBasicFile(), testStrategy);
+
+                return null;
             }
         }.start();
     }
@@ -145,10 +148,12 @@ public class SimulatorTestRunner {
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
         boolean secondReleaseEnabled = testCaseEntity.isSecondReleaseEnabled();
 
-        new SimulatorTestCaseRunner(testCaseContext, secondReleaseEnabled) {
+        new SimulatorTestCaseRunner<Void>(testCaseContext, secondReleaseEnabled) {
             @Override
-            public void run() throws Exception {
+            public Void run() throws Exception {
                 testVersionBlueGreenGrayRelease(6, 2, releaseTestCaseConditionRouteContent != null ? releaseTestCaseConditionRouteContent : SimulatorTestCaseConditionRoute.getReleaseFile(), testStrategy);
+
+                return null;
             }
         }.start();
     }
@@ -158,10 +163,12 @@ public class SimulatorTestRunner {
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
         boolean secondReleaseEnabled = testCaseEntity.isSecondReleaseEnabled();
 
-        new SimulatorTestCaseRunner(testCaseContext, secondReleaseEnabled) {
+        new SimulatorTestCaseRunner<Void>(testCaseContext, secondReleaseEnabled) {
             @Override
-            public void run() throws Exception {
+            public Void run() throws Exception {
                 testResetRelease(7, 2, testStrategy);
+
+                return null;
             }
         }.start();
     }
