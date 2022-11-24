@@ -32,6 +32,11 @@ public class InspectorConsoleResourceImpl extends ConsoleResourceImpl implements
     }
 
     @Override
+    public void validateTest(List<String> testConfigList, boolean testCaseConfigWithYaml) {
+
+    }
+
+    @Override
     public void runTest(List<String> testConfigList, boolean testCaseConfigWithYaml) throws Exception {
         String testCaseConfig = testConfigList.get(0);
         String testCaseCondition = testConfigList.get(1);
@@ -40,5 +45,10 @@ public class InspectorConsoleResourceImpl extends ConsoleResourceImpl implements
         InspectorTestStrategy testStrategy = testRunner.testInitialization(testCaseConfig, testCaseCondition, testCaseConfigWithYaml);
         testRunner.testInspection(testStrategy);
         InspectorTestRunner.afterTest();
+    }
+
+    @Override
+    public void finishTest(List<String> testConfigList, boolean testCaseConfigWithYaml) throws Exception {
+
     }
 }

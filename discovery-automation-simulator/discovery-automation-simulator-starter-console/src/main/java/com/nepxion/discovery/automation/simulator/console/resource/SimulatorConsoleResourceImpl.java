@@ -10,16 +10,51 @@ package com.nepxion.discovery.automation.simulator.console.resource;
  */
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import javax.annotation.PostConstruct;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.github.benmanes.caffeine.cache.CacheLoader;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.LoadingCache;
+import com.nepxion.discovery.automation.common.console.entity.ConsoleCachePoolProperties;
 import com.nepxion.discovery.automation.common.console.resource.ConsoleResourceImpl;
+import com.nepxion.discovery.automation.simulator.constant.SimulatorTestConstant;
+import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseConfig;
 import com.nepxion.discovery.automation.simulator.runner.SimulatorTestRunner;
 import com.nepxion.discovery.automation.simulator.strategy.SimulatorTestStrategy;
+import com.nepxion.discovery.common.exception.DiscoveryException;
 
 public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements SimulatorConsoleResource {
     @Autowired
     private SimulatorTestRunner testRunner;
+
+    @Autowired
+    private ConsoleCachePoolProperties consoleCachePoolProperties;
+
+    private LoadingCache<String, String> loadingCache;
+
+    @PostConstruct
+    private void initialize() {
+        int initialCapacity = consoleCachePoolProperties.getInitialCapacity();
+        int maximumSize = consoleCachePoolProperties.getMaximumSize();
+        int expireSeconds = consoleCachePoolProperties.getExpireSeconds();
+
+        loadingCache = Caffeine.newBuilder()
+                .expireAfterWrite(expireSeconds, TimeUnit.SECONDS)
+                .initialCapacity(initialCapacity)
+                .maximumSize(maximumSize)
+                .recordStats()
+                .build(new CacheLoader<String, String>() {
+                    @Override
+                    public String load(String key) throws Exception {
+                        return StringUtils.EMPTY;
+                    }
+                });
+    }
 
     @Override
     public String getTestName() {
@@ -32,11 +67,28 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
     }
 
     @Override
+    public void validateTest(List<String> testConfigList, boolean testCaseConfigWithYaml) {
+        String testCaseConfig = testConfigList.get(0);
+
+        try {
+            String key = getKey(testCaseConfig, testCaseConfigWithYaml);
+            if (loadingCache.getIfPresent(key) != null) {
+                throw new DiscoveryException("Testcase Task 【" + key + "】 is running now");
+            }
+        } catch (Exception e) {
+            throw new DiscoveryException(e);
+        }
+    }
+
+    @Override
     public void runTest(List<String> testConfigList, boolean testCaseConfigWithYaml) throws Exception {
         String testCaseConfig = testConfigList.get(0);
         String testCaseReleaseBasicCondition = testConfigList.get(1);
         String testCaseReleaseFirstCondition = testConfigList.get(2);
         String testCaseReleaseSecondCondition = testConfigList.get(3);
+
+        String key = getKey(testCaseConfig, testCaseConfigWithYaml);
+        loadingCache.put(key, Boolean.TRUE.toString());
 
         SimulatorTestRunner.beforeTest();
         SimulatorTestStrategy testStrategy = testRunner.testInitialization(testCaseConfig, testCaseReleaseBasicCondition, testCaseReleaseFirstCondition, testCaseReleaseSecondCondition, testCaseConfigWithYaml);
@@ -48,5 +100,22 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
         testRunner.testSecondVersionBlueGreenGrayRelease(testStrategy);
         testRunner.testSecondResetRelease(testStrategy);
         SimulatorTestRunner.afterTest();
+    }
+
+    @Override
+    public void finishTest(List<String> testConfigList, boolean testCaseConfigWithYaml) throws Exception {
+        String testCaseConfig = testConfigList.get(0);
+
+        String key = getKey(testCaseConfig, testCaseConfigWithYaml);
+        loadingCache.invalidate(key);
+    }
+
+    private String getKey(String testCaseConfig, boolean testCaseConfigWithYaml) throws Exception {
+        SimulatorTestCaseConfig simulatorTestCaseConfig = SimulatorTestCaseConfig.fromText(testCaseConfig, testCaseConfigWithYaml);
+
+        String group = simulatorTestCaseConfig.getGroup();
+        String serviceId = simulatorTestCaseConfig.getServiceId();
+
+        return group + SimulatorTestConstant.SEPARATE + serviceId;
     }
 }
