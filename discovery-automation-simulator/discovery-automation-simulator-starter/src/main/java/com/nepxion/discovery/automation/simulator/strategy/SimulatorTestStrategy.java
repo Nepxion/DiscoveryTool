@@ -24,13 +24,13 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.nepxion.discovery.automation.common.logger.TestAssertLogger;
+import com.nepxion.discovery.automation.common.runner.TestCaseContext;
 import com.nepxion.discovery.automation.common.util.TestUtil;
 import com.nepxion.discovery.automation.simulator.constant.SimulatorTestConstant;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseCondition;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseConditionRoute;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseConfig;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseEntity;
-import com.nepxion.discovery.automation.simulator.runner.SimulatorTestCaseContext;
 import com.nepxion.discovery.common.constant.DiscoveryConstant;
 import com.nepxion.discovery.common.entity.ConditionBlueGreenEntity;
 import com.nepxion.discovery.common.entity.ConditionBlueGreenRoute;
@@ -47,7 +47,7 @@ public class SimulatorTestStrategy {
 
     private TestRestTemplate testRestTemplate;
 
-    private SimulatorTestCaseContext testCaseContext;
+    private TestCaseContext testCaseContext;
 
     private String testCaseEntityContent;
     private String basicTestCaseConditionContent;
@@ -238,11 +238,11 @@ public class SimulatorTestStrategy {
         this.testRestTemplate = testRestTemplate;
     }
 
-    public SimulatorTestCaseContext getTestCaseContext() {
+    public TestCaseContext getTestCaseContext() {
         return testCaseContext;
     }
 
-    public void setTestCaseContext(SimulatorTestCaseContext testCaseContext) {
+    public void setTestCaseContext(TestCaseContext testCaseContext) {
         this.testCaseContext = testCaseContext;
     }
 

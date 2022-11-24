@@ -1,4 +1,4 @@
-package com.nepxion.discovery.automation.simulator.runner;
+package com.nepxion.discovery.automation.common.runner;
 
 /**
  * <p>Title: Nepxion Discovery</p>
@@ -9,7 +9,7 @@ package com.nepxion.discovery.automation.simulator.runner;
  * @version 1.0
  */
 
-public class SimulatorTestCaseContext {
+public class TestCaseContext {
     private boolean passed = true;
 
     public boolean isPassed() {

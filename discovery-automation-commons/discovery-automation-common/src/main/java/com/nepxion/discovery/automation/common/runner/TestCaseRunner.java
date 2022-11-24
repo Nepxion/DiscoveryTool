@@ -1,4 +1,4 @@
-package com.nepxion.discovery.automation.simulator.runner;
+package com.nepxion.discovery.automation.common.runner;
 
 /**
  * <p>Title: Nepxion Discovery</p>
@@ -9,15 +9,15 @@ package com.nepxion.discovery.automation.simulator.runner;
  * @version 1.0
  */
 
-public abstract class SimulatorTestCaseRunner<T> {
-    private SimulatorTestCaseContext testCaseContext;
+public abstract class TestCaseRunner<T> {
+    private TestCaseContext testCaseContext;
     private boolean enabled;
 
-    public SimulatorTestCaseRunner(SimulatorTestCaseContext testCaseContext) {
+    public TestCaseRunner(TestCaseContext testCaseContext) {
         this(testCaseContext, true);
     }
 
-    public SimulatorTestCaseRunner(SimulatorTestCaseContext testCaseContext, boolean enabled) {
+    public TestCaseRunner(TestCaseContext testCaseContext, boolean enabled) {
         this.testCaseContext = testCaseContext;
         this.enabled = enabled;
     }

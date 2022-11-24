@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.nepxion.discovery.automation.common.logger.TestAssertLogger;
+import com.nepxion.discovery.automation.common.runner.TestCaseContext;
 import com.nepxion.discovery.automation.inspector.entity.InspectorTestCaseCondition;
 import com.nepxion.discovery.automation.inspector.entity.InspectorTestCaseConfig;
 import com.nepxion.discovery.automation.inspector.entity.InspectorTestCaseEntity;
@@ -27,6 +28,8 @@ import com.nepxion.discovery.common.entity.InspectorEntity;
 
 public class InspectorTestStrategy {
     private static final Logger LOG = LoggerFactory.getLogger(InspectorTestStrategy.class);
+
+    private TestCaseContext testCaseContext;
 
     private String testCaseEntityContent;
     private String testCaseConditionContent;
@@ -76,6 +79,14 @@ public class InspectorTestStrategy {
 
     private void initializeHeaderMap() throws Exception {
         headerMap = testCaseCondition.getHeader();
+    }
+
+    public TestCaseContext getTestCaseContext() {
+        return testCaseContext;
+    }
+
+    public void setTestCaseContext(TestCaseContext testCaseContext) {
+        this.testCaseContext = testCaseContext;
     }
 
     public String getTestCaseEntityContent() {
