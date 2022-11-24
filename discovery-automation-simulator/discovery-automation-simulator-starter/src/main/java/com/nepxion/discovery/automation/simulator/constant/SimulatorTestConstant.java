@@ -17,9 +17,9 @@ public class SimulatorTestConstant extends TestConstant {
     public static final String CONTEXT_PATH_STRATEGY_RECREATE_VERSION_RELEASE_YAML = "strategy/recreate-version-release-yaml/";
     public static final String CONTEXT_PATH_STRATEGY_RESET_RELEASE = "strategy/reset-release/";
 
-    public static final String FILE_PATH_VERSION_RELEASE_BASIC = "version-release-basic.yaml";
-    public static final String FILE_PATH_VERSION_RELEASE_1 = "version-release-1.yaml";
-    public static final String FILE_PATH_VERSION_RELEASE_2 = "version-release-2.yaml";
+    public static final String FILE_PATH_VERSION_RELEASE_BASIC = "mock-version-release-basic.yaml";
+    public static final String FILE_PATH_VERSION_RELEASE_1 = "mock-version-release-1.yaml";
+    public static final String FILE_PATH_VERSION_RELEASE_2 = "mock-version-release-2.yaml";
 
     public static final String CONSOLE_URL = "console.url";
     public static final String CONSOLE_OPERATION_AWAIT_TIME = "console.operation.await.time";

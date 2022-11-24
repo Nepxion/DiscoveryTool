@@ -12,7 +12,7 @@ package com.nepxion.discovery.automation.inspector.constant;
 import com.nepxion.discovery.automation.common.constant.TestConstant;
 
 public class InspectorTestConstant extends TestConstant {
-    public static final String FILE_PATH_INSPECTOR = "inspector.yaml";
+    public static final String FILE_PATH_INSPECTOR = "mock-inspector.yaml";
 
     public static final String TESTCASE_SAMPLE_COUNT = "testcase.sample.count";
     public static final String TESTCASE_RESULT_FILTER = "testcase.result.filter";
