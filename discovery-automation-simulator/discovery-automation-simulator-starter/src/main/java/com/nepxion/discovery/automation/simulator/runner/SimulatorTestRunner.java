@@ -254,11 +254,11 @@ public class SimulatorTestRunner extends TestRunner {
         LOG.info("-------------------------------------------------");
 
         boolean hasGreen = testStrategy.hasBlueGreen();
-        List<String> greenParameter = testStrategy.getGreenParameter();
-        List<String> blueParameter = testStrategy.getBlueParameter();
+        List<String> greenParameter = testStrategy.getTestCaseGreenConditionData().getParameter();
+        List<String> blueParameter = testStrategy.getTestCaseBlueConditionData().getParameter();
         boolean hasGray = testStrategy.hasGray();
-        List<String> grayParameter0 = testStrategy.getGrayParameter0();
-        List<String> grayParameter1 = testStrategy.getGrayParameter1();
+        List<String> grayParameter0 = testStrategy.getTestCaseGrayConditionDataList().get(0).getParameter();
+        List<String> grayParameter1 = testStrategy.getTestCaseGrayConditionDataList().get(1).getParameter();
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
         int loopCount = testCaseEntity.getLoopCount();
 

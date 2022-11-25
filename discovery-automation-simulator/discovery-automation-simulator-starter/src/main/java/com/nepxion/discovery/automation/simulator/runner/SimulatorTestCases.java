@@ -90,7 +90,7 @@ public class SimulatorTestCases {
         int blueGreenSampleCount = testCaseEntity.getBlueGreenSampleCount();
         List<String> oldVersionList = testStrategy.getOldVersionList();
         List<String> newVersionList = testStrategy.getNewVersionList();
-        List<String> blueParameter = testStrategy.getBlueParameter();
+        List<String> blueParameter = testStrategy.getTestCaseBlueConditionData().getParameter();
 
         Map<String, Integer> countMap = testInspection(testStrategy, blueGreenSampleCount, headerName, headerValue, true, false);
         for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
@@ -138,10 +138,10 @@ public class SimulatorTestCases {
             LOG.info("侦测结果 : {} 命中次数={}", key, value);
         }
 
-        List<String> grayParameter0 = testStrategy.getGrayParameter0();
-        List<String> grayParameter1 = testStrategy.getGrayParameter1();
-        List<Integer> grayWeight0 = testStrategy.getGrayWeight0();
-        List<Integer> grayWeight1 = testStrategy.getGrayWeight1();
+        List<String> grayParameter0 = testStrategy.getTestCaseGrayConditionDataList().get(0).getParameter();
+        List<String> grayParameter1 = testStrategy.getTestCaseGrayConditionDataList().get(1).getParameter();
+        List<Integer> grayWeight0 = testStrategy.getTestCaseGrayConditionDataList().get(0).getWeight();
+        List<Integer> grayWeight1 = testStrategy.getTestCaseGrayConditionDataList().get(1).getWeight();
 
         int oldResultCount = -1;
         int newResultCount = -1;

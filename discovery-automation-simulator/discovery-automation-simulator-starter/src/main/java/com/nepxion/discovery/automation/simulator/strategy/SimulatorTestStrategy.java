@@ -10,7 +10,6 @@ package com.nepxion.discovery.automation.simulator.strategy;
  */
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,12 +26,14 @@ import com.nepxion.discovery.automation.common.logger.TestAssertLogger;
 import com.nepxion.discovery.automation.common.strategy.TestStrategy;
 import com.nepxion.discovery.automation.common.util.TestUtil;
 import com.nepxion.discovery.automation.simulator.constant.SimulatorTestConstant;
+import com.nepxion.discovery.automation.simulator.data.SimulatorTestCaseBlueConditionData;
+import com.nepxion.discovery.automation.simulator.data.SimulatorTestCaseGrayConditionData;
+import com.nepxion.discovery.automation.simulator.data.SimulatorTestCaseGreenConditionData;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseConfig;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseEntity;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseBasicCondition;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseFirstCondition;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseSecondCondition;
-import com.nepxion.discovery.common.constant.DiscoveryConstant;
 import com.nepxion.discovery.common.entity.ConditionBlueGreenEntity;
 import com.nepxion.discovery.common.entity.ConditionBlueGreenRoute;
 import com.nepxion.discovery.common.entity.ConditionGrayEntity;
@@ -40,7 +41,6 @@ import com.nepxion.discovery.common.entity.InspectorEntity;
 import com.nepxion.discovery.common.entity.InstanceEntity;
 import com.nepxion.discovery.common.entity.VersionSortType;
 import com.nepxion.discovery.common.util.JsonUtil;
-import com.nepxion.discovery.common.util.StringUtil;
 import com.nepxion.discovery.common.util.VersionSortUtil;
 
 public class SimulatorTestStrategy extends TestStrategy {
@@ -68,16 +68,9 @@ public class SimulatorTestStrategy extends TestStrategy {
     private List<String> oldVersionList;
     private List<String> newVersionList;
 
-    private String greenExpression;
-    private List<String> greenParameter;
-    private String blueExpression;
-    private List<String> blueParameter;
-    private String grayExpression0;
-    private List<String> grayParameter0;
-    private List<Integer> grayWeight0;
-    private String grayExpression1;
-    private List<String> grayParameter1;
-    private List<Integer> grayWeight1;
+    private SimulatorTestCaseGreenConditionData testCaseGreenConditionData;
+    private SimulatorTestCaseBlueConditionData testCaseBlueConditionData;
+    private List<SimulatorTestCaseGrayConditionData> testCaseGrayConditionDataList;
 
     public void testInitialization(String testCaseEntityContent, String testCaseReleaseBasicConditionContent, String testCaseReleaseFirstConditionContent, String testCaseReleaseSecondConditionContent, boolean testCaseConfigWithYaml) throws Exception {
         this.testCaseEntityContent = testCaseEntityContent;
@@ -129,14 +122,16 @@ public class SimulatorTestStrategy extends TestStrategy {
         LOG.info("初始化表达式参数列表...");
         initializeParameter();
         if (hasBlueGreen()) {
-            LOG.info("绿表达式 : {}，参数 : {}", greenExpression, greenParameter);
-            LOG.info("蓝表达式 : {}，参数 : {}", blueExpression, blueParameter);
+            LOG.info("绿表达式 : {}，参数 : {}", testCaseGreenConditionData.getExpression(), testCaseGreenConditionData.getParameter());
+            LOG.info("蓝表达式 : {}，参数 : {}", testCaseBlueConditionData.getExpression(), testCaseBlueConditionData.getParameter());
         } else {
             LOG.info("蓝绿规则策略 : 未配置");
         }
         if (hasGray()) {
-            LOG.info("灰度表达式1 : {}，参数 : {}，权重 : {}", grayExpression0, grayParameter0, grayWeight0);
-            LOG.info("灰度表达式2 : {}，参数 : {}，权重 : {}", grayExpression1, grayParameter1, grayWeight1);
+            for (int i = 0; i < testCaseGrayConditionDataList.size(); i++) {
+                SimulatorTestCaseGrayConditionData testCaseGrayConditionData = testCaseGrayConditionDataList.get(i);
+                LOG.info("灰度表达式{} : {}，参数 : {}，权重 : {}", i, testCaseGrayConditionData.getExpression(), testCaseGrayConditionData.getParameter(), testCaseGrayConditionData.getWeight());
+            }
         } else {
             LOG.info("灰度规则策略 : 未配置");
         }
@@ -204,12 +199,12 @@ public class SimulatorTestStrategy extends TestStrategy {
                 ConditionBlueGreenRoute conditionBlueGreenRoute = ConditionBlueGreenRoute.fromString(bludGreenRoute);
                 switch (conditionBlueGreenRoute) {
                     case GREEN:
-                        greenExpression = blueGreenExpression;
-                        greenParameter = extractParameter(blueGreenExpression);
+                        testCaseGreenConditionData = new SimulatorTestCaseGreenConditionData();
+                        testCaseGreenConditionData.setExpression(blueGreenExpression);
                         break;
                     case BLUE:
-                        blueExpression = blueGreenExpression;
-                        blueParameter = extractParameter(blueGreenExpression);
+                        testCaseBlueConditionData = new SimulatorTestCaseBlueConditionData();
+                        testCaseBlueConditionData.setExpression(blueGreenExpression);
                         break;
                 }
             }
@@ -217,27 +212,18 @@ public class SimulatorTestStrategy extends TestStrategy {
 
         List<ConditionGrayEntity> gray = testCaseReleaseFirstCondition.getGray();
         if (CollectionUtils.isNotEmpty(gray)) {
-            ConditionGrayEntity conditionGrayEntity0 = gray.get(0);
-            grayExpression0 = conditionGrayEntity0.getExpression();
-            grayParameter0 = extractParameter(grayExpression0);
-            grayWeight0 = conditionGrayEntity0.getWeight();
+            testCaseGrayConditionDataList = new ArrayList<SimulatorTestCaseGrayConditionData>();
+            for (ConditionGrayEntity conditionGrayEntity : gray) {
+                String grayExpression = conditionGrayEntity.getExpression();
+                List<Integer> grayWeight = conditionGrayEntity.getWeight();
 
-            ConditionGrayEntity conditionGrayEntity1 = gray.get(1);
-            grayExpression1 = conditionGrayEntity1.getExpression();
-            grayParameter1 = extractParameter(grayExpression1);
-            grayWeight1 = conditionGrayEntity1.getWeight();
+                SimulatorTestCaseGrayConditionData testCaseGrayConditionData = new SimulatorTestCaseGrayConditionData();
+                testCaseGrayConditionData.setExpression(grayExpression);
+                testCaseGrayConditionData.setWeight(grayWeight);
+
+                testCaseGrayConditionDataList.add(testCaseGrayConditionData);
+            }
         }
-    }
-
-    private List<String> extractParameter(String expression) {
-        List<String> list = StringUtil.splitToList(expression, DiscoveryConstant.EQUALS + DiscoveryConstant.EQUALS);
-        String parameter = list.get(0);
-        String value = list.get(1);
-
-        parameter = parameter.substring(parameter.indexOf("'") + 1, parameter.lastIndexOf("'")).trim();
-        value = value.substring(value.indexOf("'") + 1, value.lastIndexOf("'")).trim();
-
-        return Arrays.asList(parameter, value);
     }
 
     public TestRestTemplate getTestRestTemplate() {
@@ -312,44 +298,16 @@ public class SimulatorTestStrategy extends TestStrategy {
         return newVersionList;
     }
 
-    public String getGreenExpression() {
-        return greenExpression;
+    public SimulatorTestCaseGreenConditionData getTestCaseGreenConditionData() {
+        return testCaseGreenConditionData;
     }
 
-    public List<String> getGreenParameter() {
-        return greenParameter;
+    public SimulatorTestCaseBlueConditionData getTestCaseBlueConditionData() {
+        return testCaseBlueConditionData;
     }
 
-    public String getBlueExpression() {
-        return blueExpression;
-    }
-
-    public List<String> getBlueParameter() {
-        return blueParameter;
-    }
-
-    public String getGrayExpression0() {
-        return grayExpression0;
-    }
-
-    public List<String> getGrayParameter0() {
-        return grayParameter0;
-    }
-
-    public List<Integer> getGrayWeight0() {
-        return grayWeight0;
-    }
-
-    public String getGrayExpression1() {
-        return grayExpression1;
-    }
-
-    public List<String> getGrayParameter1() {
-        return grayParameter1;
-    }
-
-    public List<Integer> getGrayWeight1() {
-        return grayWeight1;
+    public List<SimulatorTestCaseGrayConditionData> getTestCaseGrayConditionDataList() {
+        return testCaseGrayConditionDataList;
     }
 
     public boolean hasBlueGreen() {
