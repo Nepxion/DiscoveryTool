@@ -90,7 +90,6 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
         String key = getKey(testCaseConfig, testCaseConfigWithYaml);
         loadingCache.put(key, Boolean.TRUE.toString());
 
-        SimulatorTestRunner.beforeTest();
         SimulatorTestStrategy testStrategy = testRunner.testInitialization(testCaseConfig, testCaseReleaseBasicCondition, testCaseReleaseFirstCondition, testCaseReleaseSecondCondition, testCaseConfigWithYaml);
         testRunner.testNormal(testStrategy);
         testRunner.testFirstVersionBasicRelease(testStrategy);
@@ -99,7 +98,7 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
         testRunner.testSecondVersionBasicRelease(testStrategy);
         testRunner.testSecondVersionBlueGreenGrayRelease(testStrategy);
         testRunner.testSecondResetRelease(testStrategy);
-        SimulatorTestRunner.afterTest();
+        testRunner.afterTest(testStrategy);
     }
 
     @Override

@@ -27,10 +27,9 @@ public class InspectorApplication {
         InspectorTestCaseCondition testCaseCondition = applicationContext.getBean(InspectorTestCaseCondition.class);
         InspectorTestRunner testRunner = applicationContext.getBean(InspectorTestRunner.class);
         try {
-            InspectorTestRunner.beforeTest();
             InspectorTestStrategy testStrategy = testRunner.testInitialization(testCaseProperty, testCaseCondition);
             testRunner.testInspection(testStrategy);
-            InspectorTestRunner.afterTest();
+            testRunner.afterTest(testStrategy);
             System.exit(0);
         } catch (Throwable e) {
             e.printStackTrace();

@@ -138,7 +138,7 @@ public class SimulatorTestStrategy extends TestStrategy {
             LOG.info("灰度表达式1 : {}，参数 : {}，权重 : {}", grayExpression0, grayParameter0, grayWeight0);
             LOG.info("灰度表达式2 : {}，参数 : {}，权重 : {}", grayExpression1, grayParameter1, grayWeight1);
         } else {
-          LOG.info("灰度规则策略 : 未配置");
+            LOG.info("灰度规则策略 : 未配置");
         }
     }
 

@@ -42,12 +42,12 @@ public class InspectorTest {
 
     @BeforeClass
     public static void beforeTest() {
-        InspectorTestRunner.beforeTest();
+
     }
 
     @AfterClass
     public static void afterTest() {
-        InspectorTestRunner.afterTest();
+        testStrategy.afterTest();
     }
 
     @Test

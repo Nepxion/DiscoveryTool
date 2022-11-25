@@ -41,10 +41,9 @@ public class InspectorConsoleResourceImpl extends ConsoleResourceImpl implements
         String testCaseConfig = testConfigList.get(0);
         String testCaseCondition = testConfigList.get(1);
 
-        InspectorTestRunner.beforeTest();
         InspectorTestStrategy testStrategy = testRunner.testInitialization(testCaseConfig, testCaseCondition, testCaseConfigWithYaml);
         testRunner.testInspection(testStrategy);
-        InspectorTestRunner.afterTest();
+        testRunner.afterTest(testStrategy);
     }
 
     @Override

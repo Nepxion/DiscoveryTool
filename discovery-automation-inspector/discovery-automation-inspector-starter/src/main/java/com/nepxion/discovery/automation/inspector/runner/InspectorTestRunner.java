@@ -15,25 +15,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nepxion.discovery.automation.common.runner.TestCaseContext;
 import com.nepxion.discovery.automation.common.runner.TestCaseRunner;
+import com.nepxion.discovery.automation.common.runner.TestRunner;
 import com.nepxion.discovery.automation.inspector.entity.InspectorTestCaseCondition;
 import com.nepxion.discovery.automation.inspector.entity.InspectorTestCaseEntity;
 import com.nepxion.discovery.automation.inspector.strategy.InspectorTestStrategy;
 
-public class InspectorTestRunner {
+public class InspectorTestRunner extends TestRunner {
     private static final Logger LOG = LoggerFactory.getLogger(InspectorTestRunner.class);
 
     @Autowired
     private InspectorTestCases testCases;
-
-    private static long startTime;
-
-    public static void beforeTest() {
-        startTime = System.currentTimeMillis();
-    }
-
-    public static void afterTest() {
-        LOG.info("* Finished all automation testcases in {} seconds", (System.currentTimeMillis() - startTime) / 1000);
-    }
 
     public InspectorTestStrategy testInitialization(String testCaseEntityContent, String testCaseConditionContent, boolean testCaseConfigWithYaml) throws Exception {
         TestCaseContext testCaseContext = new TestCaseContext();

@@ -31,7 +31,6 @@ public class SimulatorApplication {
         SimulatorTestCaseReleaseSecondCondition testCaseReleaseSecondCondition = applicationContext.getBean(SimulatorTestCaseReleaseSecondCondition.class);
         SimulatorTestRunner testRunner = applicationContext.getBean(SimulatorTestRunner.class);
         try {
-            SimulatorTestRunner.beforeTest();
             SimulatorTestStrategy testStrategy = testRunner.testInitialization(testCaseProperty, testCaseReleaseBasicCondition, testCaseReleaseFirstCondition, testCaseReleaseSecondCondition);
             testRunner.testNormal(testStrategy);
             testRunner.testFirstVersionBasicRelease(testStrategy);
@@ -40,7 +39,7 @@ public class SimulatorApplication {
             testRunner.testSecondVersionBasicRelease(testStrategy);
             testRunner.testSecondVersionBlueGreenGrayRelease(testStrategy);
             testRunner.testSecondResetRelease(testStrategy);
-            SimulatorTestRunner.afterTest();
+            testRunner.afterTest(testStrategy);
             System.exit(0);
         } catch (Throwable e) {
             e.printStackTrace();

@@ -18,6 +18,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 
 import com.nepxion.discovery.automation.common.runner.TestCaseContext;
 import com.nepxion.discovery.automation.common.runner.TestCaseRunner;
+import com.nepxion.discovery.automation.common.runner.TestRunner;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseEntity;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseBasicCondition;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseFirstCondition;
@@ -26,7 +27,7 @@ import com.nepxion.discovery.automation.simulator.strategy.SimulatorTestStrategy
 import com.nepxion.discovery.common.constant.DiscoveryConstant;
 import com.nepxion.discovery.common.util.StringUtil;
 
-public class SimulatorTestRunner {
+public class SimulatorTestRunner extends TestRunner {
     private static final Logger LOG = LoggerFactory.getLogger(SimulatorTestRunner.class);
 
     @Autowired
@@ -34,16 +35,6 @@ public class SimulatorTestRunner {
 
     @Autowired
     private SimulatorTestCases testCases;
-
-    private static long startTime;
-
-    public static void beforeTest() {
-        startTime = System.currentTimeMillis();
-    }
-
-    public static void afterTest() {
-        LOG.info("* Finished all automation testcases in {} seconds", (System.currentTimeMillis() - startTime) / 1000);
-    }
 
     public SimulatorTestStrategy testInitialization(String testCaseEntityContent, String testCaseReleaseBasicConditionContent, String testCaseReleaseFirstConditionContent, String testCaseReleaseSecondConditionContent, boolean testCaseConfigWithYaml) throws Exception {
         TestCaseContext testCaseContext = new TestCaseContext();
@@ -305,7 +296,7 @@ public class SimulatorTestRunner {
 
         if (hasGray) {
             LOG.info("【模拟场景{}】灰度策略，测试全链路侦测，Header : {}...", sceneIndex, "无");
-            startTime = System.currentTimeMillis();
+            long startTime = System.currentTimeMillis();
             for (int i = 0; i < loopCount; i++) {
                 testCases.testGray(testStrategy, null, null);
             }

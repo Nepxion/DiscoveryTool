@@ -50,12 +50,12 @@ public class SimulatorTest {
 
     @BeforeClass
     public static void beforeTest() {
-        SimulatorTestRunner.beforeTest();
+
     }
 
     @AfterClass
     public static void afterTest() {
-        SimulatorTestRunner.afterTest();
+        testStrategy.afterTest();
     }
 
     @Test
