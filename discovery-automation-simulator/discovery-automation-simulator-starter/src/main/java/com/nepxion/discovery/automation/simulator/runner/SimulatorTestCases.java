@@ -15,7 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.hamcrest.number.OrderingComparison;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +27,8 @@ import org.springframework.http.HttpHeaders;
 import com.nepxion.discovery.automation.common.logger.TestAssertLogger;
 import com.nepxion.discovery.automation.common.util.TestUtil;
 import com.nepxion.discovery.automation.simulator.constant.SimulatorTestConstant;
+import com.nepxion.discovery.automation.simulator.data.SimulatorTestCaseConditionDataResolver;
+import com.nepxion.discovery.automation.simulator.data.SimulatorTestCaseGrayConditionData;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseEntity;
 import com.nepxion.discovery.automation.simulator.strategy.SimulatorTestStrategy;
 import com.nepxion.discovery.common.entity.InspectorEntity;
@@ -43,7 +45,7 @@ public class SimulatorTestCases {
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
         int blueGreenSampleCount = testCaseEntity.getBlueGreenSampleCount();
 
-        Map<String, Integer> countMap = testInspection(testStrategy, blueGreenSampleCount, null, null, false, false);
+        Map<String, Integer> countMap = testInspection(testStrategy, blueGreenSampleCount, null, false, false);
         for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
             String key = entry.getKey();
             int value = entry.getValue();
@@ -64,7 +66,7 @@ public class SimulatorTestCases {
         List<String> oldVersionList = testStrategy.getOldVersionList();
         List<String> newVersionList = testStrategy.getNewVersionList();
 
-        Map<String, Integer> countMap = testInspection(testStrategy, blueGreenSampleCount, null, null, true, false);
+        Map<String, Integer> countMap = testInspection(testStrategy, blueGreenSampleCount, null, true, false);
         for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
             String key = entry.getKey();
             int value = entry.getValue();
@@ -85,21 +87,21 @@ public class SimulatorTestCases {
     }
 
     // 测试蓝绿场景
-    public void testBlueGreen(SimulatorTestStrategy testStrategy, String headerName, String headerValue) {
+    public void testBlueGreen(SimulatorTestStrategy testStrategy, Map<String, String> parameter) {
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
         int blueGreenSampleCount = testCaseEntity.getBlueGreenSampleCount();
         List<String> oldVersionList = testStrategy.getOldVersionList();
         List<String> newVersionList = testStrategy.getNewVersionList();
-        List<String> blueParameter = testStrategy.getTestCaseBlueConditionData().getParameter();
+        boolean isBlueExpressionTriggered = testStrategy.getTestCaseBlueConditionData().isTriggered(parameter);
 
-        Map<String, Integer> countMap = testInspection(testStrategy, blueGreenSampleCount, headerName, headerValue, true, false);
+        Map<String, Integer> countMap = testInspection(testStrategy, blueGreenSampleCount, parameter, true, false);
         for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
             String key = entry.getKey();
             int value = entry.getValue();
 
             LOG.info("侦测结果 : {} 命中次数={}", key, value);
 
-            if (StringUtils.equals(headerValue, blueParameter.get(1))) {
+            if (isBlueExpressionTriggered) {
                 // 旧版本调用次数为0
                 if (value == 0) {
                     // 判断是否都调用旧版本
@@ -124,24 +126,32 @@ public class SimulatorTestCases {
     }
 
     // 测试灰度场景
-    public void testGray(SimulatorTestStrategy testStrategy, String headerName, String headerValue) {
+    public void testGray(SimulatorTestStrategy testStrategy, Map<String, String> parameter) {
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
         int graySampleCount = testCaseEntity.getGraySampleCount();
         int grayWeightOffset = testCaseEntity.getGrayWeightOffset();
         Map<String, List<String>> allVersionMap = testStrategy.getAllVersionMap();
 
-        Map<String, Integer> countMap = testInspection(testStrategy, graySampleCount, headerName, headerValue, true, true);
+        List<SimulatorTestCaseGrayConditionData> testCaseGrayConditionDataList = testStrategy.getTestCaseGrayConditionDataList();
+        List<Integer> weight = SimulatorTestCaseConditionDataResolver.getFinalTriggeredTestCaseGrayWeight(testCaseGrayConditionDataList, parameter);
+
+        int oldDesireWeight = 0;
+        int newDesireWeight = 0;
+        if (weight != null) {
+            oldDesireWeight = weight.get(0);
+            newDesireWeight = weight.get(1);
+        } else {
+            oldDesireWeight = 100;
+            newDesireWeight = 0;
+        }
+
+        Map<String, Integer> countMap = testInspection(testStrategy, graySampleCount, parameter, true, true);
         for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
             String key = entry.getKey();
             int value = entry.getValue();
 
             LOG.info("侦测结果 : {} 命中次数={}", key, value);
         }
-
-        List<String> grayParameter0 = testStrategy.getTestCaseGrayConditionDataList().get(0).getParameter();
-        List<String> grayParameter1 = testStrategy.getTestCaseGrayConditionDataList().get(1).getParameter();
-        List<Integer> grayWeight0 = testStrategy.getTestCaseGrayConditionDataList().get(0).getWeight();
-        List<Integer> grayWeight1 = testStrategy.getTestCaseGrayConditionDataList().get(1).getWeight();
 
         int oldResultCount = -1;
         int newResultCount = -1;
@@ -171,21 +181,6 @@ public class SimulatorTestCases {
             newResultCount = newCount;
         }
 
-        int oldDesireWeight = 0;
-        int newDesireWeight = 0;
-        if (StringUtils.isNotEmpty(headerValue)) {
-            if (StringUtils.equals(headerValue, grayParameter0.get(1))) {
-                oldDesireWeight = grayWeight0.get(0);
-                newDesireWeight = grayWeight0.get(1);
-            } else if (StringUtils.equals(headerValue, grayParameter1.get(1))) {
-                oldDesireWeight = grayWeight1.get(0);
-                newDesireWeight = grayWeight1.get(1);
-            }
-        } else {
-            oldDesireWeight = 100;
-            newDesireWeight = 0;
-        }
-
         DecimalFormat format = new DecimalFormat("0.0000");
         double oldResultWeight = Double.valueOf(format.format((double) oldResultCount * 100 / graySampleCount));
         double newResultWeight = Double.valueOf(format.format((double) newResultCount * 100 / graySampleCount));
@@ -200,7 +195,7 @@ public class SimulatorTestCases {
         LOG.info("测试结果 : 通过");
     }
 
-    private Map<String, Integer> testInspection(SimulatorTestStrategy testStrategy, int sampleCount, String headerName, String headerValue, boolean isolationAssert, boolean progressShown) {
+    private Map<String, Integer> testInspection(SimulatorTestStrategy testStrategy, int sampleCount, Map<String, String> parameter, boolean isolationAssert, boolean progressShown) {
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
         String inspectUrl = testCaseEntity.getInspectUrl();
 
@@ -211,8 +206,13 @@ public class SimulatorTestCases {
         Map<String, Integer> countMap = initializeCountMap(testStrategy);
 
         HttpHeaders headers = new HttpHeaders();
-        if (StringUtils.isNotEmpty(headerName) && StringUtils.isNotEmpty(headerValue)) {
-            headers.add(headerName, headerValue);
+        if (MapUtils.isNotEmpty(parameter)) {
+            for (Map.Entry<String, String> entry : parameter.entrySet()) {
+                String name = entry.getKey();
+                String value = entry.getValue();
+
+                headers.add(name, value);
+            }
         }
 
         HttpEntity<InspectorEntity> requestEntity = new HttpEntity<InspectorEntity>(inspectorEntity, headers);

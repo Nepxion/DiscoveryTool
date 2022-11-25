@@ -33,7 +33,4 @@ public class SimulatorTestConstant extends TestConstant {
     public static final String TESTCASE_GRAY_WEIGHT_OFFSET = "testcase.gray.weight.offset";
     public static final String TESTCASE_VERSION_PREFER_ENABLED = "testcase.version.prefer.enabled";
     public static final String TESTCASE_SECOND_RELEASE_ENABLED = "testcase.second.release.enabled";
-
-    public static final String EXPRESSION_REGEX = "[^\\s\"']+|\"[^\"]*\"|'[^']*'";
-    public static final String SINGLE_QUOTES = "'";
 }

@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.number.OrderingComparison;
 import org.slf4j.Logger;
@@ -27,6 +28,7 @@ import com.nepxion.discovery.automation.common.strategy.TestStrategy;
 import com.nepxion.discovery.automation.common.util.TestUtil;
 import com.nepxion.discovery.automation.simulator.constant.SimulatorTestConstant;
 import com.nepxion.discovery.automation.simulator.data.SimulatorTestCaseBlueConditionData;
+import com.nepxion.discovery.automation.simulator.data.SimulatorTestCaseConditionDataResolver;
 import com.nepxion.discovery.automation.simulator.data.SimulatorTestCaseGrayConditionData;
 import com.nepxion.discovery.automation.simulator.data.SimulatorTestCaseGreenConditionData;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseConfig;
@@ -40,6 +42,7 @@ import com.nepxion.discovery.common.entity.ConditionGrayEntity;
 import com.nepxion.discovery.common.entity.InspectorEntity;
 import com.nepxion.discovery.common.entity.InstanceEntity;
 import com.nepxion.discovery.common.entity.VersionSortType;
+import com.nepxion.discovery.common.exception.DiscoveryException;
 import com.nepxion.discovery.common.util.JsonUtil;
 import com.nepxion.discovery.common.util.VersionSortUtil;
 
@@ -122,15 +125,15 @@ public class SimulatorTestStrategy extends TestStrategy {
         LOG.info("初始化表达式参数列表...");
         initializeParameter();
         if (hasBlueGreen()) {
-            LOG.info("绿表达式 : {}，参数 : {}", testCaseGreenConditionData.getExpression(), testCaseGreenConditionData.getParameter());
-            LOG.info("蓝表达式 : {}，参数 : {}", testCaseBlueConditionData.getExpression(), testCaseBlueConditionData.getParameter());
+            LOG.info("绿表达式 : {}，参数 : {}", StringUtils.isNotEmpty(testCaseGreenConditionData.getExpression()) ? testCaseGreenConditionData.getExpression() : "无", MapUtils.isNotEmpty(testCaseGreenConditionData.getParameter()) ? testCaseGreenConditionData.getParameter() : "无");
+            LOG.info("蓝表达式 : {}，参数 : {}", StringUtils.isNotEmpty(testCaseBlueConditionData.getExpression()) ? testCaseBlueConditionData.getExpression() : "无", MapUtils.isNotEmpty(testCaseBlueConditionData.getParameter()) ? testCaseBlueConditionData.getParameter() : "无");
         } else {
             LOG.info("蓝绿规则策略 : 未配置");
         }
         if (hasGray()) {
             for (int i = 0; i < testCaseGrayConditionDataList.size(); i++) {
                 SimulatorTestCaseGrayConditionData testCaseGrayConditionData = testCaseGrayConditionDataList.get(i);
-                LOG.info("灰度表达式{} : {}，参数 : {}，权重 : {}", i, testCaseGrayConditionData.getExpression(), testCaseGrayConditionData.getParameter(), testCaseGrayConditionData.getWeight());
+                LOG.info("灰度表达式{} : {}，参数 : {}，权重 : {}", i, StringUtils.isNotEmpty(testCaseGrayConditionData.getExpression()) ? testCaseGrayConditionData.getExpression() : "无", MapUtils.isNotEmpty(testCaseGrayConditionData.getParameter()) ? testCaseGrayConditionData.getParameter() : "无", testCaseGrayConditionData.getWeight());
             }
         } else {
             LOG.info("灰度规则策略 : 未配置");
@@ -192,7 +195,8 @@ public class SimulatorTestStrategy extends TestStrategy {
 
     private void initializeParameter() {
         List<ConditionBlueGreenEntity> blueGreen = testCaseReleaseFirstCondition.getBlueGreen();
-        if (CollectionUtils.isNotEmpty(blueGreen)) {
+        boolean hasBlueGreen = hasBlueGreen();
+        if (hasBlueGreen) {
             for (ConditionBlueGreenEntity conditionBlueGreenEntity : blueGreen) {
                 String blueGreenExpression = conditionBlueGreenEntity.getExpression();
                 String bludGreenRoute = conditionBlueGreenEntity.getRoute();
@@ -211,7 +215,8 @@ public class SimulatorTestStrategy extends TestStrategy {
         }
 
         List<ConditionGrayEntity> gray = testCaseReleaseFirstCondition.getGray();
-        if (CollectionUtils.isNotEmpty(gray)) {
+        boolean hasGray = hasGray();
+        if (hasGray) {
             testCaseGrayConditionDataList = new ArrayList<SimulatorTestCaseGrayConditionData>();
             for (ConditionGrayEntity conditionGrayEntity : gray) {
                 String grayExpression = conditionGrayEntity.getExpression();
@@ -222,6 +227,12 @@ public class SimulatorTestStrategy extends TestStrategy {
                 testCaseGrayConditionData.setWeight(grayWeight);
 
                 testCaseGrayConditionDataList.add(testCaseGrayConditionData);
+            }
+        }
+
+        if (hasBlueGreen && hasGray) {
+            if (SimulatorTestCaseConditionDataResolver.getBasicTestCaseGrayWeight(testCaseGrayConditionDataList) != null) {
+                throw new DiscoveryException("蓝绿灰度混合发布模式下，灰度兜底策略不允许配置");
             }
         }
     }

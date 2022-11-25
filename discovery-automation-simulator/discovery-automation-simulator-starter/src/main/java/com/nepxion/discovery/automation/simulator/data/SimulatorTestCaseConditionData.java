@@ -9,20 +9,20 @@ package com.nepxion.discovery.automation.simulator.data;
  * @version 1.0
  */
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
-import com.nepxion.discovery.automation.simulator.condition.SimulatorTestExpressionCondition;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.expression.TypeComparator;
+
 import com.nepxion.discovery.common.constant.DiscoveryConstant;
-import com.nepxion.discovery.common.util.StringUtil;
+import com.nepxion.discovery.common.expression.DiscoveryExpressionResolver;
+import com.nepxion.discovery.common.expression.DiscoveryTypeComparator;
 
 public class SimulatorTestCaseConditionData {
-    private static SimulatorTestExpressionCondition testExpressionCondition = new SimulatorTestExpressionCondition();
+    private static final TypeComparator TYPE_COMPARATOR = new DiscoveryTypeComparator();
 
     private String expression;
-    private List<String> parameter;
-    private Map<String, String> parameterMap;
+    private Map<String, String> parameter;
 
     public String getExpression() {
         return expression;
@@ -30,23 +30,16 @@ public class SimulatorTestCaseConditionData {
 
     public void setExpression(String expression) {
         this.expression = expression;
-        this.parameter = extractParameter(expression);
-        this.parameterMap = testExpressionCondition.extractParameter(expression);
-        System.out.println(parameterMap);
+        if (StringUtils.isNotEmpty(expression)) {
+            this.parameter = DiscoveryExpressionResolver.extractMap(expression);
+        }
     }
 
-    public List<String> getParameter() {
+    public Map<String, String> getParameter() {
         return parameter;
     }
 
-    private List<String> extractParameter(String expression) {
-        List<String> list = StringUtil.splitToList(expression, DiscoveryConstant.EQUALS + DiscoveryConstant.EQUALS);
-        String parameter = list.get(0);
-        String value = list.get(1);
-
-        parameter = parameter.substring(parameter.indexOf("'") + 1, parameter.lastIndexOf("'")).trim();
-        value = value.substring(value.indexOf("'") + 1, value.lastIndexOf("'")).trim();
-
-        return Arrays.asList(parameter, value);
+    public boolean isTriggered(Map<String, String> parameter) {
+        return DiscoveryExpressionResolver.eval(expression, DiscoveryConstant.EXPRESSION_PREFIX, parameter, TYPE_COMPARATOR);
     }
 }

@@ -9,8 +9,11 @@ package com.nepxion.discovery.automation.simulator.runner;
  * @version 1.0
  */
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections4.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +22,14 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import com.nepxion.discovery.automation.common.runner.TestCaseContext;
 import com.nepxion.discovery.automation.common.runner.TestCaseRunner;
 import com.nepxion.discovery.automation.common.runner.TestRunner;
+import com.nepxion.discovery.automation.simulator.data.SimulatorTestCaseConditionData;
+import com.nepxion.discovery.automation.simulator.data.SimulatorTestCaseConditionDataResolver;
+import com.nepxion.discovery.automation.simulator.data.SimulatorTestCaseGrayConditionData;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseEntity;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseBasicCondition;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseFirstCondition;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseReleaseSecondCondition;
 import com.nepxion.discovery.automation.simulator.strategy.SimulatorTestStrategy;
-import com.nepxion.discovery.common.constant.DiscoveryConstant;
-import com.nepxion.discovery.common.util.StringUtil;
 
 public class SimulatorTestRunner extends TestRunner {
     private static final Logger LOG = LoggerFactory.getLogger(SimulatorTestRunner.class);
@@ -253,12 +257,8 @@ public class SimulatorTestRunner extends TestRunner {
     public void testVersionBlueGreenGrayRelease(int sceneIndex, int releaseIndex, String input, SimulatorTestStrategy testStrategy) throws Exception {
         LOG.info("-------------------------------------------------");
 
-        boolean hasGreen = testStrategy.hasBlueGreen();
-        List<String> greenParameter = testStrategy.getTestCaseGreenConditionData().getParameter();
-        List<String> blueParameter = testStrategy.getTestCaseBlueConditionData().getParameter();
+        boolean hasBlueGreen = testStrategy.hasBlueGreen();
         boolean hasGray = testStrategy.hasGray();
-        List<String> grayParameter0 = testStrategy.getTestCaseGrayConditionDataList().get(0).getParameter();
-        List<String> grayParameter1 = testStrategy.getTestCaseGrayConditionDataList().get(1).getParameter();
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
         int loopCount = testCaseEntity.getLoopCount();
 
@@ -271,50 +271,46 @@ public class SimulatorTestRunner extends TestRunner {
             testStrategy.recreateVersionRelease(input);
         }
 
-        if (hasGreen) {
+        if (hasBlueGreen) {
             LOG.info("【模拟场景{}】蓝绿策略，测试全链路侦测，Header : {}...", sceneIndex, "无");
             long startTime = System.currentTimeMillis();
             for (int i = 0; i < loopCount; i++) {
-                testCases.testBlueGreen(testStrategy, null, null);
+                testCases.testBlueGreen(testStrategy, null);
             }
             LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
-            LOG.info("【模拟场景{}】蓝绿策略，测试全链路侦测，Header : {}...", sceneIndex, StringUtil.convertToString(greenParameter, DiscoveryConstant.EQUALS));
-            startTime = System.currentTimeMillis();
-            for (int i = 0; i < loopCount; i++) {
-                testCases.testBlueGreen(testStrategy, greenParameter.get(0), greenParameter.get(1));
+            List<SimulatorTestCaseConditionData> testCaseBlueGreenConditionDataList = Arrays.asList(testStrategy.getTestCaseGreenConditionData(), testStrategy.getTestCaseBlueConditionData());
+            SimulatorTestCaseConditionDataResolver.sort(testCaseBlueGreenConditionDataList);
+            for (SimulatorTestCaseConditionData testCaseConditionData : testCaseBlueGreenConditionDataList) {
+                Map<String, String> blueGreenParameter = testCaseConditionData.getParameter();
+                LOG.info("【模拟场景{}】蓝绿策略，测试全链路侦测，Header : {}...", sceneIndex, MapUtils.isNotEmpty(blueGreenParameter) ? blueGreenParameter : "无");
+                startTime = System.currentTimeMillis();
+                for (int i = 0; i < loopCount; i++) {
+                    testCases.testBlueGreen(testStrategy, blueGreenParameter);
+                }
+                LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
             }
-            LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
-
-            LOG.info("【模拟场景{}】蓝绿策略，测试全链路侦测，Header : {}...", sceneIndex, StringUtil.convertToString(blueParameter, DiscoveryConstant.EQUALS));
-            startTime = System.currentTimeMillis();
-            for (int i = 0; i < loopCount; i++) {
-                testCases.testBlueGreen(testStrategy, blueParameter.get(0), blueParameter.get(1));
-            }
-            LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
         }
 
         if (hasGray) {
             LOG.info("【模拟场景{}】灰度策略，测试全链路侦测，Header : {}...", sceneIndex, "无");
             long startTime = System.currentTimeMillis();
             for (int i = 0; i < loopCount; i++) {
-                testCases.testGray(testStrategy, null, null);
+                testCases.testGray(testStrategy, null);
             }
             LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
-            LOG.info("【模拟场景{}】灰度策略，测试全链路侦测，Header : {}...", sceneIndex, StringUtil.convertToString(grayParameter0, DiscoveryConstant.EQUALS));
-            startTime = System.currentTimeMillis();
-            for (int i = 0; i < loopCount; i++) {
-                testCases.testGray(testStrategy, grayParameter0.get(0), grayParameter0.get(1));
+            List<SimulatorTestCaseGrayConditionData> testCaseGrayConditionDataList = testStrategy.getTestCaseGrayConditionDataList();
+            SimulatorTestCaseConditionDataResolver.sort(testCaseGrayConditionDataList);
+            for (SimulatorTestCaseGrayConditionData testCaseGrayConditionData : testCaseGrayConditionDataList) {
+                Map<String, String> grayParameter = testCaseGrayConditionData.getParameter();
+                LOG.info("【模拟场景{}】灰度策略，测试全链路侦测，Header : {}...", sceneIndex, MapUtils.isNotEmpty(grayParameter) ? grayParameter : "无");
+                startTime = System.currentTimeMillis();
+                for (int i = 0; i < loopCount; i++) {
+                    testCases.testGray(testStrategy, grayParameter);
+                }
+                LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
             }
-            LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
-
-            LOG.info("【模拟场景{}】灰度策略，测试全链路侦测，Header : {}...", sceneIndex, StringUtil.convertToString(grayParameter1, DiscoveryConstant.EQUALS));
-            startTime = System.currentTimeMillis();
-            for (int i = 0; i < loopCount; i++) {
-                testCases.testGray(testStrategy, grayParameter1.get(0), grayParameter1.get(1));
-            }
-            LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
             LOG.info("【模拟场景{}】* 测试通过...", sceneIndex);
         }
