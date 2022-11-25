@@ -262,8 +262,10 @@ public class SimulatorTestRunner {
     public void testVersionBlueGreenGrayRelease(int sceneIndex, int releaseIndex, String input, SimulatorTestStrategy testStrategy) throws Exception {
         LOG.info("-------------------------------------------------");
 
+        boolean hasGreen = testStrategy.hasBlueGreen();
         List<String> greenParameter = testStrategy.getGreenParameter();
         List<String> blueParameter = testStrategy.getBlueParameter();
+        boolean hasGray = testStrategy.hasGray();
         List<String> grayParameter0 = testStrategy.getGrayParameter0();
         List<String> grayParameter1 = testStrategy.getGrayParameter1();
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
@@ -278,49 +280,53 @@ public class SimulatorTestRunner {
             testStrategy.recreateVersionRelease(input);
         }
 
-        LOG.info("【模拟场景{}】蓝绿策略，测试全链路侦测，Header : {}...", sceneIndex, "无");
-        long startTime = System.currentTimeMillis();
-        for (int i = 0; i < loopCount; i++) {
-            testCases.testBlueGreen(testStrategy, null, null);
-        }
-        LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
+        if (hasGreen) {
+            LOG.info("【模拟场景{}】蓝绿策略，测试全链路侦测，Header : {}...", sceneIndex, "无");
+            long startTime = System.currentTimeMillis();
+            for (int i = 0; i < loopCount; i++) {
+                testCases.testBlueGreen(testStrategy, null, null);
+            }
+            LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
-        LOG.info("【模拟场景{}】蓝绿策略，测试全链路侦测，Header : {}...", sceneIndex, StringUtil.convertToString(greenParameter, DiscoveryConstant.EQUALS));
-        startTime = System.currentTimeMillis();
-        for (int i = 0; i < loopCount; i++) {
-            testCases.testBlueGreen(testStrategy, greenParameter.get(0), greenParameter.get(1));
-        }
-        LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
+            LOG.info("【模拟场景{}】蓝绿策略，测试全链路侦测，Header : {}...", sceneIndex, StringUtil.convertToString(greenParameter, DiscoveryConstant.EQUALS));
+            startTime = System.currentTimeMillis();
+            for (int i = 0; i < loopCount; i++) {
+                testCases.testBlueGreen(testStrategy, greenParameter.get(0), greenParameter.get(1));
+            }
+            LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
-        LOG.info("【模拟场景{}】蓝绿策略，测试全链路侦测，Header : {}...", sceneIndex, StringUtil.convertToString(blueParameter, DiscoveryConstant.EQUALS));
-        startTime = System.currentTimeMillis();
-        for (int i = 0; i < loopCount; i++) {
-            testCases.testBlueGreen(testStrategy, blueParameter.get(0), blueParameter.get(1));
+            LOG.info("【模拟场景{}】蓝绿策略，测试全链路侦测，Header : {}...", sceneIndex, StringUtil.convertToString(blueParameter, DiscoveryConstant.EQUALS));
+            startTime = System.currentTimeMillis();
+            for (int i = 0; i < loopCount; i++) {
+                testCases.testBlueGreen(testStrategy, blueParameter.get(0), blueParameter.get(1));
+            }
+            LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
         }
-        LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
-        LOG.info("【模拟场景{}】灰度策略，测试全链路侦测，Header : {}...", sceneIndex, "无");
-        startTime = System.currentTimeMillis();
-        for (int i = 0; i < loopCount; i++) {
-            testCases.testGray(testStrategy, null, null);
+        if (hasGray) {
+            LOG.info("【模拟场景{}】灰度策略，测试全链路侦测，Header : {}...", sceneIndex, "无");
+            startTime = System.currentTimeMillis();
+            for (int i = 0; i < loopCount; i++) {
+                testCases.testGray(testStrategy, null, null);
+            }
+            LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
+
+            LOG.info("【模拟场景{}】灰度策略，测试全链路侦测，Header : {}...", sceneIndex, StringUtil.convertToString(grayParameter0, DiscoveryConstant.EQUALS));
+            startTime = System.currentTimeMillis();
+            for (int i = 0; i < loopCount; i++) {
+                testCases.testGray(testStrategy, grayParameter0.get(0), grayParameter0.get(1));
+            }
+            LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
+
+            LOG.info("【模拟场景{}】灰度策略，测试全链路侦测，Header : {}...", sceneIndex, StringUtil.convertToString(grayParameter1, DiscoveryConstant.EQUALS));
+            startTime = System.currentTimeMillis();
+            for (int i = 0; i < loopCount; i++) {
+                testCases.testGray(testStrategy, grayParameter1.get(0), grayParameter1.get(1));
+            }
+            LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
+
+            LOG.info("【模拟场景{}】* 测试通过...", sceneIndex);
         }
-        LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
-
-        LOG.info("【模拟场景{}】灰度策略，测试全链路侦测，Header : {}...", sceneIndex, StringUtil.convertToString(grayParameter0, DiscoveryConstant.EQUALS));
-        startTime = System.currentTimeMillis();
-        for (int i = 0; i < loopCount; i++) {
-            testCases.testGray(testStrategy, grayParameter0.get(0), grayParameter0.get(1));
-        }
-        LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
-
-        LOG.info("【模拟场景{}】灰度策略，测试全链路侦测，Header : {}...", sceneIndex, StringUtil.convertToString(grayParameter1, DiscoveryConstant.EQUALS));
-        startTime = System.currentTimeMillis();
-        for (int i = 0; i < loopCount; i++) {
-            testCases.testGray(testStrategy, grayParameter1.get(0), grayParameter1.get(1));
-        }
-        LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
-
-        LOG.info("【模拟场景{}】* 测试通过...", sceneIndex);
     }
 
     public void testResetRelease(int sceneIndex, int releaseIndex, SimulatorTestStrategy testStrategy) throws Exception {

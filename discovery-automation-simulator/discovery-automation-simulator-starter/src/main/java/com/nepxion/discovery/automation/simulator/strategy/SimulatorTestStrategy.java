@@ -128,10 +128,18 @@ public class SimulatorTestStrategy extends TestStrategy {
 
         LOG.info("初始化表达式参数列表...");
         initializeParameter();
-        LOG.info("绿表达式 : {}，参数 : {}", greenExpression, greenParameter);
-        LOG.info("蓝表达式 : {}，参数 : {}", blueExpression, blueParameter);
-        LOG.info("灰度表达式1 : {}，参数 : {}，权重 : {}", grayExpression0, grayParameter0, grayWeight0);
-        LOG.info("灰度表达式2 : {}，参数 : {}，权重 : {}", grayExpression1, grayParameter1, grayWeight1);
+        if (hasBlueGreen()) {
+            LOG.info("绿表达式 : {}，参数 : {}", greenExpression, greenParameter);
+            LOG.info("蓝表达式 : {}，参数 : {}", blueExpression, blueParameter);
+        } else {
+            LOG.info("蓝绿规则策略 : 未配置");
+        }
+        if (hasGray()) {
+            LOG.info("灰度表达式1 : {}，参数 : {}，权重 : {}", grayExpression0, grayParameter0, grayWeight0);
+            LOG.info("灰度表达式2 : {}，参数 : {}，权重 : {}", grayExpression1, grayParameter1, grayWeight1);
+        } else {
+          LOG.info("灰度规则策略 : 未配置");
+        }
     }
 
     private void initializeServiceIdList() throws Exception {
@@ -189,33 +197,36 @@ public class SimulatorTestStrategy extends TestStrategy {
 
     private void initializeParameter() {
         List<ConditionBlueGreenEntity> blueGreen = testCaseReleaseFirstCondition.getBlueGreen();
-        for (ConditionBlueGreenEntity conditionBlueGreenEntity : blueGreen) {
-            String blueGreenExpression = conditionBlueGreenEntity.getExpression();
-            String bludGreenRoute = conditionBlueGreenEntity.getRoute();
-            ConditionBlueGreenRoute conditionBlueGreenRoute = ConditionBlueGreenRoute.fromString(bludGreenRoute);
-            switch (conditionBlueGreenRoute) {
-                case GREEN:
-                    greenExpression = blueGreenExpression;
-                    greenParameter = extractParameter(blueGreenExpression);
-                    break;
-                case BLUE:
-                    blueExpression = blueGreenExpression;
-                    blueParameter = extractParameter(blueGreenExpression);
-                    break;
+        if (CollectionUtils.isNotEmpty(blueGreen)) {
+            for (ConditionBlueGreenEntity conditionBlueGreenEntity : blueGreen) {
+                String blueGreenExpression = conditionBlueGreenEntity.getExpression();
+                String bludGreenRoute = conditionBlueGreenEntity.getRoute();
+                ConditionBlueGreenRoute conditionBlueGreenRoute = ConditionBlueGreenRoute.fromString(bludGreenRoute);
+                switch (conditionBlueGreenRoute) {
+                    case GREEN:
+                        greenExpression = blueGreenExpression;
+                        greenParameter = extractParameter(blueGreenExpression);
+                        break;
+                    case BLUE:
+                        blueExpression = blueGreenExpression;
+                        blueParameter = extractParameter(blueGreenExpression);
+                        break;
+                }
             }
-
         }
 
         List<ConditionGrayEntity> gray = testCaseReleaseFirstCondition.getGray();
-        ConditionGrayEntity conditionGrayEntity0 = gray.get(0);
-        grayExpression0 = conditionGrayEntity0.getExpression();
-        grayParameter0 = extractParameter(grayExpression0);
-        grayWeight0 = conditionGrayEntity0.getWeight();
+        if (CollectionUtils.isNotEmpty(gray)) {
+            ConditionGrayEntity conditionGrayEntity0 = gray.get(0);
+            grayExpression0 = conditionGrayEntity0.getExpression();
+            grayParameter0 = extractParameter(grayExpression0);
+            grayWeight0 = conditionGrayEntity0.getWeight();
 
-        ConditionGrayEntity conditionGrayEntity1 = gray.get(1);
-        grayExpression1 = conditionGrayEntity1.getExpression();
-        grayParameter1 = extractParameter(grayExpression1);
-        grayWeight1 = conditionGrayEntity1.getWeight();
+            ConditionGrayEntity conditionGrayEntity1 = gray.get(1);
+            grayExpression1 = conditionGrayEntity1.getExpression();
+            grayParameter1 = extractParameter(grayExpression1);
+            grayWeight1 = conditionGrayEntity1.getWeight();
+        }
     }
 
     private List<String> extractParameter(String expression) {
@@ -339,6 +350,14 @@ public class SimulatorTestStrategy extends TestStrategy {
 
     public List<Integer> getGrayWeight1() {
         return grayWeight1;
+    }
+
+    public boolean hasBlueGreen() {
+        return CollectionUtils.isNotEmpty(testCaseReleaseFirstCondition.getBlueGreen());
+    }
+
+    public boolean hasGray() {
+        return CollectionUtils.isNotEmpty(testCaseReleaseFirstCondition.getGray());
     }
 
     public InspectorEntity createInspectorEntity() {
