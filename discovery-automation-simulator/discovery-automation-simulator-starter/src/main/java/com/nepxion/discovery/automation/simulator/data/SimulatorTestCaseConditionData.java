@@ -11,13 +11,18 @@ package com.nepxion.discovery.automation.simulator.data;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
+import com.nepxion.discovery.automation.simulator.condition.SimulatorTestExpressionCondition;
 import com.nepxion.discovery.common.constant.DiscoveryConstant;
 import com.nepxion.discovery.common.util.StringUtil;
 
 public class SimulatorTestCaseConditionData {
+    private static SimulatorTestExpressionCondition testExpressionCondition = new SimulatorTestExpressionCondition();
+
     private String expression;
     private List<String> parameter;
+    private Map<String, String> parameterMap;
 
     public String getExpression() {
         return expression;
@@ -26,6 +31,8 @@ public class SimulatorTestCaseConditionData {
     public void setExpression(String expression) {
         this.expression = expression;
         this.parameter = extractParameter(expression);
+        this.parameterMap = testExpressionCondition.extractParameter(expression);
+        System.out.println(parameterMap);
     }
 
     public List<String> getParameter() {
