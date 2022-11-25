@@ -5,9 +5,9 @@ name: build
 
 on:
   push:
-    branches: [ console ]
+    branches: [ discovery-console ]
   pull_request:
-    branches: [ console ]
+    branches: [ discovery-console ]
 
 jobs:
   build:
