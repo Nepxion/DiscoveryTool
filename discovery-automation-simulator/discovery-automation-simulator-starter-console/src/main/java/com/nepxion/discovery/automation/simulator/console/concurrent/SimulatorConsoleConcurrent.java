@@ -9,8 +9,28 @@ package com.nepxion.discovery.automation.simulator.console.concurrent;
  * @version 1.0
  */
 
-// 并行控制测试用例，根据Key（group@serviceId）进行判断，不允许有多个Key相同的测试用例同时运行
+import javax.annotation.PostConstruct;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+// 通过线程安全的缓存组件（本地缓存或者分布式缓存）并行控制测试用例，根据Key（group@serviceId）进行判断，不允许有多个Key相同的测试用例同时运行
 public abstract class SimulatorConsoleConcurrent {
+    private static final Logger LOG = LoggerFactory.getLogger(SimulatorConsoleConcurrent.class);
+
+    @PostConstruct
+    private void initialize() {
+        LOG.info("Concurrent cache for {} starts to initialize...", getCacheName());
+
+        initializeCache();
+    }
+
+    // 初始化并行控制缓存
+    public abstract void initializeCache();
+
+    // 返回并行控制缓存的名称
+    public abstract String getCacheName();
+
     // 新发起的测试用例是否和正在运行的测试用例相同
     public abstract boolean validateTest(String key);
 

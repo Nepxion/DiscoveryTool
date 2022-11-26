@@ -3,45 +3,51 @@
 		{
 			"name": "console.automation.thread.pool.core-pool-size",
 			"type": "java.lang.Integer",
-			"description": "Console automation threadpool core pool size."
+			"description": "Console automation thread pool core size."
 		},
 		{
 			"name": "console.automation.thread.pool.max-pool-size",
 			"type": "java.lang.Integer",
-			"description": "Console automation threadpool max pool size."
+			"description": "Console automation thread pool max size."
 		},
 		{
 			"name": "console.automation.thread.pool.queue-capacity",
 			"type": "java.lang.Integer",
-			"description": "Console automation threadpool queue capacity."
+			"description": "Console automation thread pool queue capacity."
 		},
 		{
 			"name": "console.automation.thread.pool.keep-alive-seconds",
 			"type": "java.lang.Integer",
-			"description": "Console automation threadpool keep alive seconds."
+			"description": "Console automation thread pool keep alive seconds."
 		},
 		{
 			"name": "console.automation.thread.pool.await-termination-seconds",
 			"type": "java.lang.Integer",
-			"description": "Console automation threadpool await termination seconds."
+			"description": "Console automation thread pool await termination seconds."
 		},
 		{
-			"name": "console.automation.cache.pool.initial-capacity",
+			"name": "console.automation.caffeine.cache.initial-capacity",
 			"type": "java.lang.Integer",
 			"defaultValue": 10,
-			"description": "Console automation cachepool initial capacity."
+			"description": "Console automation caffeine cache initial capacity."
 		},
 		{
-			"name": "console.automation.cache.pool.maximum-size",
+			"name": "console.automation.caffeine.cache.maximum-size",
 			"type": "java.lang.Integer",
 			"defaultValue": 100,
-			"description": "Console automation cachepool maximum size."
+			"description": "Console automation caffeine cache maximum size."
 		},
 		{
-			"name": "console.automation.cache.pool.expire-seconds",
+			"name": "console.automation.caffeine.cache.expire-seconds",
 			"type": "java.lang.Integer",
 			"defaultValue": 1800,
-			"description": "Console automation cachepool expire seconds."
+			"description": "Console automation caffeine cache expire seconds."
+		},
+		{
+			"name": "console.automation.cache.type",
+			"type": "java.lang.String",
+			"defaultValue": "caffeine",
+			"description": "Console automation cache type."
 		},
 		{
 			"name": "console.automation.logger.mdc.key.shown",

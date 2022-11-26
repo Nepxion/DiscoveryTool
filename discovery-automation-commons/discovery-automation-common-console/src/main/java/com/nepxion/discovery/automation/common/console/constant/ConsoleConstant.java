@@ -10,5 +10,8 @@ package com.nepxion.discovery.automation.common.console.constant;
  */
 
 public class ConsoleConstant {
+    public static final String CONSOLE_AUTOMATION_CACHE_TYPE = "console.automation.cache.type";
+    public static final String CONSOLE_AUTOMATION_CACHE_TYPE_CAFFEINE = "caffeine";
+
     public static final String CONSOLE_AUTOMATION_LOGGER_MDC_KEY_SHOWN = "console.automation.logger.mdc.key.shown";
 }

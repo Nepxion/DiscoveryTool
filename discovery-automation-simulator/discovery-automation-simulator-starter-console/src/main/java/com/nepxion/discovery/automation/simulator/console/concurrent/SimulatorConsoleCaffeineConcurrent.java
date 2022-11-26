@@ -11,27 +11,26 @@ package com.nepxion.discovery.automation.simulator.console.concurrent;
 
 import java.util.concurrent.TimeUnit;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.github.benmanes.caffeine.cache.CacheLoader;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
-import com.nepxion.discovery.automation.common.console.entity.ConsoleCachePoolProperties;
+import com.nepxion.discovery.automation.common.console.constant.ConsoleConstant;
+import com.nepxion.discovery.automation.common.console.entity.ConsoleCaffeineCacheProperties;
 
 public class SimulatorConsoleCaffeineConcurrent extends SimulatorConsoleConcurrent {
     @Autowired
-    private ConsoleCachePoolProperties consoleCachePoolProperties;
+    private ConsoleCaffeineCacheProperties consoleCaffeineCacheProperties;
 
     private LoadingCache<String, String> loadingCache;
 
-    @PostConstruct
-    private void initialize() {
-        int initialCapacity = consoleCachePoolProperties.getInitialCapacity();
-        int maximumSize = consoleCachePoolProperties.getMaximumSize();
-        int expireSeconds = consoleCachePoolProperties.getExpireSeconds();
+    @Override
+    public void initializeCache() {
+        int initialCapacity = consoleCaffeineCacheProperties.getInitialCapacity();
+        int maximumSize = consoleCaffeineCacheProperties.getMaximumSize();
+        int expireSeconds = consoleCaffeineCacheProperties.getExpireSeconds();
 
         loadingCache = Caffeine.newBuilder()
                 .expireAfterWrite(expireSeconds, TimeUnit.SECONDS)
@@ -44,6 +43,11 @@ public class SimulatorConsoleCaffeineConcurrent extends SimulatorConsoleConcurre
                         return StringUtils.EMPTY;
                     }
                 });
+    }
+
+    @Override
+    public String getCacheName() {
+        return ConsoleConstant.CONSOLE_AUTOMATION_CACHE_TYPE_CAFFEINE;
     }
 
     @Override
