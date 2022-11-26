@@ -11,7 +11,7 @@ package com.nepxion.discovery.automation.common.console.entity;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties("console.cache.pool")
+@ConfigurationProperties("console.automation.cache.pool")
 public class ConsoleCachePoolProperties {
     private int initialCapacity = 10;
     private int maximumSize = 100;

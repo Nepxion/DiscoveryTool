@@ -11,7 +11,7 @@ package com.nepxion.discovery.automation.common.console.entity;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties("console.thread.pool")
+@ConfigurationProperties("console.automation.thread.pool")
 public class ConsoleThreadPoolProperties {
     private int corePoolSize = -1;
     private int maxPoolSize = -1;
