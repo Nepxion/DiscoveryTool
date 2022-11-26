@@ -12,15 +12,23 @@ package com.nepxion.discovery.automation.simulator.console.lock;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringUtils;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.github.benmanes.caffeine.cache.CacheLoader;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
+import com.github.benmanes.caffeine.cache.RemovalCause;
+import com.github.benmanes.caffeine.cache.RemovalListener;
 import com.nepxion.discovery.automation.common.console.constant.ConsoleConstant;
 import com.nepxion.discovery.automation.common.console.entity.ConsoleCaffeineLockProperties;
 
 public class SimulatorConsoleCaffeineLock extends SimulatorConsoleLock {
+    private static final Logger LOG = LoggerFactory.getLogger(SimulatorConsoleCaffeineLock.class);
+
     @Autowired
     private ConsoleCaffeineLockProperties consoleCaffeineLockProperties;
 
@@ -37,6 +45,14 @@ public class SimulatorConsoleCaffeineLock extends SimulatorConsoleLock {
                 .initialCapacity(initialCapacity)
                 .maximumSize(maximumSize)
                 .recordStats()
+                .evictionListener(new RemovalListener<String, String>() {
+                    @Override
+                    public void onRemoval(@Nullable String key, @Nullable String value, @NonNull RemovalCause cause) {
+                        if (cause == RemovalCause.EXPIRED) {
+                            LOG.info("Key={} is expired...", key);
+                        }
+                    }
+                })
                 .build(new CacheLoader<String, String>() {
                     @Override
                     public String load(String key) throws Exception {

@@ -11,16 +11,6 @@ package com.nepxion.discovery.automation.simulator.console;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
-/**
- * <p>Title: Nepxion Discovery</p>
- * <p>Description: Nepxion Discovery</p>
- * <p>Copyright: Copyright (c) 2017-2050</p>
- * <p>Company: Nepxion</p>
- * @author Haojun Ren
- * @version 1.0
- */
-
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringUtils;
