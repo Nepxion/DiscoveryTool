@@ -26,28 +26,28 @@
 			"description": "Console automation thread pool await termination seconds."
 		},
 		{
-			"name": "console.automation.caffeine.cache.initial-capacity",
+			"name": "console.automation.caffeine.initial-capacity",
 			"type": "java.lang.Integer",
 			"defaultValue": 10,
-			"description": "Console automation caffeine cache initial capacity."
+			"description": "Console automation caffeine initial capacity."
 		},
 		{
-			"name": "console.automation.caffeine.cache.maximum-size",
+			"name": "console.automation.caffeine.maximum-size",
 			"type": "java.lang.Integer",
 			"defaultValue": 100,
-			"description": "Console automation caffeine cache maximum size."
+			"description": "Console automation caffeine maximum size."
 		},
 		{
-			"name": "console.automation.caffeine.cache.expire-seconds",
+			"name": "console.automation.caffeine.expire-seconds",
 			"type": "java.lang.Integer",
 			"defaultValue": 1800,
-			"description": "Console automation caffeine cache expire seconds."
+			"description": "Console automation caffeine expire seconds."
 		},
 		{
-			"name": "console.automation.cache.type",
+			"name": "console.automation.lock.type",
 			"type": "java.lang.String",
 			"defaultValue": "caffeine",
-			"description": "Console automation cache type."
+			"description": "Console automation lock type."
 		},
 		{
 			"name": "console.automation.logger.mdc.key.shown",

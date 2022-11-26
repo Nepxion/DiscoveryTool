@@ -16,10 +16,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import com.nepxion.discovery.automation.common.console.constant.ConsoleConstant;
-import com.nepxion.discovery.automation.common.console.entity.ConsoleCaffeineCacheProperties;
-import com.nepxion.discovery.automation.simulator.console.concurrent.SimulatorConsoleCaffeineConcurrent;
-import com.nepxion.discovery.automation.simulator.console.concurrent.SimulatorConsoleConcurrent;
+import com.nepxion.discovery.automation.common.console.entity.ConsoleCaffeineLockProperties;
 import com.nepxion.discovery.automation.simulator.console.endpoint.SimulatorConsoleEndpoint;
+import com.nepxion.discovery.automation.simulator.console.lock.SimulatorConsoleCaffeineLock;
+import com.nepxion.discovery.automation.simulator.console.lock.SimulatorConsoleLock;
 import com.nepxion.discovery.automation.simulator.console.resource.SimulatorConsoleResource;
 import com.nepxion.discovery.automation.simulator.console.resource.SimulatorConsoleResourceImpl;
 
@@ -38,12 +38,12 @@ public class SimulatorConsoleAutoConfiguration {
         }
     }
 
-    @ConditionalOnProperty(value = ConsoleConstant.CONSOLE_AUTOMATION_CACHE_TYPE, havingValue = ConsoleConstant.CONSOLE_AUTOMATION_CACHE_TYPE_CAFFEINE, matchIfMissing = true)
-    @EnableConfigurationProperties({ ConsoleCaffeineCacheProperties.class })
-    protected static class CaffeineConsoleConcurrentConfiguration {
+    @ConditionalOnProperty(value = ConsoleConstant.CONSOLE_AUTOMATION_LOCK_TYPE, havingValue = ConsoleConstant.CONSOLE_AUTOMATION_LOCK_TYPE_CAFFEINE, matchIfMissing = true)
+    @EnableConfigurationProperties({ ConsoleCaffeineLockProperties.class })
+    protected static class CaffeineConsoleLockConfiguration {
         @Bean
-        public SimulatorConsoleConcurrent simulatorConsoleConcurrent() {
-            return new SimulatorConsoleCaffeineConcurrent();
+        public SimulatorConsoleLock simulatorConsoleLock() {
+            return new SimulatorConsoleCaffeineLock();
         }
     }
 }

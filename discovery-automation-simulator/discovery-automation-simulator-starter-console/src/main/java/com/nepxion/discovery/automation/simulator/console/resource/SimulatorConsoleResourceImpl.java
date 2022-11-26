@@ -14,7 +14,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nepxion.discovery.automation.common.console.resource.ConsoleResourceImpl;
-import com.nepxion.discovery.automation.simulator.console.concurrent.SimulatorConsoleConcurrent;
+import com.nepxion.discovery.automation.simulator.console.lock.SimulatorConsoleLock;
 import com.nepxion.discovery.automation.simulator.constant.SimulatorTestConstant;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseConfig;
 import com.nepxion.discovery.automation.simulator.runner.SimulatorTestRunner;
@@ -26,7 +26,7 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
     private SimulatorTestRunner testRunner;
 
     @Autowired
-    private SimulatorConsoleConcurrent consoleConcurrent;
+    private SimulatorConsoleLock consoleLock;
 
     @Override
     public String getTestName() {
@@ -44,7 +44,7 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
 
         try {
             String key = getKey(testCaseConfig, testCaseConfigWithYaml);
-            if (consoleConcurrent.validateTest(key)) {
+            if (consoleLock.validateTest(key)) {
                 throw new DiscoveryException("Testcase Task 【" + key + "】 is running now");
             }
         } catch (Exception e) {
@@ -60,7 +60,7 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
         String testCaseReleaseSecondCondition = testConfigList.get(3);
 
         String key = getKey(testCaseConfig, testCaseConfigWithYaml);
-        consoleConcurrent.runTest(key);
+        consoleLock.runTest(key);
 
         SimulatorTestStrategy testStrategy = testRunner.testInitialization(testCaseConfig, testCaseReleaseBasicCondition, testCaseReleaseFirstCondition, testCaseReleaseSecondCondition, testCaseConfigWithYaml);
         testRunner.testNormal(testStrategy);
@@ -78,7 +78,7 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
         String testCaseConfig = testConfigList.get(0);
 
         String key = getKey(testCaseConfig, testCaseConfigWithYaml);
-        consoleConcurrent.finishTest(key);
+        consoleLock.finishTest(key);
     }
 
     private String getKey(String testCaseConfig, boolean testCaseConfigWithYaml) throws Exception {

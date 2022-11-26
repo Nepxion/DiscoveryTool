@@ -1,4 +1,4 @@
-package com.nepxion.discovery.automation.simulator.console.concurrent;
+package com.nepxion.discovery.automation.simulator.console.lock;
 
 /**
  * <p>Title: Nepxion Discovery</p>
@@ -18,19 +18,19 @@ import com.github.benmanes.caffeine.cache.CacheLoader;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.nepxion.discovery.automation.common.console.constant.ConsoleConstant;
-import com.nepxion.discovery.automation.common.console.entity.ConsoleCaffeineCacheProperties;
+import com.nepxion.discovery.automation.common.console.entity.ConsoleCaffeineLockProperties;
 
-public class SimulatorConsoleCaffeineConcurrent extends SimulatorConsoleConcurrent {
+public class SimulatorConsoleCaffeineLock extends SimulatorConsoleLock {
     @Autowired
-    private ConsoleCaffeineCacheProperties consoleCaffeineCacheProperties;
+    private ConsoleCaffeineLockProperties consoleCaffeineLockProperties;
 
     private LoadingCache<String, String> loadingCache;
 
     @Override
-    public void initializeCache() {
-        int initialCapacity = consoleCaffeineCacheProperties.getInitialCapacity();
-        int maximumSize = consoleCaffeineCacheProperties.getMaximumSize();
-        int expireSeconds = consoleCaffeineCacheProperties.getExpireSeconds();
+    public void initializeLock() {
+        int initialCapacity = consoleCaffeineLockProperties.getInitialCapacity();
+        int maximumSize = consoleCaffeineLockProperties.getMaximumSize();
+        int expireSeconds = consoleCaffeineLockProperties.getExpireSeconds();
 
         loadingCache = Caffeine.newBuilder()
                 .expireAfterWrite(expireSeconds, TimeUnit.SECONDS)
@@ -46,8 +46,8 @@ public class SimulatorConsoleCaffeineConcurrent extends SimulatorConsoleConcurre
     }
 
     @Override
-    public String getCacheName() {
-        return ConsoleConstant.CONSOLE_AUTOMATION_CACHE_TYPE_CAFFEINE;
+    public String getLockName() {
+        return ConsoleConstant.CONSOLE_AUTOMATION_LOCK_TYPE_CAFFEINE;
     }
 
     @Override

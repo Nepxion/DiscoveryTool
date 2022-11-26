@@ -11,8 +11,8 @@ package com.nepxion.discovery.automation.common.console.entity;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties("console.automation.caffeine.cache")
-public class ConsoleCaffeineCacheProperties {
+@ConfigurationProperties("console.automation.caffeine")
+public class ConsoleCaffeineLockProperties {
     private int initialCapacity = 10;
     private int maximumSize = 100;
     private int expireSeconds = 1800;
