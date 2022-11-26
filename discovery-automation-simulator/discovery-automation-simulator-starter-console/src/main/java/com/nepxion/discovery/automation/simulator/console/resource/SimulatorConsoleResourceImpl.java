@@ -44,7 +44,7 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
 
         try {
             String key = getKey(testCaseConfig, testCaseConfigWithYaml);
-            if (consoleLock.validateTest(key)) {
+            if (consoleLock.isLocked(key)) {
                 throw new DiscoveryException("Testcase Task 【" + key + "】 is running now");
             }
         } catch (Exception e) {
@@ -60,7 +60,7 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
         String testCaseReleaseSecondCondition = testConfigList.get(3);
 
         String key = getKey(testCaseConfig, testCaseConfigWithYaml);
-        consoleLock.runTest(key);
+        consoleLock.lock(key);
 
         SimulatorTestStrategy testStrategy = testRunner.testInitialization(testCaseConfig, testCaseReleaseBasicCondition, testCaseReleaseFirstCondition, testCaseReleaseSecondCondition, testCaseConfigWithYaml);
         testRunner.testNormal(testStrategy);
@@ -78,7 +78,7 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
         String testCaseConfig = testConfigList.get(0);
 
         String key = getKey(testCaseConfig, testCaseConfigWithYaml);
-        consoleLock.finishTest(key);
+        consoleLock.unlock(key);
     }
 
     private String getKey(String testCaseConfig, boolean testCaseConfigWithYaml) throws Exception {

@@ -20,7 +20,7 @@ public abstract class SimulatorConsoleLock {
 
     @PostConstruct
     private void initialize() {
-        LOG.info("Lock for {} starts to initialize...", getLockName());
+        LOG.info("Lock for {} starts to initialize...", getLockType());
 
         initializeLock();
     }
@@ -29,14 +29,14 @@ public abstract class SimulatorConsoleLock {
     public abstract void initializeLock();
 
     // 返回并行控制锁的名称
-    public abstract String getLockName();
+    public abstract String getLockType();
 
     // 新发起的测试用例是否和正在运行的测试用例相同
-    public abstract boolean validateTest(String key);
+    public abstract boolean isLocked(String key);
 
     // 测试用例一旦运行，需要把Key放入到并行控制的锁缓存里
-    public abstract void runTest(String key);
+    public abstract void lock(String key);
 
     // 测试用例一旦结束或者中途抛错，需要把Key从并行控制的锁缓存里删除
-    public abstract void finishTest(String key);
+    public abstract void unlock(String key);
 }

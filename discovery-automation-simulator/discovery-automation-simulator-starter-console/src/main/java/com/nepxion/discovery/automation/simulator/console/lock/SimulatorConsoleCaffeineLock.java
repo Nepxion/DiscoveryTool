@@ -46,22 +46,22 @@ public class SimulatorConsoleCaffeineLock extends SimulatorConsoleLock {
     }
 
     @Override
-    public String getLockName() {
+    public String getLockType() {
         return ConsoleConstant.CONSOLE_AUTOMATION_LOCK_TYPE_CAFFEINE;
     }
 
     @Override
-    public boolean validateTest(String key) {
+    public boolean isLocked(String key) {
         return loadingCache.getIfPresent(key) != null;
     }
 
     @Override
-    public void runTest(String key) {
+    public void lock(String key) {
         loadingCache.put(key, Boolean.TRUE.toString());
     }
 
     @Override
-    public void finishTest(String key) {
+    public void unlock(String key) {
         loadingCache.invalidate(key);
     }
 }
