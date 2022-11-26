@@ -1,15 +1,15 @@
 {
 	"properties": [
 		{
-			"name": "console.url",
+			"name": "testcase.console.url",
 			"type": "java.lang.String",
-			"description": "Console url."
+			"description": "Testcase console url."
 		},
 		{
-			"name": "console.operation.await.time",
+			"name": "testcase.console.operation.await.time",
 			"type": "java.lang.Integer",
 			"defaultValue": 5000,
-			"description": "Console operation await time."
+			"description": "Testcase console operation await time."
 		},
 		{
 			"name": "testcase.group",

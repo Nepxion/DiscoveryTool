@@ -21,8 +21,8 @@ public class SimulatorTestConstant extends TestConstant {
     public static final String FILE_PATH_VERSION_RELEASE_1 = "mock-version-release-1.yaml";
     public static final String FILE_PATH_VERSION_RELEASE_2 = "mock-version-release-2.yaml";
 
-    public static final String CONSOLE_URL = "console.url";
-    public static final String CONSOLE_OPERATION_AWAIT_TIME = "console.operation.await.time";
+    public static final String TESTCASE_CONSOLE_URL = "testcase.console.url";
+    public static final String TESTCASE_CONSOLE_OPERATION_AWAIT_TIME = "testcase.console.operation.await.time";
 
     public static final String TESTCASE_GROUP = "testcase.group";
     public static final String TESTCASE_SERVICE = "testcase.service";

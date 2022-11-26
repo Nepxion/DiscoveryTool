@@ -15,10 +15,10 @@ import com.nepxion.discovery.automation.common.entity.TestCaseProperty;
 import com.nepxion.discovery.automation.simulator.constant.SimulatorTestConstant;
 
 public class SimulatorTestCaseProperty extends TestCaseProperty implements SimulatorTestCaseEntity {
-    @Value("${" + SimulatorTestConstant.CONSOLE_URL + "}")
+    @Value("${" + SimulatorTestConstant.TESTCASE_CONSOLE_URL + "}")
     private String consoleUrl;
 
-    @Value("${" + SimulatorTestConstant.CONSOLE_OPERATION_AWAIT_TIME + ":5000}")
+    @Value("${" + SimulatorTestConstant.TESTCASE_CONSOLE_OPERATION_AWAIT_TIME + ":5000}")
     private Integer consoleOperationAwaitTime;
 
     @Value("${" + SimulatorTestConstant.TESTCASE_GROUP + "}")

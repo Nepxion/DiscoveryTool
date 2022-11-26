@@ -160,12 +160,12 @@ public class SimulatorTestCaseConfig extends TestCaseConfig implements Simulator
     public static SimulatorTestCaseConfig fromMap(Map<String, String> map) {
         SimulatorTestCaseConfig testCaseConfig = new SimulatorTestCaseConfig();
 
-        String consoleUrl = map.get(SimulatorTestConstant.CONSOLE_URL);
+        String consoleUrl = map.get(SimulatorTestConstant.TESTCASE_CONSOLE_URL);
         if (StringUtils.isNotBlank(consoleUrl)) {
             testCaseConfig.setConsoleUrl(consoleUrl);
         }
 
-        String consoleOperationAwaitTime = map.get(SimulatorTestConstant.CONSOLE_OPERATION_AWAIT_TIME);
+        String consoleOperationAwaitTime = map.get(SimulatorTestConstant.TESTCASE_CONSOLE_OPERATION_AWAIT_TIME);
         if (StringUtils.isNotBlank(consoleOperationAwaitTime)) {
             testCaseConfig.setConsoleOperationAwaitTime(Integer.valueOf(consoleOperationAwaitTime));
         }
