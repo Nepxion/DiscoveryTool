@@ -43,7 +43,7 @@ public abstract class ConsoleResourceImpl implements ConsoleResource {
 
     @PostConstruct
     private void initialize() {
-        String testThreadNamePrefix = getTestName() + "-Thread-";
+        String testThreadNamePrefix = getTestName() + "-";
 
         taskExecutor.setThreadNamePrefix(testThreadNamePrefix);
 
