@@ -14,12 +14,15 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import com.nepxion.discovery.automation.common.console.constant.ConsoleConstant;
 import com.nepxion.discovery.automation.common.console.entity.ConsoleThreadPoolProperties;
 import com.nepxion.discovery.automation.common.constant.TestConstant;
 import com.nepxion.discovery.common.exception.DiscoveryException;
@@ -34,6 +37,9 @@ public abstract class ConsoleResourceImpl implements ConsoleResource {
 
     @Autowired
     private ConsoleThreadPoolProperties consoleThreadPoolProperties;
+
+    @Value("${" + ConsoleConstant.CONSOLE_AUTOMATION_LOGGER_MDC_KEY_SHOWN + ":true}")
+    private Boolean loggerMdcKeyShown;
 
     @PostConstruct
     private void initialize() {
@@ -81,7 +87,7 @@ public abstract class ConsoleResourceImpl implements ConsoleResource {
         taskExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                MDC.put(TestConstant.TESTCASE_ID, TestConstant.TESTCASE_ID + "=" + uuid);
+                MDC.put(TestConstant.TESTCASE_ID, (loggerMdcKeyShown ? TestConstant.TESTCASE_ID + "=" : StringUtils.EMPTY) + uuid);
 
                 String testName = getTestName() + " test";
 

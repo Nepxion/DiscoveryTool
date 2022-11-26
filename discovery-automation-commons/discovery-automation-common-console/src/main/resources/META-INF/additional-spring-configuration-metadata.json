@@ -3,45 +3,51 @@
 		{
 			"name": "console.automation.thread.pool.core-pool-size",
 			"type": "java.lang.Integer",
-			"description": "Console Automation threadpool core pool size."
+			"description": "Console automation threadpool core pool size."
 		},
 		{
 			"name": "console.automation.thread.pool.max-pool-size",
 			"type": "java.lang.Integer",
-			"description": "Console Automation threadpool max pool size."
+			"description": "Console automation threadpool max pool size."
 		},
 		{
 			"name": "console.automation.thread.pool.queue-capacity",
 			"type": "java.lang.Integer",
-			"description": "Console Automation threadpool queue capacity."
+			"description": "Console automation threadpool queue capacity."
 		},
 		{
 			"name": "console.automation.thread.pool.keep-alive-seconds",
 			"type": "java.lang.Integer",
-			"description": "Console Automation threadpool keep alive seconds."
+			"description": "Console automation threadpool keep alive seconds."
 		},
 		{
 			"name": "console.automation.thread.pool.await-termination-seconds",
 			"type": "java.lang.Integer",
-			"description": "Console Automation threadpool await termination seconds."
+			"description": "Console automation threadpool await termination seconds."
 		},
 		{
 			"name": "console.automation.cache.pool.initial-capacity",
 			"type": "java.lang.Integer",
 			"defaultValue": 10,
-			"description": "Console Automation cachepool initial capacity."
+			"description": "Console automation cachepool initial capacity."
 		},
 		{
 			"name": "console.automation.cache.pool.maximum-size",
 			"type": "java.lang.Integer",
 			"defaultValue": 100,
-			"description": "Console Automation cachepool maximum size."
+			"description": "Console automation cachepool maximum size."
 		},
 		{
 			"name": "console.automation.cache.pool.expire-seconds",
 			"type": "java.lang.Integer",
 			"defaultValue": 1800,
-			"description": "Console Automation cachepool expire-seconds."
+			"description": "Console automation cachepool expire seconds."
+		},
+		{
+			"name": "console.automation.logger.mdc.key.shown",
+			"type": "java.lang.Boolean",
+			"defaultValue": true,
+			"description": "Whether console automation for logger mdc key is shown."
 		}
 	]
 }
