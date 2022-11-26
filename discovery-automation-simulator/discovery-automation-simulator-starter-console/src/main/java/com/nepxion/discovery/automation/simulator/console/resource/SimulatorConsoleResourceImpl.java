@@ -10,18 +10,11 @@ package com.nepxion.discovery.automation.simulator.console.resource;
  */
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import javax.annotation.PostConstruct;
-
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.github.benmanes.caffeine.cache.CacheLoader;
-import com.github.benmanes.caffeine.cache.Caffeine;
-import com.github.benmanes.caffeine.cache.LoadingCache;
-import com.nepxion.discovery.automation.common.console.entity.ConsoleCachePoolProperties;
 import com.nepxion.discovery.automation.common.console.resource.ConsoleResourceImpl;
+import com.nepxion.discovery.automation.simulator.console.concurrent.SimulatorConsoleConcurrent;
 import com.nepxion.discovery.automation.simulator.constant.SimulatorTestConstant;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseConfig;
 import com.nepxion.discovery.automation.simulator.runner.SimulatorTestRunner;
@@ -33,28 +26,7 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
     private SimulatorTestRunner testRunner;
 
     @Autowired
-    private ConsoleCachePoolProperties consoleCachePoolProperties;
-
-    private LoadingCache<String, String> loadingCache;
-
-    @PostConstruct
-    private void initialize() {
-        int initialCapacity = consoleCachePoolProperties.getInitialCapacity();
-        int maximumSize = consoleCachePoolProperties.getMaximumSize();
-        int expireSeconds = consoleCachePoolProperties.getExpireSeconds();
-
-        loadingCache = Caffeine.newBuilder()
-                .expireAfterWrite(expireSeconds, TimeUnit.SECONDS)
-                .initialCapacity(initialCapacity)
-                .maximumSize(maximumSize)
-                .recordStats()
-                .build(new CacheLoader<String, String>() {
-                    @Override
-                    public String load(String key) throws Exception {
-                        return StringUtils.EMPTY;
-                    }
-                });
-    }
+    private SimulatorConsoleConcurrent consoleConcurrent;
 
     @Override
     public String getTestName() {
@@ -72,7 +44,7 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
 
         try {
             String key = getKey(testCaseConfig, testCaseConfigWithYaml);
-            if (loadingCache.getIfPresent(key) != null) {
+            if (consoleConcurrent.validateTest(key)) {
                 throw new DiscoveryException("Testcase Task 【" + key + "】 is running now");
             }
         } catch (Exception e) {
@@ -88,7 +60,7 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
         String testCaseReleaseSecondCondition = testConfigList.get(3);
 
         String key = getKey(testCaseConfig, testCaseConfigWithYaml);
-        loadingCache.put(key, Boolean.TRUE.toString());
+        consoleConcurrent.runTest(key);
 
         SimulatorTestStrategy testStrategy = testRunner.testInitialization(testCaseConfig, testCaseReleaseBasicCondition, testCaseReleaseFirstCondition, testCaseReleaseSecondCondition, testCaseConfigWithYaml);
         testRunner.testNormal(testStrategy);
@@ -106,7 +78,7 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
         String testCaseConfig = testConfigList.get(0);
 
         String key = getKey(testCaseConfig, testCaseConfigWithYaml);
-        loadingCache.invalidate(key);
+        consoleConcurrent.finishTest(key);
     }
 
     private String getKey(String testCaseConfig, boolean testCaseConfigWithYaml) throws Exception {

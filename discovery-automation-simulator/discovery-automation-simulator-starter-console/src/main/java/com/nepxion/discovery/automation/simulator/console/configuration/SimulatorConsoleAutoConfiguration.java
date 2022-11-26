@@ -15,6 +15,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import com.nepxion.discovery.automation.common.console.entity.ConsoleCachePoolProperties;
+import com.nepxion.discovery.automation.simulator.console.concurrent.SimulatorConsoleCaffeineConcurrent;
+import com.nepxion.discovery.automation.simulator.console.concurrent.SimulatorConsoleConcurrent;
 import com.nepxion.discovery.automation.simulator.console.endpoint.SimulatorConsoleEndpoint;
 import com.nepxion.discovery.automation.simulator.console.resource.SimulatorConsoleResource;
 import com.nepxion.discovery.automation.simulator.console.resource.SimulatorConsoleResourceImpl;
@@ -33,5 +35,10 @@ public class SimulatorConsoleAutoConfiguration {
         public SimulatorConsoleEndpoint simulatorConsoleEndpoint() {
             return new SimulatorConsoleEndpoint();
         }
+    }
+    
+    @Bean
+    public SimulatorConsoleConcurrent simulatorConsoleConcurrent() {
+        return new SimulatorConsoleCaffeineConcurrent();
     }
 }
