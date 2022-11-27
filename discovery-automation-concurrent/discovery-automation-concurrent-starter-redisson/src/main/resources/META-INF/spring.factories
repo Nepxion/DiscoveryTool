@@ -1,2 +1,5 @@
+org.springframework.context.ApplicationContextInitializer=\
+com.nepxion.discovery.automation.concurrent.redisson.context.RedissonApplicationContextInitializer
+
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.nepxion.discovery.automation.concurrent.redisson.configuration.RedissonAutoConfiguration
