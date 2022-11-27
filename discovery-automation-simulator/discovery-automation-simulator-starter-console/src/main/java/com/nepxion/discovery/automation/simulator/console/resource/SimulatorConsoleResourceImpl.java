@@ -14,19 +14,19 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nepxion.discovery.automation.common.console.resource.ConsoleResourceImpl;
-import com.nepxion.discovery.automation.simulator.console.lock.SimulatorConsoleLock;
 import com.nepxion.discovery.automation.simulator.constant.SimulatorTestConstant;
 import com.nepxion.discovery.automation.simulator.entity.SimulatorTestCaseConfig;
 import com.nepxion.discovery.automation.simulator.runner.SimulatorTestRunner;
 import com.nepxion.discovery.automation.simulator.strategy.SimulatorTestStrategy;
 import com.nepxion.discovery.common.exception.DiscoveryException;
+import com.nepxion.discovery.common.lock.DiscoveryLock;
 
 public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements SimulatorConsoleResource {
     @Autowired
     private SimulatorTestRunner testRunner;
 
     @Autowired
-    private SimulatorConsoleLock consoleLock;
+    private DiscoveryLock lock;
 
     @Override
     public String getTestName() {
@@ -44,7 +44,9 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
 
         String key = getKey(testCaseConfig, testCaseConfigWithYaml);
 
-        if (!consoleLock.tryLock(key)) {
+        // 通过线程安全的锁组件（本地锁或者分布式锁）并行控制测试用例，根据Key（group@serviceId）进行判断，不允许有多个Key相同的测试用例同时运行
+        // 新发起的测试用例尝试获取锁。如果获取不到，则结束并抛出异常
+        if (!lock.tryLock(key)) {
             throw new DiscoveryException("自动化测试任务【" + key + "】正在执行中，不能同时并发执行相同的任务");
         }
     }
@@ -72,7 +74,9 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
         String testCaseConfig = testConfigList.get(0);
 
         String key = getKey(testCaseConfig, testCaseConfigWithYaml);
-        consoleLock.unlock(key);
+
+        // 测试用例结束或者中途抛错释放锁
+        lock.unlock(key);
     }
 
     private String getKey(String testCaseConfig, boolean testCaseConfigWithYaml) throws Exception {

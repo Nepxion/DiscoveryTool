@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.nepxion.discovery.automation.common.console.constant.ConsoleConstant;
-import com.nepxion.discovery.automation.common.console.entity.ConsoleThreadPoolProperties;
 import com.nepxion.discovery.automation.common.constant.TestConstant;
 import com.nepxion.discovery.common.exception.DiscoveryException;
 import com.nepxion.discovery.common.util.StringUtil;
@@ -35,9 +34,6 @@ public abstract class ConsoleResourceImpl implements ConsoleResource {
     @Autowired
     private ThreadPoolTaskExecutor taskExecutor;
 
-    @Autowired
-    private ConsoleThreadPoolProperties consoleThreadPoolProperties;
-
     @Value("${" + ConsoleConstant.CONSOLE_AUTOMATION_LOGGER_MDC_KEY_SHOWN + ":true}")
     private Boolean loggerMdcKeyShown;
 
@@ -46,28 +42,6 @@ public abstract class ConsoleResourceImpl implements ConsoleResource {
         String testThreadNamePrefix = getTestName() + "-";
 
         taskExecutor.setThreadNamePrefix(testThreadNamePrefix);
-
-        int corePoolSize = consoleThreadPoolProperties.getCorePoolSize();
-        int maxPoolSize = consoleThreadPoolProperties.getMaxPoolSize();
-        int queueCapacity = consoleThreadPoolProperties.getQueueCapacity();
-        int keepAliveSeconds = consoleThreadPoolProperties.getKeepAliveSeconds();
-        int awaitTerminationSeconds = consoleThreadPoolProperties.getAwaitTerminationSeconds();
-
-        if (corePoolSize > 0) {
-            taskExecutor.setCorePoolSize(corePoolSize);
-        }
-        if (maxPoolSize > 0) {
-            taskExecutor.setMaxPoolSize(maxPoolSize);
-        }
-        if (queueCapacity > 0) {
-            taskExecutor.setQueueCapacity(queueCapacity);
-        }
-        if (keepAliveSeconds > 0) {
-            taskExecutor.setKeepAliveSeconds(keepAliveSeconds);
-        }
-        if (awaitTerminationSeconds > 0) {
-            taskExecutor.setAwaitTerminationSeconds(awaitTerminationSeconds);
-        }
     }
 
     @Override
@@ -93,6 +67,8 @@ public abstract class ConsoleResourceImpl implements ConsoleResource {
                     beforeTest(testConfigList, testCaseConfigWithYaml);
 
                     runTest(testConfigList, testCaseConfigWithYaml);
+                } catch (InterruptedException e) {
+                    // Ignored
                 } catch (Exception e) {
                     LOG.error("{} failed", testName, e);
                 } finally {

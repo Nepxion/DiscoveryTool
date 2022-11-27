@@ -1,67 +1,6 @@
 {
 	"properties": [
 		{
-			"name": "console.automation.thread.pool.core-pool-size",
-			"type": "java.lang.Integer",
-			"description": "Console automation thread pool core size."
-		},
-		{
-			"name": "console.automation.thread.pool.max-pool-size",
-			"type": "java.lang.Integer",
-			"description": "Console automation thread pool max size."
-		},
-		{
-			"name": "console.automation.thread.pool.queue-capacity",
-			"type": "java.lang.Integer",
-			"description": "Console automation thread pool queue capacity."
-		},
-		{
-			"name": "console.automation.thread.pool.keep-alive-seconds",
-			"type": "java.lang.Integer",
-			"description": "Console automation thread pool keep alive seconds."
-		},
-		{
-			"name": "console.automation.thread.pool.await-termination-seconds",
-			"type": "java.lang.Integer",
-			"description": "Console automation thread pool await termination seconds."
-		},
-		{
-			"name": "console.automation.caffeine.initial-capacity",
-			"type": "java.lang.Integer",
-			"defaultValue": 10,
-			"description": "Console automation caffeine initial capacity."
-		},
-		{
-			"name": "console.automation.caffeine.maximum-size",
-			"type": "java.lang.Integer",
-			"defaultValue": 100,
-			"description": "Console automation caffeine maximum size."
-		},
-		{
-			"name": "console.automation.caffeine.expire-seconds",
-			"type": "java.lang.Integer",
-			"defaultValue": 900,
-			"description": "Console automation caffeine expire seconds."
-		},
-		{
-			"name": "console.automation.redisson.wait-seconds",
-			"type": "java.lang.Integer",
-			"defaultValue": 0,
-			"description": "Console automation redisson wait seconds."
-		},
-		{
-			"name": "console.automation.redisson.expire-seconds",
-			"type": "java.lang.Integer",
-			"defaultValue": 900,
-			"description": "Console automation redisson expire seconds."
-		},
-		{
-			"name": "console.automation.lock.type",
-			"type": "java.lang.String",
-			"defaultValue": "caffeine",
-			"description": "Console automation lock type."
-		},
-		{
 			"name": "console.automation.logger.mdc.key.shown",
 			"type": "java.lang.Boolean",
 			"defaultValue": true,

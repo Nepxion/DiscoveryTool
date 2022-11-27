@@ -1,0 +1,29 @@
+{
+	"properties": [
+		{
+			"name": "console.automation.thread.pool.core-pool-size",
+			"type": "java.lang.Integer",
+			"description": "Console automation thread pool core size."
+		},
+		{
+			"name": "console.automation.thread.pool.max-pool-size",
+			"type": "java.lang.Integer",
+			"description": "Console automation thread pool max size."
+		},
+		{
+			"name": "console.automation.thread.pool.queue-capacity",
+			"type": "java.lang.Integer",
+			"description": "Console automation thread pool queue capacity."
+		},
+		{
+			"name": "console.automation.thread.pool.keep-alive-seconds",
+			"type": "java.lang.Integer",
+			"description": "Console automation thread pool keep alive seconds."
+		},
+		{
+			"name": "console.automation.thread.pool.await-termination-seconds",
+			"type": "java.lang.Integer",
+			"description": "Console automation thread pool await termination seconds."
+		}
+	]
+}

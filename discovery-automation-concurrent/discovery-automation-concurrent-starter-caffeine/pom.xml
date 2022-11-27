@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <artifactId>discovery-automation-simulator-starter-console</artifactId>
-    <name>Nepxion Discovery Automation Simulator Starter Console</name>
+    <artifactId>discovery-automation-concurrent-starter-caffeine</artifactId>
+    <name>Nepxion Discovery Automation Concurrent Starter Caffeine</name>
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
     <description>Nepxion Discovery Automation is a tool for Spring Cloud with blue green, gray inspection and simulation testing</description>
@@ -10,19 +10,25 @@
 
     <parent>
         <groupId>com.nepxion</groupId>
-        <artifactId>discovery-automation-simulator</artifactId>
+        <artifactId>discovery-automation-concurrent</artifactId>
         <version>1.1.0</version>
     </parent>
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>discovery-automation-common-console</artifactId>
+            <artifactId>discovery-common</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>discovery-automation-simulator-starter</artifactId>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

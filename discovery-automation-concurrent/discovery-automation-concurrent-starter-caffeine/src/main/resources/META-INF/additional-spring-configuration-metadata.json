@@ -1,0 +1,22 @@
+{
+	"properties": [
+		{
+			"name": "console.automation.caffeine.initial-capacity",
+			"type": "java.lang.Integer",
+			"defaultValue": 10,
+			"description": "Console automation caffeine initial capacity."
+		},
+		{
+			"name": "console.automation.caffeine.maximum-size",
+			"type": "java.lang.Integer",
+			"defaultValue": 100,
+			"description": "Console automation caffeine maximum size."
+		},
+		{
+			"name": "console.automation.caffeine.expire-seconds",
+			"type": "java.lang.Integer",
+			"defaultValue": 900,
+			"description": "Console automation caffeine expire seconds."
+		}
+	]
+}

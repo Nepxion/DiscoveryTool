@@ -12,14 +12,17 @@
 
     <modules>
         <module>discovery-automation-commons</module>
+        <module>discovery-automation-concurrent</module>
         <module>discovery-automation-inspector</module>
         <module>discovery-automation-simulator</module>
+        <module>discovery-automation-console</module>
     </modules>
 
     <properties>
         <discovery.version>6.20.0-SNAPSHOT</discovery.version>
 
         <commons.configuration2.version>2.8.0</commons.configuration2.version>
+        <redisson.spring.boot.version>3.18.0</redisson.spring.boot.version>
 
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -36,6 +39,24 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>discovery-automation-common-console</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>discovery-automation-concurrent-starter-thread</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>discovery-automation-concurrent-starter-caffeine</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>discovery-automation-concurrent-starter-redisson</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -67,6 +88,12 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-configuration2</artifactId>
                 <version>${commons.configuration2.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson.spring.boot.version}</version>
             </dependency>
 
             <dependency>

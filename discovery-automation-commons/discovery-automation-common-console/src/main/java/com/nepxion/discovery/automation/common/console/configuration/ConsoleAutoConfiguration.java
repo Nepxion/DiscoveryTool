@@ -9,14 +9,10 @@ package com.nepxion.discovery.automation.common.console.configuration;
  * @version 1.0
  */
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import com.nepxion.discovery.automation.common.console.entity.ConsoleThreadPoolProperties;
-
 @Configuration
-@EnableConfigurationProperties({ ConsoleThreadPoolProperties.class })
 @Import({ ConsoleCorsRegistryConfiguration.class })
 public class ConsoleAutoConfiguration {
 
