@@ -40,8 +40,8 @@ public class ConsoleRedissonLockTest {
 
         ConsoleRedissonLock consoleLock = new ConsoleRedissonLock(config);
 
-        // testLock1(consoleLock);
-        testLock2(consoleLock);
+        testLock1(consoleLock);
+        // testLock2(consoleLock);
     }
 
     public static void testLock1(ConsoleRedissonLock consoleLock) {

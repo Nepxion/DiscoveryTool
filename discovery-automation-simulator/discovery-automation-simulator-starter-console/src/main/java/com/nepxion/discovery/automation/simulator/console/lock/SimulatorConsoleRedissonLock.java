@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.nepxion.discovery.automation.common.console.constant.ConsoleConstant;
 import com.nepxion.discovery.automation.common.console.entity.ConsoleRedissonLockProperties;
 import com.nepxion.discovery.automation.common.console.lock.ConsoleRedissonLock;
+import com.nepxion.discovery.automation.common.console.lock.ConsoleRedissonLock.LockType;
 import com.nepxion.discovery.automation.common.util.TestUtil;
 
 public class SimulatorConsoleRedissonLock extends SimulatorConsoleLock {
@@ -30,10 +31,13 @@ public class SimulatorConsoleRedissonLock extends SimulatorConsoleLock {
 
     private ConsoleRedissonLock consoleRedissonLock;
 
+    private int waitSeconds;
+    private int expireSeconds;
+
     @Override
     public void initializeLock() {
-        int waitSeconds = consoleRedissonLockProperties.getWaitSeconds();
-        int expireSeconds = consoleRedissonLockProperties.getExpireSeconds();
+        this.waitSeconds = consoleRedissonLockProperties.getWaitSeconds();
+        this.expireSeconds = consoleRedissonLockProperties.getExpireSeconds();
 
         String content = TestUtil.getContent(ConsoleConstant.CONSOLE_AUTOMATION_FILE_PATH_REDISSON);
 
@@ -46,7 +50,7 @@ public class SimulatorConsoleRedissonLock extends SimulatorConsoleLock {
             return;
         }
 
-        consoleRedissonLock = new ConsoleRedissonLock(config, waitSeconds, expireSeconds, TimeUnit.SECONDS);
+        consoleRedissonLock = new ConsoleRedissonLock(config);
     }
 
     @Override
@@ -56,11 +60,11 @@ public class SimulatorConsoleRedissonLock extends SimulatorConsoleLock {
 
     @Override
     public boolean tryLock(String key) {
-        return consoleRedissonLock.tryLock(key);
+        return consoleRedissonLock.tryLock(LockType.LOCK, key, false, waitSeconds, expireSeconds, TimeUnit.SECONDS);
     }
 
     @Override
     public void unlock(String key) {
-        consoleRedissonLock.unlock(key);
+        consoleRedissonLock.unlock(LockType.LOCK, key, false);
     }
 }
