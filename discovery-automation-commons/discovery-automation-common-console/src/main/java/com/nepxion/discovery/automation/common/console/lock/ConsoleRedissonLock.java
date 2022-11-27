@@ -18,8 +18,12 @@ import org.redisson.api.RLock;
 import org.redisson.api.RReadWriteLock;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ConsoleRedissonLock {
+    private static final Logger LOG = LoggerFactory.getLogger(ConsoleRedissonLock.class);
+
     private RedissonClient redissonClient;
 
     // 可重入锁可重复使用, 不需要考虑锁删除
@@ -38,6 +42,10 @@ public class ConsoleRedissonLock {
     }
 
     public boolean tryLock(LockType lockType, String key, boolean fair, long waitTime, long leaseTime, TimeUnit timeUnit) {
+        if (!isStarted()) {
+            return false;
+        }
+
         RLock lock = getLock(lockType, key, fair);
 
         try {
@@ -48,6 +56,10 @@ public class ConsoleRedissonLock {
     }
 
     public void unlock(LockType lockType, String key, boolean fair) {
+        if (!isStarted()) {
+            return;
+        }
+
         RLock lock = getLock(lockType, key, fair);
 
         if (lock.isLocked() && lock.isHeldByCurrentThread()) {
@@ -108,6 +120,20 @@ public class ConsoleRedissonLock {
         RReadWriteLock readWriteLock = redissonClient.getReadWriteLock(key);
 
         return readWriteLock;
+    }
+
+    public void shutdown() {
+        if (!isStarted()) {
+            return;
+        }
+
+        LOG.info("Lock for redisson starts to shutdown...");
+
+        redissonClient.shutdown();
+    }
+
+    public boolean isStarted() {
+        return redissonClient != null && !redissonClient.isShutdown() && !redissonClient.isShuttingDown();
     }
 
     public enum LockType {

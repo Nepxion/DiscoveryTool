@@ -45,7 +45,7 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
         String key = getKey(testCaseConfig, testCaseConfigWithYaml);
 
         if (!consoleLock.tryLock(key)) {
-            throw new DiscoveryException("自动化测试用例任务【" + key + "】正在执行中，不能并发执行相同的任务");
+            throw new DiscoveryException("自动化测试任务【" + key + "】正在执行中，不能同时并发执行相同的任务");
         }
     }
 

@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 import org.redisson.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nepxion.discovery.automation.common.console.constant.ConsoleConstant;
@@ -23,7 +24,7 @@ import com.nepxion.discovery.automation.common.console.lock.ConsoleRedissonLock;
 import com.nepxion.discovery.automation.common.console.lock.ConsoleRedissonLock.LockType;
 import com.nepxion.discovery.automation.common.util.TestUtil;
 
-public class SimulatorConsoleRedissonLock extends SimulatorConsoleLock {
+public class SimulatorConsoleRedissonLock extends SimulatorConsoleLock implements DisposableBean {
     private static final Logger LOG = LoggerFactory.getLogger(SimulatorConsoleRedissonLock.class);
 
     @Autowired
@@ -66,5 +67,10 @@ public class SimulatorConsoleRedissonLock extends SimulatorConsoleLock {
     @Override
     public void unlock(String key) {
         consoleRedissonLock.unlock(LockType.LOCK, key, false);
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        consoleRedissonLock.shutdown();
     }
 }
