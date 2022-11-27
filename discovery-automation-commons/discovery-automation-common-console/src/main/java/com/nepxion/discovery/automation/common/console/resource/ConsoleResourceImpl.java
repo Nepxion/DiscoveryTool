@@ -95,8 +95,6 @@ public abstract class ConsoleResourceImpl implements ConsoleResource {
                     runTest(testConfigList, testCaseConfigWithYaml);
                 } catch (Exception e) {
                     LOG.error("{} failed", testName, e);
-
-                    e.printStackTrace();
                 } finally {
                     MDC.remove(TestConstant.TESTCASE_ID);
 
@@ -104,8 +102,6 @@ public abstract class ConsoleResourceImpl implements ConsoleResource {
                         afterTest(testConfigList, testCaseConfigWithYaml);
                     } catch (Exception e) {
                         LOG.error("{} failed", testName, e);
-
-                        e.printStackTrace();
                     }
                 }
             }
@@ -118,7 +114,7 @@ public abstract class ConsoleResourceImpl implements ConsoleResource {
 
     public abstract int getTestConfigPartsCount();
 
-    public abstract void beforeTest(List<String> testConfigList, boolean testCaseConfigWithYaml);
+    public abstract void beforeTest(List<String> testConfigList, boolean testCaseConfigWithYaml) throws Exception;
 
     public abstract void runTest(List<String> testConfigList, boolean testCaseConfigWithYaml) throws Exception;
 

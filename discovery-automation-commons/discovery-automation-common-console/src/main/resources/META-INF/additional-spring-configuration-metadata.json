@@ -40,7 +40,7 @@
 		{
 			"name": "console.automation.caffeine.expire-seconds",
 			"type": "java.lang.Integer",
-			"defaultValue": 1800,
+			"defaultValue": 900,
 			"description": "Console automation caffeine expire seconds."
 		},
 		{
@@ -52,7 +52,7 @@
 		{
 			"name": "console.automation.redisson.expire-seconds",
 			"type": "java.lang.Integer",
-			"defaultValue": 1800,
+			"defaultValue": 900,
 			"description": "Console automation redisson expire seconds."
 		},
 		{

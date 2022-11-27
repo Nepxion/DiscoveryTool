@@ -15,7 +15,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ConsoleCaffeineLockProperties {
     private int initialCapacity = 10;
     private int maximumSize = 100;
-    private int expireSeconds = 1800;
+    private int expireSeconds = 900;
 
     public int getInitialCapacity() {
         return initialCapacity;

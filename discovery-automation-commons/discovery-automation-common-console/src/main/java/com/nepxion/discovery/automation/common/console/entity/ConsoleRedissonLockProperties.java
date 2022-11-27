@@ -14,7 +14,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("console.automation.redisson")
 public class ConsoleRedissonLockProperties {
     private int waitSeconds = 0;
-    private int expireSeconds = 1800;
+    private int expireSeconds = 900;
 
     public int getWaitSeconds() {
         return waitSeconds;

@@ -39,16 +39,13 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
     }
 
     @Override
-    public void beforeTest(List<String> testConfigList, boolean testCaseConfigWithYaml) {
+    public void beforeTest(List<String> testConfigList, boolean testCaseConfigWithYaml) throws Exception {
         String testCaseConfig = testConfigList.get(0);
 
-        try {
-            String key = getKey(testCaseConfig, testCaseConfigWithYaml);
-            if (!consoleLock.tryLock(key)) {
-                throw new DiscoveryException("Testcase Task 【" + key + "】 is running now");
-            }
-        } catch (Exception e) {
-            throw new DiscoveryException(e);
+        String key = getKey(testCaseConfig, testCaseConfigWithYaml);
+
+        if (!consoleLock.tryLock(key)) {
+            throw new DiscoveryException("自动化测试用例任务【" + key + "】正在执行中，不能并发执行相同的任务");
         }
     }
 

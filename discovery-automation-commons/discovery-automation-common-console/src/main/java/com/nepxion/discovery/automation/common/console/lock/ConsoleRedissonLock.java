@@ -50,7 +50,7 @@ public class ConsoleRedissonLock {
     public void unlock(LockType lockType, String key, boolean fair) {
         RLock lock = getLock(lockType, key, fair);
 
-        if (lock.isLocked()) {
+        if (lock.isLocked() && lock.isHeldByCurrentThread()) {
             lock.unlock();
         }
     }
