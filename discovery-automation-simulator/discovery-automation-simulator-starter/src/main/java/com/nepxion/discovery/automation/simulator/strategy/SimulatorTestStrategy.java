@@ -368,14 +368,14 @@ public class SimulatorTestStrategy extends TestStrategy {
         String group = testCaseEntity.getGroup();
         String serviceId = testCaseEntity.getServiceId();
 
-        LOG.info("输入规则策略 : {}", input != null ? "\n" + input : "无");
+        LOG.info("输入规则策略 : {}", input != null ? "\n" + prettyString(input) : "无");
 
         String url = consoleUrl + TestUtil.formatContextPath(SimulatorTestConstant.CONTEXT_PATH_STRATEGY_CREATE_VERSION_RELEASE_YAML) + group + "/" + serviceId;
         String output = testRestTemplate.postForEntity(url, input, String.class).getBody();
 
         TestUtil.determineRestException(testRestTemplate);
 
-        LOG.info("输出规则策略 : {}", output != null ? "\n" + output : "无");
+        LOG.info("输出规则策略 : {}", output != null ? "\n" + prettyString(output) : "无");
 
         Thread.sleep(consoleOperationAwaitTime);
     }
@@ -386,14 +386,14 @@ public class SimulatorTestStrategy extends TestStrategy {
         String group = testCaseEntity.getGroup();
         String serviceId = testCaseEntity.getServiceId();
 
-        LOG.info("输入规则策略 : {}", input != null ? "\n" + input : "无");
+        LOG.info("输入规则策略 : {}", input != null ? "\n" + prettyString(input) : "无");
 
         String url = consoleUrl + TestUtil.formatContextPath(SimulatorTestConstant.CONTEXT_PATH_STRATEGY_RECREATE_VERSION_RELEASE_YAML) + group + "/" + serviceId;
         String output = testRestTemplate.postForEntity(url, input, String.class).getBody();
 
         TestUtil.determineRestException(testRestTemplate);
 
-        LOG.info("输出规则策略 : {}", output != null ? "\n" + output : "无");
+        LOG.info("输出规则策略 : {}", output != null ? "\n" + prettyString(output) : "无");
 
         Thread.sleep(consoleOperationAwaitTime);
     }
@@ -411,8 +411,20 @@ public class SimulatorTestStrategy extends TestStrategy {
 
         TestUtil.determineRestException(testRestTemplate);
 
-        LOG.info("输出规则策略 : {}", output != null ? "\n" + output : "无");
+        LOG.info("输出规则策略 : {}", output != null ? "\n" + prettyString(output) : "无");
 
         Thread.sleep(consoleOperationAwaitTime);
+    }
+
+    private String prettyString(String content) {
+        if (!content.startsWith("\n")) {
+            content = "\n" + content;
+        }
+
+        if (!content.endsWith("\n")) {
+            content = content + "\n";
+        }
+
+        return content;
     }
 }
