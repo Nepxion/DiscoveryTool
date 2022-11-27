@@ -52,5 +52,9 @@ public class ThreadProcessor {
         if (awaitTerminationSeconds > 0) {
             taskExecutor.setAwaitTerminationSeconds(awaitTerminationSeconds);
         }
+
+        LOG.info("ThreadPoolTaskExecutor core pool size : {}", taskExecutor.getCorePoolSize());
+        LOG.info("ThreadPoolTaskExecutor max pool size : {}", taskExecutor.getMaxPoolSize());
+        LOG.info("ThreadPoolTaskExecutor keep alive seconds : {}", taskExecutor.getKeepAliveSeconds());
     }
 }

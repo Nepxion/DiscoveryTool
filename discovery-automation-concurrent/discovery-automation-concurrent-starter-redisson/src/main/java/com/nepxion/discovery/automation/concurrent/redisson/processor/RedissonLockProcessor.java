@@ -44,6 +44,9 @@ public class RedissonLockProcessor implements DiscoveryLock, DisposableBean {
         this.expireSeconds = redissonProperties.getExpireSeconds();
 
         redissonLock = new RedissonLock(redissonClient);
+
+        LOG.info("RedissonLock wait seconds : {}", waitSeconds);
+        LOG.info("RedissonLock expire seconds : {}", expireSeconds);
     }
 
     @Override

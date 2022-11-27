@@ -45,6 +45,10 @@ public class CaffeineLockProcessor implements DiscoveryLock {
                 }
             }
         };
+
+        LOG.info("CaffeineLock initial capacity : {}", initialCapacity);
+        LOG.info("CaffeineLock maximum size : {}", maximumSize);
+        LOG.info("CaffeineLock expire seconds : {}", expireSeconds);
     }
 
     @Override
