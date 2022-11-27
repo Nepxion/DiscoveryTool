@@ -1,16 +1,16 @@
 {
 	"properties": [
 		{
-			"name": "console.automation.redisson.wait-seconds",
+			"name": "spring.application.redisson.wait-seconds",
 			"type": "java.lang.Integer",
 			"defaultValue": 0,
-			"description": "Console automation redisson wait seconds."
+			"description": "Redisson wait seconds."
 		},
 		{
-			"name": "console.automation.redisson.expire-seconds",
+			"name": "spring.application.redisson.expire-seconds",
 			"type": "java.lang.Integer",
 			"defaultValue": 900,
-			"description": "Console automation redisson expire seconds."
+			"description": "Redisson expire seconds."
 		}
 	]
 }

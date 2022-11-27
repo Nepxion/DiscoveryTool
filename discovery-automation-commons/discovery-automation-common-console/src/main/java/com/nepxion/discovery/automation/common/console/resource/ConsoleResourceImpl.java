@@ -34,7 +34,7 @@ public abstract class ConsoleResourceImpl implements ConsoleResource {
     @Autowired
     private ThreadPoolTaskExecutor taskExecutor;
 
-    @Value("${" + ConsoleConstant.CONSOLE_AUTOMATION_LOGGER_MDC_KEY_SHOWN + ":true}")
+    @Value("${" + ConsoleConstant.SPRING_APPLICATION_LOGGER_MDC_KEY_SHOWN + ":true}")
     private Boolean loggerMdcKeyShown;
 
     @PostConstruct

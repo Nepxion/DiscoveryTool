@@ -1,22 +1,22 @@
 {
 	"properties": [
 		{
-			"name": "console.automation.caffeine.initial-capacity",
+			"name": "spring.application.caffeine.initial-capacity",
 			"type": "java.lang.Integer",
 			"defaultValue": 10,
-			"description": "Console automation caffeine initial capacity."
+			"description": "Caffeine initial capacity."
 		},
 		{
-			"name": "console.automation.caffeine.maximum-size",
+			"name": "spring.application.caffeine.maximum-size",
 			"type": "java.lang.Integer",
 			"defaultValue": 100,
-			"description": "Console automation caffeine maximum size."
+			"description": "Caffeine maximum size."
 		},
 		{
-			"name": "console.automation.caffeine.expire-seconds",
+			"name": "spring.application.caffeine.expire-seconds",
 			"type": "java.lang.Integer",
 			"defaultValue": 900,
-			"description": "Console automation caffeine expire seconds."
+			"description": "Caffeine expire seconds."
 		}
 	]
 }

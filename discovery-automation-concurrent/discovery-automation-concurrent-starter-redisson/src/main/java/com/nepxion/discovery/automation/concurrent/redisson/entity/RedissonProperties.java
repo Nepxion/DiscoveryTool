@@ -11,7 +11,7 @@ package com.nepxion.discovery.automation.concurrent.redisson.entity;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties("console.automation.redisson")
+@ConfigurationProperties("spring.application.redisson")
 public class RedissonProperties {
     private int waitSeconds = 0;
     private int expireSeconds = 900;

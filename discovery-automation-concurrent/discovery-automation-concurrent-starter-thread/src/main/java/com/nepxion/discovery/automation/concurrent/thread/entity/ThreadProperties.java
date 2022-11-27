@@ -11,7 +11,7 @@ package com.nepxion.discovery.automation.concurrent.thread.entity;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties("console.automation.thread.pool")
+@ConfigurationProperties("spring.application.thread")
 public class ThreadProperties {
     private int corePoolSize = -1;
     private int maxPoolSize = -1;

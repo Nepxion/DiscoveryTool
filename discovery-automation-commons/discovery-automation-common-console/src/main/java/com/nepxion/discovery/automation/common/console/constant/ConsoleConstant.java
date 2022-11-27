@@ -10,5 +10,5 @@ package com.nepxion.discovery.automation.common.console.constant;
  */
 
 public class ConsoleConstant {
-    public static final String CONSOLE_AUTOMATION_LOGGER_MDC_KEY_SHOWN = "console.automation.logger.mdc.key.shown";
+    public static final String SPRING_APPLICATION_LOGGER_MDC_KEY_SHOWN = "spring.application.logger.mdc.key.shown";
 }

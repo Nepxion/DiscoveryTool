@@ -1,10 +1,10 @@
 {
 	"properties": [
 		{
-			"name": "console.automation.logger.mdc.key.shown",
+			"name": "spring.application.logger.mdc.key.shown",
 			"type": "java.lang.Boolean",
 			"defaultValue": true,
-			"description": "Whether console automation for logger mdc key is shown."
+			"description": "Whether logger mdc key is shown."
 		}
 	]
 }

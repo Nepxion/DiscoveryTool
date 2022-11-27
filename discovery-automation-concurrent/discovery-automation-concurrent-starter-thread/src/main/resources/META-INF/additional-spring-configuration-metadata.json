@@ -1,29 +1,29 @@
 {
 	"properties": [
 		{
-			"name": "console.automation.thread.pool.core-pool-size",
+			"name": "spring.application.thread.core-pool-size",
 			"type": "java.lang.Integer",
-			"description": "Console automation thread pool core size."
+			"description": "Thread core pool size."
 		},
 		{
-			"name": "console.automation.thread.pool.max-pool-size",
+			"name": "spring.application.thread.max-pool-size",
 			"type": "java.lang.Integer",
-			"description": "Console automation thread pool max size."
+			"description": "Thread max pool size."
 		},
 		{
-			"name": "console.automation.thread.pool.queue-capacity",
+			"name": "spring.application.thread.queue-capacity",
 			"type": "java.lang.Integer",
-			"description": "Console automation thread pool queue capacity."
+			"description": "Thread queue capacity."
 		},
 		{
-			"name": "console.automation.thread.pool.keep-alive-seconds",
+			"name": "spring.application.thread.keep-alive-seconds",
 			"type": "java.lang.Integer",
-			"description": "Console automation thread pool keep alive seconds."
+			"description": "Thread keep alive seconds."
 		},
 		{
-			"name": "console.automation.thread.pool.await-termination-seconds",
+			"name": "spring.application.thread.await-termination-seconds",
 			"type": "java.lang.Integer",
-			"description": "Console automation thread pool await termination seconds."
+			"description": "Thread await termination seconds."
 		}
 	]
 }

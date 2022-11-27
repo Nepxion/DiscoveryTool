@@ -11,7 +11,7 @@ package com.nepxion.discovery.automation.concurrent.caffeine.entity;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties("console.automation.caffeine")
+@ConfigurationProperties("spring.application.caffeine")
 public class CaffeineProperties {
     private int initialCapacity = 10;
     private int maximumSize = 100;
