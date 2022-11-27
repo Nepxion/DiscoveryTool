@@ -17,9 +17,11 @@ import org.springframework.context.annotation.Import;
 
 import com.nepxion.discovery.automation.common.console.constant.ConsoleConstant;
 import com.nepxion.discovery.automation.common.console.entity.ConsoleCaffeineLockProperties;
+import com.nepxion.discovery.automation.common.console.entity.ConsoleRedissonLockProperties;
 import com.nepxion.discovery.automation.simulator.console.endpoint.SimulatorConsoleEndpoint;
 import com.nepxion.discovery.automation.simulator.console.lock.SimulatorConsoleCaffeineLock;
 import com.nepxion.discovery.automation.simulator.console.lock.SimulatorConsoleLock;
+import com.nepxion.discovery.automation.simulator.console.lock.SimulatorConsoleRedissonLock;
 import com.nepxion.discovery.automation.simulator.console.resource.SimulatorConsoleResource;
 import com.nepxion.discovery.automation.simulator.console.resource.SimulatorConsoleResourceImpl;
 
@@ -40,10 +42,19 @@ public class SimulatorConsoleAutoConfiguration {
 
     @ConditionalOnProperty(value = ConsoleConstant.CONSOLE_AUTOMATION_LOCK_TYPE, havingValue = ConsoleConstant.CONSOLE_AUTOMATION_LOCK_TYPE_CAFFEINE, matchIfMissing = true)
     @EnableConfigurationProperties({ ConsoleCaffeineLockProperties.class })
-    protected static class CaffeineConsoleLockConfiguration {
+    protected static class ConsoleCaffeineLockConfiguration {
         @Bean
         public SimulatorConsoleLock simulatorConsoleLock() {
             return new SimulatorConsoleCaffeineLock();
+        }
+    }
+
+    @ConditionalOnProperty(value = ConsoleConstant.CONSOLE_AUTOMATION_LOCK_TYPE, havingValue = ConsoleConstant.CONSOLE_AUTOMATION_LOCK_TYPE_REDISSON, matchIfMissing = false)
+    @EnableConfigurationProperties({ ConsoleRedissonLockProperties.class })
+    protected static class ConsoleRedissonLockConfiguration {
+        @Bean
+        public SimulatorConsoleLock simulatorConsoleLock() {
+            return new SimulatorConsoleRedissonLock();
         }
     }
 }

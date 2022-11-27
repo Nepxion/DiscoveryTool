@@ -9,22 +9,16 @@ package com.nepxion.discovery.automation.simulator.console.lock;
  * @version 1.0
  */
 
-import java.util.concurrent.TimeUnit;
-
-import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.github.benmanes.caffeine.cache.CacheLoader;
-import com.github.benmanes.caffeine.cache.Caffeine;
-import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.github.benmanes.caffeine.cache.RemovalCause;
-import com.github.benmanes.caffeine.cache.RemovalListener;
 import com.nepxion.discovery.automation.common.console.constant.ConsoleConstant;
 import com.nepxion.discovery.automation.common.console.entity.ConsoleCaffeineLockProperties;
+import com.nepxion.discovery.automation.common.console.lock.ConsoleCaffeineLock;
 
 public class SimulatorConsoleCaffeineLock extends SimulatorConsoleLock {
     private static final Logger LOG = LoggerFactory.getLogger(SimulatorConsoleCaffeineLock.class);
@@ -32,7 +26,7 @@ public class SimulatorConsoleCaffeineLock extends SimulatorConsoleLock {
     @Autowired
     private ConsoleCaffeineLockProperties consoleCaffeineLockProperties;
 
-    private LoadingCache<String, String> loadingCache;
+    private ConsoleCaffeineLock consoleCaffeineLock;
 
     @Override
     public void initializeLock() {
@@ -40,25 +34,14 @@ public class SimulatorConsoleCaffeineLock extends SimulatorConsoleLock {
         int maximumSize = consoleCaffeineLockProperties.getMaximumSize();
         int expireSeconds = consoleCaffeineLockProperties.getExpireSeconds();
 
-        loadingCache = Caffeine.newBuilder()
-                .expireAfterWrite(expireSeconds, TimeUnit.SECONDS)
-                .initialCapacity(initialCapacity)
-                .maximumSize(maximumSize)
-                .recordStats()
-                .evictionListener(new RemovalListener<String, String>() {
-                    @Override
-                    public void onRemoval(@Nullable String key, @Nullable String value, @NonNull RemovalCause cause) {
-                        if (cause == RemovalCause.EXPIRED) {
-                            LOG.info("Key={} is expired...", key);
-                        }
-                    }
-                })
-                .build(new CacheLoader<String, String>() {
-                    @Override
-                    public String load(String key) throws Exception {
-                        return StringUtils.EMPTY;
-                    }
-                });
+        consoleCaffeineLock = new ConsoleCaffeineLock(initialCapacity, maximumSize, expireSeconds) {
+            @Override
+            public void onKeyRemoval(@Nullable String key, @Nullable String value, @NonNull RemovalCause cause) {
+                if (cause == RemovalCause.EXPIRED) {
+                    LOG.info("Key={} is expired...", key);
+                }
+            }
+        };
     }
 
     @Override
@@ -67,17 +50,12 @@ public class SimulatorConsoleCaffeineLock extends SimulatorConsoleLock {
     }
 
     @Override
-    public boolean isLocked(String key) {
-        return loadingCache.getIfPresent(key) != null;
-    }
-
-    @Override
-    public void lock(String key) {
-        loadingCache.put(key, Boolean.TRUE.toString());
+    public boolean tryLock(String key) {
+        return consoleCaffeineLock.tryLock(key);
     }
 
     @Override
     public void unlock(String key) {
-        loadingCache.invalidate(key);
+        consoleCaffeineLock.unlock(key);
     }
 }

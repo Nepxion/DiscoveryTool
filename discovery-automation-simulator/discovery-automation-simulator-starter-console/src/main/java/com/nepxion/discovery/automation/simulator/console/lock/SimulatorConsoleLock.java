@@ -31,12 +31,9 @@ public abstract class SimulatorConsoleLock {
     // 返回并行控制锁的名称
     public abstract String getLockType();
 
-    // 新发起的测试用例是否和正在运行的测试用例相同
-    public abstract boolean isLocked(String key);
+    // 新发起的测试用例尝试获取锁
+    public abstract boolean tryLock(String key);
 
-    // 测试用例一旦运行，需要把Key放入到并行控制的锁缓存里
-    public abstract void lock(String key);
-
-    // 测试用例一旦结束或者中途抛错，需要把Key从并行控制的锁缓存里删除
+    // 测试用例结束或者中途抛错释放锁
     public abstract void unlock(String key);
 }
