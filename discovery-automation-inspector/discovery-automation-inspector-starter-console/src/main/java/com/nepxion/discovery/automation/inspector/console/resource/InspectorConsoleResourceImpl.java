@@ -32,7 +32,7 @@ public class InspectorConsoleResourceImpl extends ConsoleResourceImpl implements
     }
 
     @Override
-    public void validateTest(List<String> testConfigList, boolean testCaseConfigWithYaml) {
+    public void beforeTest(List<String> testConfigList, boolean testCaseConfigWithYaml) {
 
     }
 
@@ -47,7 +47,7 @@ public class InspectorConsoleResourceImpl extends ConsoleResourceImpl implements
     }
 
     @Override
-    public void finishTest(List<String> testConfigList, boolean testCaseConfigWithYaml) throws Exception {
+    public void afterTest(List<String> testConfigList, boolean testCaseConfigWithYaml) throws Exception {
 
     }
 }
