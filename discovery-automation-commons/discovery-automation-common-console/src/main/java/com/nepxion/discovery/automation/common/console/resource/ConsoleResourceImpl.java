@@ -61,23 +61,29 @@ public abstract class ConsoleResourceImpl implements ConsoleResource {
             public void run() {
                 MDC.put(TestConstant.TESTCASE_ID, (loggerMdcKeyShown ? TestConstant.TESTCASE_ID + "=" : StringUtils.EMPTY) + uuid);
 
-                String testName = getTestName() + " test";
+                String testName = getTestName();
 
                 try {
                     beforeTest(testConfigList, testCaseConfigWithYaml);
+                } catch (Exception e) {
+                    LOG.error("[{}] execute BeforeTest failed", testName, e);
 
+                    return;
+                }
+
+                try {
                     runTest(testConfigList, testCaseConfigWithYaml);
                 } catch (InterruptedException e) {
                     // Ignored
                 } catch (Exception e) {
-                    LOG.error("{} failed", testName, e);
+                    LOG.error("[{}] execute RunTest failed", testName, e);
                 } finally {
                     MDC.remove(TestConstant.TESTCASE_ID);
 
                     try {
                         afterTest(testConfigList, testCaseConfigWithYaml);
                     } catch (Exception e) {
-                        LOG.error("{} failed", testName, e);
+                        LOG.error("[{}] execute AfterTest failed", testName, e);
                     }
                 }
             }
