@@ -80,8 +80,6 @@ public abstract class ConsoleResourceImpl implements ConsoleResource {
             throw new DiscoveryException("Test config must consists of " + testConfigPartsCount + " parts");
         }
 
-        validateTest(testConfigList, testCaseConfigWithYaml);
-
         String uuid = UuidUtil.getTimeUUID();
 
         taskExecutor.execute(new Runnable() {
@@ -92,6 +90,8 @@ public abstract class ConsoleResourceImpl implements ConsoleResource {
                 String testName = getTestName() + " test";
 
                 try {
+                    beforeTest(testConfigList, testCaseConfigWithYaml);
+
                     runTest(testConfigList, testCaseConfigWithYaml);
                 } catch (Exception e) {
                     LOG.error("{} failed", testName, e);
@@ -101,7 +101,7 @@ public abstract class ConsoleResourceImpl implements ConsoleResource {
                     MDC.remove(TestConstant.TESTCASE_ID);
 
                     try {
-                        finishTest(testConfigList, testCaseConfigWithYaml);
+                        afterTest(testConfigList, testCaseConfigWithYaml);
                     } catch (Exception e) {
                         LOG.error("{} failed", testName, e);
 
@@ -118,9 +118,9 @@ public abstract class ConsoleResourceImpl implements ConsoleResource {
 
     public abstract int getTestConfigPartsCount();
 
-    public abstract void validateTest(List<String> testConfigList, boolean testCaseConfigWithYaml);
+    public abstract void beforeTest(List<String> testConfigList, boolean testCaseConfigWithYaml);
 
     public abstract void runTest(List<String> testConfigList, boolean testCaseConfigWithYaml) throws Exception;
 
-    public abstract void finishTest(List<String> testConfigList, boolean testCaseConfigWithYaml) throws Exception;
+    public abstract void afterTest(List<String> testConfigList, boolean testCaseConfigWithYaml) throws Exception;
 }

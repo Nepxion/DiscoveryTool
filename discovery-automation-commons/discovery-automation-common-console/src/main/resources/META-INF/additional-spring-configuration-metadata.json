@@ -44,6 +44,18 @@
 			"description": "Console automation caffeine expire seconds."
 		},
 		{
+			"name": "console.automation.redisson.wait-seconds",
+			"type": "java.lang.Integer",
+			"defaultValue": 0,
+			"description": "Console automation redisson wait seconds."
+		},
+		{
+			"name": "console.automation.redisson.expire-seconds",
+			"type": "java.lang.Integer",
+			"defaultValue": 1800,
+			"description": "Console automation redisson expire seconds."
+		},
+		{
 			"name": "console.automation.lock.type",
 			"type": "java.lang.String",
 			"defaultValue": "caffeine",
