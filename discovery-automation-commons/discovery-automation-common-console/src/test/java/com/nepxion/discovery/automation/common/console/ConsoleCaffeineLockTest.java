@@ -30,11 +30,15 @@ public class ConsoleCaffeineLockTest {
             @Override
             public void onKeyRemoval(@Nullable String key, @Nullable String value, @NonNull RemovalCause cause) {
                 if (cause == RemovalCause.EXPIRED) {
-                    LOG.info("{}", "=== 释过期===");
+                    LOG.info("{}", "=== 锁过期===");
                 }
             }
         };
 
+        testLock1(consoleLock);
+    }
+
+    public static void testLock1(ConsoleCaffeineLock consoleLock) {
         Timer time = new Timer();
         time.scheduleAtFixedRate(new TimerTask() {
             public void run() {
@@ -54,7 +58,6 @@ public class ConsoleCaffeineLockTest {
 
                                 if (acquired) {
                                     consoleLock.unlock("Lock");
-
                                     LOG.info("{}", "=== 释放锁 ===");
                                 }
                             }

@@ -15,43 +15,30 @@ import java.util.concurrent.TimeUnit;
 
 import org.redisson.Redisson;
 import org.redisson.api.RLock;
+import org.redisson.api.RReadWriteLock;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 
 public class ConsoleRedissonLock {
     private RedissonClient redissonClient;
 
-    private long waitTime;
-    private long leaseTime;
-    private TimeUnit timeUnit;
-
-    // 不需要考虑锁删除
+    // 可重入锁可重复使用, 不需要考虑锁删除
     private volatile Map<String, RLock> lockMap;
-
-    public ConsoleRedissonLock(Config config, long waitTime, long leaseTime, TimeUnit timeUnit) {
-        this(config);
-
-        this.waitTime = waitTime;
-        this.leaseTime = leaseTime;
-        this.timeUnit = timeUnit;
-    }
+    private volatile Map<String, RReadWriteLock> readWriteLockMap;
 
     public ConsoleRedissonLock(Config config) {
         redissonClient = Redisson.create(config);
 
         lockMap = new ConcurrentHashMap<String, RLock>();
+        readWriteLockMap = new ConcurrentHashMap<String, RReadWriteLock>();
     }
 
     public RedissonClient getRedissonClient() {
         return redissonClient;
     }
 
-    public boolean tryLock(String key) {
-        return tryLock(key, waitTime, leaseTime, timeUnit);
-    }
-
-    public boolean tryLock(String key, long waitTime, long leaseTime, TimeUnit timeUnit) {
-        RLock lock = getLock(key);
+    public boolean tryLock(LockType lockType, String key, boolean fair, long waitTime, long leaseTime, TimeUnit timeUnit) {
+        RLock lock = getLock(lockType, key, fair);
 
         try {
             return lock.tryLock(waitTime, leaseTime, timeUnit);
@@ -60,24 +47,102 @@ public class ConsoleRedissonLock {
         }
     }
 
-    public void unlock(String key) {
-        RLock lock = getLock(key);
+    public void unlock(LockType lockType, String key, boolean fair) {
+        RLock lock = getLock(lockType, key, fair);
 
         if (lock.isLocked()) {
             lock.unlock();
         }
     }
 
-    private RLock getLock(String key) {
-        RLock lock = lockMap.get(key);
+    public RLock getLock(LockType lockType, String key, boolean fair) {
+        switch (lockType) {
+            case LOCK:
+                return getCachedLock(key, fair);
+            case READ_LOCK:
+                return getCachedReadWriteLock(key).readLock();
+            case WRITE_LOCK:
+                return getCachedReadWriteLock(key).writeLock();
+        }
+
+        return null;
+    }
+
+    private RLock getCachedLock(String key, boolean fair) {
+        String newKey = key + "-" + (fair ? "fair" : "unfair");
+
+        RLock lock = lockMap.get(newKey);
         if (lock == null) {
-            RLock newLock = redissonClient.getLock(key);
-            lock = lockMap.putIfAbsent(key, newLock);
+            RLock newLock = getNewLock(newKey, fair);
+            lock = lockMap.putIfAbsent(newKey, newLock);
             if (lock == null) {
                 lock = newLock;
             }
         }
 
         return lock;
+    }
+
+    private RReadWriteLock getCachedReadWriteLock(String key) {
+        String newKey = key;
+
+        RReadWriteLock readWriteLock = readWriteLockMap.get(newKey);
+        if (readWriteLock == null) {
+            RReadWriteLock newReadWriteLock = getNewReadWriteLock(newKey);
+            readWriteLock = readWriteLockMap.putIfAbsent(newKey, newReadWriteLock);
+            if (readWriteLock == null) {
+                readWriteLock = newReadWriteLock;
+            }
+        }
+
+        return readWriteLock;
+    }
+
+    private RLock getNewLock(String key, boolean fair) {
+        RLock lock = fair ? redissonClient.getFairLock(key) : redissonClient.getLock(key);
+
+        return lock;
+    }
+
+    private RReadWriteLock getNewReadWriteLock(String key) {
+        RReadWriteLock readWriteLock = redissonClient.getReadWriteLock(key);
+
+        return readWriteLock;
+    }
+
+    public enum LockType {
+        // 普通锁
+        LOCK("Lock"),
+
+        // 读锁
+        READ_LOCK("ReadLock"),
+
+        // 写锁
+        WRITE_LOCK("WriteLock");
+
+        private String value;
+
+        private LockType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public static LockType fromString(String value) {
+            for (LockType type : LockType.values()) {
+                if (type.getValue().equalsIgnoreCase(value.trim())) {
+                    return type;
+                }
+            }
+
+            throw new IllegalArgumentException("Mismatched type with value=" + value);
+        }
+
+        @Override
+        public String toString() {
+            return value;
+        }
     }
 }
