@@ -9,6 +9,7 @@ package com.nepxion.discovery.automation.concurrent.redisson.processor;
  * @version 1.0
  */
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
@@ -57,6 +58,11 @@ public class RedissonLockProcessor implements DiscoveryLock, DisposableBean {
     @Override
     public void unlock(String key) {
         redissonLock.unlock(RedissonLockType.LOCK, key, false);
+    }
+
+    @Override
+    public List<String> getHeldLocks() {
+        return redissonLock.getHeldLocks();
     }
 
     @Override

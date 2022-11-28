@@ -9,11 +9,16 @@ package com.nepxion.discovery.automation.concurrent.caffeine.processor;
  * @version 1.0
  */
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.github.benmanes.caffeine.cache.CacheLoader;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -22,6 +27,8 @@ import com.github.benmanes.caffeine.cache.RemovalCause;
 import com.github.benmanes.caffeine.cache.RemovalListener;
 
 public class CaffeineLock {
+    private static final Logger LOG = LoggerFactory.getLogger(CaffeineLock.class);
+
     private LoadingCache<String, String> loadingCache;
 
     public CaffeineLock(int initialCapacity, int maximumSize, int expireSeconds) {
@@ -62,6 +69,18 @@ public class CaffeineLock {
         if (!acquired) {
             loadingCache.invalidate(key);
         }
+    }
+
+    public List<String> getHeldLocks() {
+        Set<String> set = loadingCache.asMap().keySet();
+
+        return new ArrayList<String>(set);
+    }
+
+    public void shutdown() {
+        LOG.info("Start to shutdown CaffeineLock......");
+
+        // loadingCache.invalidateAll();
     }
 
     public void onKeyRemoval(@Nullable String key, @Nullable String value, @NonNull RemovalCause cause) {

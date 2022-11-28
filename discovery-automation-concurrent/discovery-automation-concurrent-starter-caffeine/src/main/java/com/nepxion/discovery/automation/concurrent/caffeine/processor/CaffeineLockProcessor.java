@@ -9,19 +9,22 @@ package com.nepxion.discovery.automation.concurrent.caffeine.processor;
  * @version 1.0
  */
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.github.benmanes.caffeine.cache.RemovalCause;
 import com.nepxion.discovery.automation.concurrent.caffeine.entity.CaffeineProperties;
 import com.nepxion.discovery.common.lock.DiscoveryLock;
 
-public class CaffeineLockProcessor implements DiscoveryLock {
+public class CaffeineLockProcessor implements DiscoveryLock, DisposableBean {
     private static final Logger LOG = LoggerFactory.getLogger(CaffeineLockProcessor.class);
 
     @Autowired
@@ -59,5 +62,15 @@ public class CaffeineLockProcessor implements DiscoveryLock {
     @Override
     public void unlock(String key) {
         caffeineLock.unlock(key);
+    }
+
+    @Override
+    public List<String> getHeldLocks() {
+        return caffeineLock.getHeldLocks();
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        caffeineLock.shutdown();
     }
 }

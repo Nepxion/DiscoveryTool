@@ -9,6 +9,8 @@ package com.nepxion.discovery.automation.concurrent.redisson.processor;
  * @version 1.0
  */
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -124,6 +126,45 @@ public class RedissonLock {
         RReadWriteLock readWriteLock = redissonClient.getReadWriteLock(key);
 
         return readWriteLock;
+    }
+
+    public List<String> getHeldLocks() {
+        List<String> heldLocks = new ArrayList<String>();
+        for (Map.Entry<String, RLock> entry : lockMap.entrySet()) {
+            String key = entry.getKey();
+            RLock lock = entry.getValue();
+            if (lock.isLocked()) {
+                heldLocks.add(key);
+            }
+        }
+
+        return heldLocks;
+    }
+
+    public List<String> getHeldReadLocks() {
+        List<String> heldLocks = new ArrayList<String>();
+        for (Map.Entry<String, RReadWriteLock> entry : readWriteLockMap.entrySet()) {
+            String key = entry.getKey();
+            RReadWriteLock lock = entry.getValue();
+            if (lock.readLock().isLocked()) {
+                heldLocks.add(key);
+            }
+        }
+
+        return heldLocks;
+    }
+
+    public List<String> getHeldWriteLocks() {
+        List<String> heldLocks = new ArrayList<String>();
+        for (Map.Entry<String, RReadWriteLock> entry : readWriteLockMap.entrySet()) {
+            String key = entry.getKey();
+            RReadWriteLock lock = entry.getValue();
+            if (lock.writeLock().isLocked()) {
+                heldLocks.add(key);
+            }
+        }
+
+        return heldLocks;
     }
 
     public void shutdown() {

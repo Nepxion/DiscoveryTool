@@ -46,8 +46,12 @@ public class CaffeineLockTest {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
+                            LOG.info("当前被持有的锁列表 : locks={}", caffeineLock.getHeldLocks());
+
                             boolean acquired = caffeineLock.tryLock("Lock");
                             LOG.info("{}", acquired ? "拿到锁..." : "未拿到锁...");
+
+                            LOG.info("当前被持有的锁列表 : locks={}", caffeineLock.getHeldLocks());
 
                             if (index % 2 == 0) {
                                 try {
