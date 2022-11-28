@@ -9,15 +9,17 @@ package com.nepxion.discovery.automation.concurrent.redisson.processor;
  * @version 1.0
  */
 
+import com.nepxion.discovery.automation.concurrent.redisson.constant.RedissonConstant;
+
 public enum RedissonLockType {
     // 普通锁
-    LOCK("Lock"),
+    LOCK(RedissonConstant.LOCK),
 
     // 读锁
-    READ_LOCK("ReadLock"),
+    READ_LOCK(RedissonConstant.READ_LOCK),
 
     // 写锁
-    WRITE_LOCK("WriteLock");
+    WRITE_LOCK(RedissonConstant.WRITE_LOCK);
 
     private String value;
 
