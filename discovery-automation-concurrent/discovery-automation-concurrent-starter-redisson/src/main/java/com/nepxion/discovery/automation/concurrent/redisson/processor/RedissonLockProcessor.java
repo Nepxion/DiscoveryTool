@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nepxion.discovery.automation.concurrent.redisson.entity.RedissonProperties;
 import com.nepxion.discovery.common.lock.DiscoveryLock;
+import com.nepxion.discovery.common.lock.DiscoveryLockHeldType;
 
 public class RedissonLockProcessor implements DiscoveryLock, DisposableBean {
     private static final Logger LOG = LoggerFactory.getLogger(RedissonLockProcessor.class);
@@ -61,8 +62,9 @@ public class RedissonLockProcessor implements DiscoveryLock, DisposableBean {
     }
 
     @Override
-    public List<String> getHeldLocks() {
-        return redissonLock.getHeldLocks(RedissonLockHeldType.DISTRIBUTION_HELD, true);
+    public List<String> getHeldLocks(DiscoveryLockHeldType lockHeldType) {
+        // 只考虑普通锁，读写分离锁不考虑
+        return redissonLock.getHeldLocks(lockHeldType, true);
     }
 
     @Override

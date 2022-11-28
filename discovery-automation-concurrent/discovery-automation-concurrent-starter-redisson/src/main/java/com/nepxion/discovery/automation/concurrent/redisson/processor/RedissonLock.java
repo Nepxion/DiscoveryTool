@@ -24,6 +24,8 @@ import org.redisson.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.nepxion.discovery.common.lock.DiscoveryLockHeldType;
+
 public class RedissonLock {
     private static final Logger LOG = LoggerFactory.getLogger(RedissonLock.class);
 
@@ -146,18 +148,18 @@ public class RedissonLock {
 
     // 锁被分布式持有，即被任意一个进程持有，在其它进程也视为被持有
     // 锁被本地持有，即根据线程ID列表，判断锁被某个线程持有
-    public List<String> getHeldLocks(RedissonLockHeldType lockHeldType, boolean ignoreSuffix) {
+    public List<String> getHeldLocks(DiscoveryLockHeldType lockHeldType, boolean ignoreSuffix) {
         List<String> heldLocks = new ArrayList<String>();
         for (Map.Entry<String, RLock> entry : lockMap.entrySet()) {
             String key = entry.getKey();
             RLock lock = entry.getValue();
             switch (lockHeldType) {
-                case DISTRIBUTION_HELD:
+                case DISTRIBUTION:
                     if (lock.isLocked()) {
                         heldLocks.add(ignoreSuffix ? key.substring(0, key.lastIndexOf("-")) : key);
                     }
                     break;
-                case LOCAL_HELD:
+                case LOCAL:
                     for (long threadId : threadIdList) {
                         if (lock.isHeldByThread(threadId)) {
                             heldLocks.add(ignoreSuffix ? key.substring(0, key.lastIndexOf("-")) : key);
@@ -173,19 +175,19 @@ public class RedissonLock {
 
     // 锁被分布式持有，即被任意一个进程持有，在其它进程也视为被持有
     // 锁被本地持有，即根据线程ID列表，判断锁被某个线程持有
-    public List<String> getHeldReadLocks(RedissonLockHeldType lockHeldType) {
+    public List<String> getHeldReadLocks(DiscoveryLockHeldType lockHeldType) {
         List<String> heldLocks = new ArrayList<String>();
         for (Map.Entry<String, RReadWriteLock> entry : readWriteLockMap.entrySet()) {
             String key = entry.getKey();
             RReadWriteLock lock = entry.getValue();
             RLock readLock = lock.readLock();
             switch (lockHeldType) {
-                case DISTRIBUTION_HELD:
+                case DISTRIBUTION:
                     if (readLock.isLocked()) {
                         heldLocks.add(key);
                     }
                     break;
-                case LOCAL_HELD:
+                case LOCAL:
                     for (long threadId : threadIdList) {
                         if (readLock.isHeldByThread(threadId)) {
                             heldLocks.add(key);
@@ -201,19 +203,19 @@ public class RedissonLock {
 
     // 锁被分布式持有，即被任意一个进程持有，在其它进程也视为被持有
     // 锁被本地持有，即根据线程ID列表，判断锁被某个线程持有
-    public List<String> getHeldWriteLocks(RedissonLockHeldType lockHeldType) {
+    public List<String> getHeldWriteLocks(DiscoveryLockHeldType lockHeldType) {
         List<String> heldLocks = new ArrayList<String>();
         for (Map.Entry<String, RReadWriteLock> entry : readWriteLockMap.entrySet()) {
             String key = entry.getKey();
             RReadWriteLock lock = entry.getValue();
             RLock writeLock = lock.writeLock();
             switch (lockHeldType) {
-                case DISTRIBUTION_HELD:
+                case DISTRIBUTION:
                     if (writeLock.isLocked()) {
                         heldLocks.add(key);
                     }
                     break;
-                case LOCAL_HELD:
+                case LOCAL:
                     for (long threadId : threadIdList) {
                         if (writeLock.isHeldByThread(threadId)) {
                             heldLocks.add(key);
@@ -232,9 +234,9 @@ public class RedissonLock {
             return;
         }
 
-        List<String> heldLocks = getHeldLocks(RedissonLockHeldType.LOCAL_HELD, false);
-        List<String> heldReadLocks = getHeldReadLocks(RedissonLockHeldType.LOCAL_HELD);
-        List<String> heldWriteLocks = getHeldWriteLocks(RedissonLockHeldType.LOCAL_HELD);
+        List<String> heldLocks = getHeldLocks(DiscoveryLockHeldType.LOCAL, false);
+        List<String> heldReadLocks = getHeldReadLocks(DiscoveryLockHeldType.LOCAL);
+        List<String> heldWriteLocks = getHeldWriteLocks(DiscoveryLockHeldType.LOCAL);
         List<String> allHeldLocks = new ArrayList<String>();
         allHeldLocks.addAll(heldLocks);
         allHeldLocks.addAll(heldReadLocks);
