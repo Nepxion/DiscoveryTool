@@ -62,11 +62,11 @@ public class RedissonLockProcessor implements DiscoveryLock, DisposableBean {
 
     @Override
     public List<String> getHeldLocks() {
-        return redissonLock.getHeldLocks(true);
+        return redissonLock.getHeldLocks(RedissonLockHeldType.DISTRIBUTION_HELD, true);
     }
 
     @Override
     public void destroy() throws Exception {
-        redissonLock.shutdown();
+        redissonLock.destroy();
     }
 }

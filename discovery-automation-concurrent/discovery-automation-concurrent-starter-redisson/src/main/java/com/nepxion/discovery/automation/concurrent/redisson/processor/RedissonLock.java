@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
 import org.redisson.Redisson;
@@ -31,6 +32,7 @@ public class RedissonLock {
     // 可重入锁可重复使用, 不需要考虑锁删除
     private volatile Map<String, RLock> lockMap;
     private volatile Map<String, RReadWriteLock> readWriteLockMap;
+    private volatile List<Long> threadIdList;
 
     public RedissonLock(Config config) {
         this(Redisson.create(config));
@@ -41,6 +43,7 @@ public class RedissonLock {
 
         lockMap = new ConcurrentHashMap<String, RLock>();
         readWriteLockMap = new ConcurrentHashMap<String, RReadWriteLock>();
+        threadIdList = new CopyOnWriteArrayList<Long>();
     }
 
     public RedissonClient getRedissonClient() {
@@ -74,6 +77,8 @@ public class RedissonLock {
     }
 
     public RLock getLock(RedissonLockType lockType, String key, boolean fair) {
+        addThreadId();
+
         switch (lockType) {
             case LOCK:
                 return getCachedLock(key, fair);
@@ -84,6 +89,17 @@ public class RedissonLock {
         }
 
         return null;
+    }
+
+    private void addThreadId() {
+        long id = Thread.currentThread().getId();
+        for (Long threadId : threadIdList) {
+            if (threadId.longValue() == id) {
+                return;
+            }
+        }
+
+        threadIdList.add(id);
     }
 
     private RLock getCachedLock(String key, boolean fair) {
@@ -128,52 +144,112 @@ public class RedissonLock {
         return readWriteLock;
     }
 
-    public List<String> getHeldLocks(boolean ignoreSuffix) {
+    // 锁被分布式持有，即被任意一个进程持有，在其它进程也视为被持有
+    // 锁被本地持有，即根据线程ID列表，判断锁被某个线程持有
+    public List<String> getHeldLocks(RedissonLockHeldType lockHeldType, boolean ignoreSuffix) {
         List<String> heldLocks = new ArrayList<String>();
         for (Map.Entry<String, RLock> entry : lockMap.entrySet()) {
             String key = entry.getKey();
             RLock lock = entry.getValue();
-            if (lock.isLocked()) {
-                heldLocks.add(ignoreSuffix ? key.substring(0, key.lastIndexOf("-")) : key);
+            switch (lockHeldType) {
+                case DISTRIBUTION_HELD:
+                    if (lock.isLocked()) {
+                        heldLocks.add(ignoreSuffix ? key.substring(0, key.lastIndexOf("-")) : key);
+                    }
+                    break;
+                case LOCAL_HELD:
+                    for (long threadId : threadIdList) {
+                        if (lock.isHeldByThread(threadId)) {
+                            heldLocks.add(ignoreSuffix ? key.substring(0, key.lastIndexOf("-")) : key);
+                            break;
+                        }
+                    }
+                    break;
             }
         }
 
         return heldLocks;
     }
 
-    public List<String> getHeldReadLocks() {
+    // 锁被分布式持有，即被任意一个进程持有，在其它进程也视为被持有
+    // 锁被本地持有，即根据线程ID列表，判断锁被某个线程持有
+    public List<String> getHeldReadLocks(RedissonLockHeldType lockHeldType) {
         List<String> heldLocks = new ArrayList<String>();
         for (Map.Entry<String, RReadWriteLock> entry : readWriteLockMap.entrySet()) {
             String key = entry.getKey();
             RReadWriteLock lock = entry.getValue();
-            if (lock.readLock().isLocked()) {
-                heldLocks.add(key);
+            RLock readLock = lock.readLock();
+            switch (lockHeldType) {
+                case DISTRIBUTION_HELD:
+                    if (readLock.isLocked()) {
+                        heldLocks.add(key);
+                    }
+                    break;
+                case LOCAL_HELD:
+                    for (long threadId : threadIdList) {
+                        if (readLock.isHeldByThread(threadId)) {
+                            heldLocks.add(key);
+                            break;
+                        }
+                    }
+                    break;
             }
         }
 
         return heldLocks;
     }
 
-    public List<String> getHeldWriteLocks() {
+    // 锁被分布式持有，即被任意一个进程持有，在其它进程也视为被持有
+    // 锁被本地持有，即根据线程ID列表，判断锁被某个线程持有
+    public List<String> getHeldWriteLocks(RedissonLockHeldType lockHeldType) {
         List<String> heldLocks = new ArrayList<String>();
         for (Map.Entry<String, RReadWriteLock> entry : readWriteLockMap.entrySet()) {
             String key = entry.getKey();
             RReadWriteLock lock = entry.getValue();
-            if (lock.writeLock().isLocked()) {
-                heldLocks.add(key);
+            RLock writeLock = lock.writeLock();
+            switch (lockHeldType) {
+                case DISTRIBUTION_HELD:
+                    if (writeLock.isLocked()) {
+                        heldLocks.add(key);
+                    }
+                    break;
+                case LOCAL_HELD:
+                    for (long threadId : threadIdList) {
+                        if (writeLock.isHeldByThread(threadId)) {
+                            heldLocks.add(key);
+                            break;
+                        }
+                    }
+                    break;
             }
         }
 
         return heldLocks;
     }
 
-    public void shutdown() {
+    public void destroy() {
         if (!isStarted()) {
             return;
         }
 
-        LOG.info("Start to shutdown RedissonLock......");
+        List<String> heldLocks = getHeldLocks(RedissonLockHeldType.LOCAL_HELD, false);
+        List<String> heldReadLocks = getHeldReadLocks(RedissonLockHeldType.LOCAL_HELD);
+        List<String> heldWriteLocks = getHeldWriteLocks(RedissonLockHeldType.LOCAL_HELD);
+        List<String> allHeldLocks = new ArrayList<String>();
+        allHeldLocks.addAll(heldLocks);
+        allHeldLocks.addAll(heldReadLocks);
+        allHeldLocks.addAll(heldWriteLocks);
 
+        LOG.info("Start to destroy Redisson Held Locks with locks={}, readLocks={}, writeLocks={}", heldLocks, heldReadLocks, heldWriteLocks);
+        try {
+            for (String heldLock : allHeldLocks) {
+                redissonClient.getBucket(heldLock).delete();
+            }
+        } catch (Exception e) {
+            LOG.info("Failed to Redisson Held Locks", e);
+        }
+
+        LOG.info("Start to shutdown RedissonLock...");
         redissonClient.shutdown();
     }
 

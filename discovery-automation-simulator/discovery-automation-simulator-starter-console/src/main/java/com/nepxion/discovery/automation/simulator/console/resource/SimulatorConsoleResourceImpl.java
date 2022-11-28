@@ -44,7 +44,7 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
 
         String key = getKey(testCaseConfig, testCaseConfigWithYaml);
 
-        // 通过线程安全的锁组件（本地锁或者分布式锁）并行控制测试用例，根据Key（group@serviceId）进行判断，不允许有多个Key相同的测试用例同时运行
+        // 通过线程安全的锁组件（本地锁或者分布式锁）并行控制测试用例，根据Key（group@@serviceId）进行判断，不允许有多个Key相同的测试用例同时运行
         // 新发起的测试用例尝试获取锁。如果获取不到，则结束并抛出异常
         if (!lock.tryLock(key)) {
             throw new DiscoveryException("自动化测试任务【" + key + "】正在执行中，不能同时并发执行相同的任务");

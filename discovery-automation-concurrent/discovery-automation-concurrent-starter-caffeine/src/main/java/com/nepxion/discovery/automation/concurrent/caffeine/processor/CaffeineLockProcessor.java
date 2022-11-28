@@ -71,6 +71,6 @@ public class CaffeineLockProcessor implements DiscoveryLock, DisposableBean {
 
     @Override
     public void destroy() throws Exception {
-        caffeineLock.shutdown();
+        caffeineLock.destroy();
     }
 }

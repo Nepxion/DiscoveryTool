@@ -77,9 +77,10 @@ public class CaffeineLock {
         return new ArrayList<String>(set);
     }
 
-    public void shutdown() {
-        LOG.info("Start to shutdown CaffeineLock......");
+    public void destroy() {
+        List<String> heldLocks = getHeldLocks();
 
+        LOG.info("Start to destroy Caffeine Held Locks with locks={}", heldLocks);
         // loadingCache.invalidateAll();
     }
 
