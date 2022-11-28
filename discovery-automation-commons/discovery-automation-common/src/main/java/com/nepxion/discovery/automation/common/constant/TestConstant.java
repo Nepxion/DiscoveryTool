@@ -20,6 +20,6 @@ public class TestConstant {
     public static final String ID = "ID";
     public static final String V = "V";
 
-    public static final String SEPARATE = "@";
+    public static final String SEPARATE = "@@";
     public static final String LINE_SEPARATE = "----------";
 }
