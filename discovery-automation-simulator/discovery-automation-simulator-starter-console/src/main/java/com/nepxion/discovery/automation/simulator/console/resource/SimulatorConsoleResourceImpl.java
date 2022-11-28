@@ -79,6 +79,12 @@ public class SimulatorConsoleResourceImpl extends ConsoleResourceImpl implements
         lock.unlock(key);
     }
 
+    @Override
+    public List<String> getRunningTestCases() {
+        // 获取当前正在运行的测试用例列表
+        return lock.getHeldLocks();
+    }
+
     private String getKey(String testCaseConfig, boolean testCaseConfigWithYaml) throws Exception {
         SimulatorTestCaseConfig simulatorTestCaseConfig = SimulatorTestCaseConfig.fromText(testCaseConfig, testCaseConfigWithYaml);
 

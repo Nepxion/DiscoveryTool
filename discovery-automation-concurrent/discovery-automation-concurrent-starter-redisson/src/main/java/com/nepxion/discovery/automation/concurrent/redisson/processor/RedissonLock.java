@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.StringUtils;
 import org.redisson.Redisson;
 import org.redisson.api.RLock;
 import org.redisson.api.RReadWriteLock;
@@ -134,7 +135,7 @@ public class RedissonLock {
             String key = entry.getKey();
             RLock lock = entry.getValue();
             if (lock.isLocked()) {
-                heldLocks.add(key);
+                heldLocks.add(key.substring(0, key.lastIndexOf("-")));
             }
         }
 
