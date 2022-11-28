@@ -53,18 +53,41 @@ public class RedissonLockProcessor implements DiscoveryLock, DisposableBean {
 
     @Override
     public boolean tryLock(String key) {
-        return redissonLock.tryLock(RedissonLockType.LOCK, key, false, waitSeconds, expireSeconds, TimeUnit.SECONDS);
+        // 默认只实现普通锁，不考虑读写分离锁
+        return tryLock(RedissonLockType.LOCK, key, false);
+    }
+
+    public boolean tryLock(RedissonLockType lockType, String key, boolean fair) {
+        return redissonLock.tryLock(lockType, key, fair, waitSeconds, expireSeconds, TimeUnit.SECONDS);
     }
 
     @Override
     public void unlock(String key) {
-        redissonLock.unlock(RedissonLockType.LOCK, key, false);
+        // 默认只实现普通锁，不考虑读写分离锁
+        unlock(RedissonLockType.LOCK, key, false);
+    }
+
+    public void unlock(RedissonLockType lockType, String key, boolean fair) {
+        redissonLock.unlock(lockType, key, fair);
     }
 
     @Override
     public List<String> getHeldLocks(DiscoveryLockHeldType lockHeldType) {
-        // 只考虑普通锁，读写分离锁不考虑
-        return redissonLock.getHeldLocks(lockHeldType, true);
+        // 默认只实现普通锁，不考虑读写分离锁
+        return getHeldLocks(RedissonLockType.LOCK, lockHeldType, true);
+    }
+
+    public List<String> getHeldLocks(RedissonLockType lockType, DiscoveryLockHeldType lockHeldType, boolean ignoreSuffix) {
+        switch (lockType) {
+            case LOCK:
+                return redissonLock.getHeldLocks(lockHeldType, ignoreSuffix);
+            case READ_LOCK:
+                return redissonLock.getHeldReadLocks(lockHeldType);
+            case WRITE_LOCK:
+                return redissonLock.getHeldWriteLocks(lockHeldType);
+        }
+
+        return null;
     }
 
     @Override
