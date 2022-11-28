@@ -53,12 +53,12 @@ public class RedissonLockTest {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            LOG.info("当前被持有的锁列表 : locks={}, writeLocks={}, readLocks={}", redissonLock.getHeldLocks(), redissonLock.getHeldWriteLocks(), redissonLock.getHeldReadLocks());
+                            LOG.info("当前被持有的锁列表 : locks={}, writeLocks={}, readLocks={}", redissonLock.getHeldLocks(false), redissonLock.getHeldWriteLocks(), redissonLock.getHeldReadLocks());
 
                             boolean acquired = redissonLock.tryLock(RedissonLockType.LOCK, "Lock", false, 0, 10, TimeUnit.SECONDS);
                             LOG.info("{}", acquired ? "拿到锁..." : "未拿到锁...");
 
-                            LOG.info("当前被持有的锁列表 : locks={}, writeLocks={}, readLocks={}", redissonLock.getHeldLocks(), redissonLock.getHeldWriteLocks(), redissonLock.getHeldReadLocks());
+                            LOG.info("当前被持有的锁列表 : locks={}, writeLocks={}, readLocks={}", redissonLock.getHeldLocks(false), redissonLock.getHeldWriteLocks(), redissonLock.getHeldReadLocks());
 
                             if (index % 2 == 0) {
                                 try {
@@ -92,12 +92,12 @@ public class RedissonLockTest {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            LOG.info("当前被持有的锁列表 : locks={}, writeLocks={}, readLocks={}", redissonLock.getHeldLocks(), redissonLock.getHeldWriteLocks(), redissonLock.getHeldReadLocks());
+                            LOG.info("当前被持有的锁列表 : locks={}, writeLocks={}, readLocks={}", redissonLock.getHeldLocks(false), redissonLock.getHeldWriteLocks(), redissonLock.getHeldReadLocks());
 
                             boolean acquired = redissonLock.tryLock(RedissonLockType.WRITE_LOCK, "Lock-RW", false, 0, 10, TimeUnit.SECONDS);
                             LOG.info("{}", acquired ? "1.【写】拿到锁..." : "1.【写】未拿到锁...");
 
-                            LOG.info("当前被持有的锁列表 : locks={}, writeLocks={}, readLocks={}", redissonLock.getHeldLocks(), redissonLock.getHeldWriteLocks(), redissonLock.getHeldReadLocks());
+                            LOG.info("当前被持有的锁列表 : locks={}, writeLocks={}, readLocks={}", redissonLock.getHeldLocks(false), redissonLock.getHeldWriteLocks(), redissonLock.getHeldReadLocks());
 
                             if (index % 2 == 0) {
                                 try {
@@ -126,12 +126,12 @@ public class RedissonLockTest {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            LOG.info("当前被持有的锁列表 : locks={}, writeLocks={}, readLocks={}", redissonLock.getHeldLocks(), redissonLock.getHeldWriteLocks(), redissonLock.getHeldReadLocks());
+                            LOG.info("当前被持有的锁列表 : locks={}, writeLocks={}, readLocks={}", redissonLock.getHeldLocks(false), redissonLock.getHeldWriteLocks(), redissonLock.getHeldReadLocks());
 
                             boolean acquired = redissonLock.tryLock(RedissonLockType.READ_LOCK, "Lock-RW", false, 0, 10, TimeUnit.SECONDS);
                             LOG.info("{}", acquired ? "2.【读】拿到锁..." : "2.【读】未拿到锁...");
 
-                            LOG.info("当前被持有的锁列表 : locks={}, writeLocks={}, readLocks={}", redissonLock.getHeldLocks(), redissonLock.getHeldWriteLocks(), redissonLock.getHeldReadLocks());
+                            LOG.info("当前被持有的锁列表 : locks={}, writeLocks={}, readLocks={}", redissonLock.getHeldLocks(false), redissonLock.getHeldWriteLocks(), redissonLock.getHeldReadLocks());
 
                             if (acquired) {
                                 redissonLock.unlock(RedissonLockType.READ_LOCK, "Lock-RW", false);
