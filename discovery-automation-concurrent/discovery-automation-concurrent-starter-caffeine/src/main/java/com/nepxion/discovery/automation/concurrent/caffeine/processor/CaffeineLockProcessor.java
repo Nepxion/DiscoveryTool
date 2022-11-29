@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.github.benmanes.caffeine.cache.RemovalCause;
 import com.nepxion.discovery.automation.concurrent.caffeine.entity.CaffeineProperties;
 import com.nepxion.discovery.common.lock.DiscoveryLock;
-import com.nepxion.discovery.common.lock.DiscoveryLockHeldType;
 
 public class CaffeineLockProcessor implements DiscoveryLock, DisposableBean {
     private static final Logger LOG = LoggerFactory.getLogger(CaffeineLockProcessor.class);
@@ -66,8 +65,8 @@ public class CaffeineLockProcessor implements DiscoveryLock, DisposableBean {
     }
 
     @Override
-    public List<String> getHeldLocks(DiscoveryLockHeldType lockHeldType) {
-        // Caffeine只支持锁被本地持有的场景
+    public List<String> getHeldLocks() {
+        // Caffeine鍙敮鎸侀攣琚湰鍦版寔鏈夌殑鍦烘櫙
         return caffeineLock.getHeldLocks();
     }
 

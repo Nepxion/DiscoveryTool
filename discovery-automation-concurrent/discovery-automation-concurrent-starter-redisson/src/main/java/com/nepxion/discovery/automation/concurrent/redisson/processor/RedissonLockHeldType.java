@@ -11,22 +11,16 @@ package com.nepxion.discovery.automation.concurrent.redisson.processor;
 
 import com.nepxion.discovery.automation.concurrent.redisson.constant.RedissonConstant;
 
-public enum RedissonLockType {
-    // 非公平锁
-    UNFAIR(RedissonConstant.UNFAIR),
+public enum RedissonLockHeldType {
+    // 锁被分布式持有
+    DISTRIBUTION(RedissonConstant.DISTRIBUTION),
 
-    // 公平锁
-    FAIR(RedissonConstant.FAIR),
-
-    // 读锁
-    READ(RedissonConstant.READ),
-
-    // 写锁
-    WRITE(RedissonConstant.WRITE);
+    // 锁被本地持有
+    LOCAL(RedissonConstant.LOCAL);
 
     private String value;
 
-    private RedissonLockType(String value) {
+    private RedissonLockHeldType(String value) {
         this.value = value;
     }
 
@@ -34,8 +28,8 @@ public enum RedissonLockType {
         return value;
     }
 
-    public static RedissonLockType fromString(String value) {
-        for (RedissonLockType type : RedissonLockType.values()) {
+    public static RedissonLockHeldType fromString(String value) {
+        for (RedissonLockHeldType type : RedissonLockHeldType.values()) {
             if (type.getValue().equalsIgnoreCase(value.trim())) {
                 return type;
             }

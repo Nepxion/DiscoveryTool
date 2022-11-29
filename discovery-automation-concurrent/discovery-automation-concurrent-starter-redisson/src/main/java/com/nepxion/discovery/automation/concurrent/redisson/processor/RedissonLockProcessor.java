@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nepxion.discovery.automation.concurrent.redisson.entity.RedissonProperties;
 import com.nepxion.discovery.common.lock.DiscoveryLock;
-import com.nepxion.discovery.common.lock.DiscoveryLockHeldType;
 
 public class RedissonLockProcessor implements DiscoveryLock, DisposableBean {
     private static final Logger LOG = LoggerFactory.getLogger(RedissonLockProcessor.class);
@@ -53,41 +52,32 @@ public class RedissonLockProcessor implements DiscoveryLock, DisposableBean {
 
     @Override
     public boolean tryLock(String key) {
-        // 默认只实现普通锁，不考虑读写分离锁
-        return tryLock(RedissonLockType.LOCK, key, false);
+        // 默认只实现非公平锁
+        return tryLock(RedissonLockType.UNFAIR, key);
     }
 
-    public boolean tryLock(RedissonLockType lockType, String key, boolean fair) {
-        return redissonLock.tryLock(lockType, key, fair, waitSeconds, expireSeconds, TimeUnit.SECONDS);
+    public boolean tryLock(RedissonLockType lockType, String key) {
+        return redissonLock.tryLock(lockType, key, waitSeconds, expireSeconds, TimeUnit.SECONDS);
     }
 
     @Override
     public void unlock(String key) {
-        // 默认只实现普通锁，不考虑读写分离锁
-        unlock(RedissonLockType.LOCK, key, false);
+        // 默认只实现非公平锁
+        unlock(RedissonLockType.UNFAIR, key);
     }
 
-    public void unlock(RedissonLockType lockType, String key, boolean fair) {
-        redissonLock.unlock(lockType, key, fair);
+    public void unlock(RedissonLockType lockType, String key) {
+        redissonLock.unlock(lockType, key);
     }
 
     @Override
-    public List<String> getHeldLocks(DiscoveryLockHeldType lockHeldType) {
-        // 默认只实现普通锁，不考虑读写分离锁
-        return getHeldLocks(RedissonLockType.LOCK, lockHeldType, true);
+    public List<String> getHeldLocks() {
+        // 默认只实现非公平锁
+        return getHeldLocks(RedissonLockType.UNFAIR, RedissonLockHeldType.DISTRIBUTION);
     }
 
-    public List<String> getHeldLocks(RedissonLockType lockType, DiscoveryLockHeldType lockHeldType, boolean ignoreSuffix) {
-        switch (lockType) {
-            case LOCK:
-                return redissonLock.getHeldLocks(lockHeldType, ignoreSuffix);
-            case READ_LOCK:
-                return redissonLock.getHeldReadLocks(lockHeldType);
-            case WRITE_LOCK:
-                return redissonLock.getHeldWriteLocks(lockHeldType);
-        }
-
-        return null;
+    public List<String> getHeldLocks(RedissonLockType lockType, RedissonLockHeldType lockHeldType) {
+        return redissonLock.getHeldLocks(lockType, lockHeldType);
     }
 
     @Override
