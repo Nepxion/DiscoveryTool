@@ -12,7 +12,7 @@ echo '============================================================='
 
 echo -n $'\e'"]0;Nepxion Discovery Inspector"$'\a'
 
-java -jar -Dfile.encoding=UTF-8 discovery-automation-inspector-1.1.0.jar --spring.config.location=./
+java -jar -Dfile.encoding=UTF-8 -Dnepxion.banner.shown.ansi.mode=true discovery-automation-inspector-1.1.0.jar --spring.config.location=./
 
 function pause(){
   echo 'Press any key to continue...'
