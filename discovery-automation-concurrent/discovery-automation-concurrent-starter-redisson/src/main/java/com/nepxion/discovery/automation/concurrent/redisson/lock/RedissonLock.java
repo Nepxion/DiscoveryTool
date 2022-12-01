@@ -61,9 +61,9 @@ public class RedissonLock {
     }
 
     public boolean tryLock(RedissonLockType lockType, String key, long waitTime, long leaseTime, TimeUnit timeUnit) {
-        if (!isStarted()) {
+        /*if (!isStarted()) {
             return false;
-        }
+        }*/
 
         RLock lock = getLock(lockType, key);
         try {
@@ -79,9 +79,9 @@ public class RedissonLock {
     }
 
     public void unlock(RedissonLockType lockType, String key) {
-        if (!isStarted()) {
+        /*if (!isStarted()) {
             return;
-        }
+        }*/
 
         RLock lock = getLock(lockType, key);
         if (lock.isLocked() && lock.isHeldByCurrentThread()) {
