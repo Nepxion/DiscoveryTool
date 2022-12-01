@@ -1,4 +1,4 @@
-package com.nepxion.discovery.automation.concurrent.thread.processor;
+package com.nepxion.discovery.automation.concurrent.thread.task;
 
 /**
  * <p>Title: Nepxion Discovery</p>
@@ -18,8 +18,8 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.nepxion.discovery.automation.concurrent.thread.entity.ThreadProperties;
 
-public class ThreadProcessor {
-    private static final Logger LOG = LoggerFactory.getLogger(ThreadProcessor.class);
+public class ThreadTaskWrapper {
+    private static final Logger LOG = LoggerFactory.getLogger(ThreadTaskWrapper.class);
 
     @Autowired
     private ThreadPoolTaskExecutor taskExecutor;

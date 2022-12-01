@@ -1,4 +1,4 @@
-package com.nepxion.discovery.automation.concurrent.redisson.processor;
+package com.nepxion.discovery.automation.concurrent.redisson.lock;
 
 /**
  * <p>Title: Nepxion Discovery</p>
@@ -23,8 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.nepxion.discovery.automation.concurrent.redisson.entity.RedissonProperties;
 import com.nepxion.discovery.common.lock.DiscoveryLock;
 
-public class RedissonLockProcessor implements DiscoveryLock, DisposableBean {
-    private static final Logger LOG = LoggerFactory.getLogger(RedissonLockProcessor.class);
+public class RedissonLockWrapper implements DiscoveryLock, DisposableBean {
+    private static final Logger LOG = LoggerFactory.getLogger(RedissonLockWrapper.class);
 
     @Autowired
     private RedissonProperties redissonProperties;

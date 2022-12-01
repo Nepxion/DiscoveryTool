@@ -18,7 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.benmanes.caffeine.cache.RemovalCause;
-import com.nepxion.discovery.automation.concurrent.caffeine.processor.CaffeineLock;
+import com.nepxion.discovery.automation.concurrent.caffeine.lock.CaffeineLock;
 
 public class CaffeineLockTest {
     private static final Logger LOG = LoggerFactory.getLogger(CaffeineLockTest.class);

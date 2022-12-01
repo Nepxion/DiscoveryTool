@@ -14,13 +14,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.nepxion.discovery.automation.concurrent.caffeine.entity.CaffeineProperties;
-import com.nepxion.discovery.automation.concurrent.caffeine.processor.CaffeineLockProcessor;
+import com.nepxion.discovery.automation.concurrent.caffeine.lock.CaffeineLockWrapper;
 
 @Configuration
 @EnableConfigurationProperties({ CaffeineProperties.class })
 public class CaffeineAutoConfiguration {
     @Bean
-    public CaffeineLockProcessor caffeineLockProcessor() {
-        return new CaffeineLockProcessor();
+    public CaffeineLockWrapper caffeineLockWrapper() {
+        return new CaffeineLockWrapper();
     }
 }

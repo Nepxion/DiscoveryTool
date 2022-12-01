@@ -1,4 +1,4 @@
-package com.nepxion.discovery.automation.concurrent.redisson.processor;
+package com.nepxion.discovery.automation.concurrent.redisson.lock;
 
 /**
  * <p>Title: Nepxion Discovery</p>

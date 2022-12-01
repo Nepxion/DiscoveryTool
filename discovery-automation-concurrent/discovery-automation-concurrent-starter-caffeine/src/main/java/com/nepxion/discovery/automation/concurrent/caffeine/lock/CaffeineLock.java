@@ -1,4 +1,4 @@
-package com.nepxion.discovery.automation.concurrent.caffeine.processor;
+package com.nepxion.discovery.automation.concurrent.caffeine.lock;
 
 /**
  * <p>Title: Nepxion Discovery</p>

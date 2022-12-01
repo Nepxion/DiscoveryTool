@@ -18,9 +18,9 @@ import org.redisson.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.nepxion.discovery.automation.concurrent.redisson.processor.RedissonLock;
-import com.nepxion.discovery.automation.concurrent.redisson.processor.RedissonLockHeldType;
-import com.nepxion.discovery.automation.concurrent.redisson.processor.RedissonLockType;
+import com.nepxion.discovery.automation.concurrent.redisson.lock.RedissonLock;
+import com.nepxion.discovery.automation.concurrent.redisson.lock.RedissonLockHeldType;
+import com.nepxion.discovery.automation.concurrent.redisson.lock.RedissonLockType;
 import com.nepxion.discovery.common.constant.DiscoveryConstant;
 import com.nepxion.discovery.common.property.DiscoveryContent;
 

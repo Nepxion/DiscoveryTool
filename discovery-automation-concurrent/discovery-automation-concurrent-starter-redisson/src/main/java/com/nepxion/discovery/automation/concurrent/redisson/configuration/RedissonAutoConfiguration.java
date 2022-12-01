@@ -14,13 +14,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.nepxion.discovery.automation.concurrent.redisson.entity.RedissonProperties;
-import com.nepxion.discovery.automation.concurrent.redisson.processor.RedissonLockProcessor;
+import com.nepxion.discovery.automation.concurrent.redisson.lock.RedissonLockWrapper;
 
 @Configuration
 @EnableConfigurationProperties({ RedissonProperties.class })
 public class RedissonAutoConfiguration {
     @Bean
-    public RedissonLockProcessor redissonLockProcessor() {
-        return new RedissonLockProcessor();
+    public RedissonLockWrapper redissonLockWrapper() {
+        return new RedissonLockWrapper();
     }
 }

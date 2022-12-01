@@ -14,13 +14,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.nepxion.discovery.automation.concurrent.thread.entity.ThreadProperties;
-import com.nepxion.discovery.automation.concurrent.thread.processor.ThreadProcessor;
+import com.nepxion.discovery.automation.concurrent.thread.task.ThreadTaskWrapper;
 
 @Configuration
 @EnableConfigurationProperties({ ThreadProperties.class })
 public class ThreadAutoConfiguration {
     @Bean
-    public ThreadProcessor threadProcessor() {
-        return new ThreadProcessor();
+    public ThreadTaskWrapper threadTaskWrapper() {
+        return new ThreadTaskWrapper();
     }
 }

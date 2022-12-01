@@ -1,4 +1,4 @@
-package com.nepxion.discovery.automation.concurrent.caffeine.processor;
+package com.nepxion.discovery.automation.concurrent.caffeine.lock;
 
 /**
  * <p>Title: Nepxion Discovery</p>
@@ -24,8 +24,8 @@ import com.github.benmanes.caffeine.cache.RemovalCause;
 import com.nepxion.discovery.automation.concurrent.caffeine.entity.CaffeineProperties;
 import com.nepxion.discovery.common.lock.DiscoveryLock;
 
-public class CaffeineLockProcessor implements DiscoveryLock, DisposableBean {
-    private static final Logger LOG = LoggerFactory.getLogger(CaffeineLockProcessor.class);
+public class CaffeineLockWrapper implements DiscoveryLock, DisposableBean {
+    private static final Logger LOG = LoggerFactory.getLogger(CaffeineLockWrapper.class);
 
     @Autowired
     private CaffeineProperties caffeineProperties;
