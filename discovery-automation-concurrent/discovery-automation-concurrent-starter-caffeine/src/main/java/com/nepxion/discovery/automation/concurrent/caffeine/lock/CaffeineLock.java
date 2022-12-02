@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -30,6 +32,7 @@ public class CaffeineLock {
     private static final Logger LOG = LoggerFactory.getLogger(CaffeineLock.class);
 
     private LoadingCache<String, String> loadingCache;
+    private Lock lock = new ReentrantLock();
 
     public CaffeineLock(int initialCapacity, int maximumSize, int expireSeconds) {
         loadingCache = Caffeine.newBuilder()
@@ -55,19 +58,39 @@ public class CaffeineLock {
         return loadingCache;
     }
 
-    public synchronized boolean tryLock(String key) {
-        boolean acquired = loadingCache.getIfPresent(key) == null;
-        if (acquired) {
-            loadingCache.put(key, Boolean.TRUE.toString());
-        }
+    public boolean tryLock(String key) {
+        lock.lock();
+        try {
+            boolean absent = loadingCache.getIfPresent(key) == null;
+            if (absent) {
+                loadingCache.put(key, Boolean.TRUE.toString());
+            }
 
-        return acquired;
+            return absent;
+        } finally {
+            lock.unlock();
+        }
     }
 
-    public synchronized void unlock(String key) {
-        boolean acquired = loadingCache.getIfPresent(key) == null;
-        if (!acquired) {
+    public void lock(String key) {
+        lock.lock();
+        try {
             loadingCache.invalidate(key);
+            loadingCache.put(key, Boolean.TRUE.toString());
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public void unlock(String key) {
+        lock.lock();
+        try {
+            boolean absent = loadingCache.getIfPresent(key) == null;
+            if (!absent) {
+                loadingCache.invalidate(key);
+            }
+        } finally {
+            lock.unlock();
         }
     }
 

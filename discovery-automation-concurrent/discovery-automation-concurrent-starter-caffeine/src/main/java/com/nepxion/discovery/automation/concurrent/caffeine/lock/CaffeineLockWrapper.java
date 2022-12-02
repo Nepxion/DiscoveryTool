@@ -60,6 +60,11 @@ public class CaffeineLockWrapper implements DiscoveryLock, DisposableBean {
     }
 
     @Override
+    public void lock(String key) {
+        caffeineLock.lock(key);
+    }
+
+    @Override
     public void unlock(String key) {
         caffeineLock.unlock(key);
     }
