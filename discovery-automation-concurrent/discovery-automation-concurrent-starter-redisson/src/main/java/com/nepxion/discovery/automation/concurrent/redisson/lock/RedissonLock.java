@@ -37,6 +37,7 @@ public class RedissonLock {
     private volatile Map<String, RLock> fairLockMap;
     private volatile Map<String, RLock> readLockMap;
     private volatile Map<String, RLock> writeLockMap;
+    private volatile Map<String, RLock> spinLockMap;
     private volatile Map<RedissonLockType, List<Long>> lockThreadIdMap;
 
     public RedissonLock(Config config) {
@@ -49,11 +50,13 @@ public class RedissonLock {
         this.fairLockMap = new ConcurrentHashMap<String, RLock>();
         this.readLockMap = new ConcurrentHashMap<String, RLock>();
         this.writeLockMap = new ConcurrentHashMap<String, RLock>();
+        this.spinLockMap = new ConcurrentHashMap<String, RLock>();
         this.lockThreadIdMap = new ConcurrentHashMap<RedissonLockType, List<Long>>();
         this.lockThreadIdMap.put(RedissonLockType.UNFAIR, new CopyOnWriteArrayList<Long>());
         this.lockThreadIdMap.put(RedissonLockType.FAIR, new CopyOnWriteArrayList<Long>());
         this.lockThreadIdMap.put(RedissonLockType.READ, new CopyOnWriteArrayList<Long>());
         this.lockThreadIdMap.put(RedissonLockType.WRITE, new CopyOnWriteArrayList<Long>());
+        this.lockThreadIdMap.put(RedissonLockType.SPIN, new CopyOnWriteArrayList<Long>());
     }
 
     public RedissonClient getRedissonClient() {
@@ -78,17 +81,43 @@ public class RedissonLock {
         }
     }
 
+    public void lock(RedissonLockType lockType, String key, long leaseTime, TimeUnit timeUnit) {
+        /*if (!isStarted()) {
+            return;
+        }*/
+
+        RLock lock = getLock(lockType, key);
+        // 考虑到自旋锁SpinLock的阻塞情况，这里不能加判断
+        /*if (lock.isLocked()) {
+            return;
+        }
+
+        if (lock.isHeldByCurrentThread()) {
+            return;
+        }*/
+
+        lock.lock(leaseTime, timeUnit);
+
+        addCurrentThreadId(lockType);
+    }
+
     public void unlock(RedissonLockType lockType, String key) {
         /*if (!isStarted()) {
             return;
         }*/
 
         RLock lock = getLock(lockType, key);
-        if (lock.isLocked() && lock.isHeldByCurrentThread()) {
-            lock.unlock();
-
-            removeCurrentThreadId(lockType);
+        if (!lock.isLocked()) {
+            return;
         }
+
+        if (!lock.isHeldByCurrentThread()) {
+            return;
+        }
+
+        lock.unlock();
+
+        removeCurrentThreadId(lockType);
     }
 
     public RLock getLock(RedissonLockType lockType, String key) {
@@ -101,6 +130,8 @@ public class RedissonLock {
                 return getCachedReadLock(key);
             case WRITE:
                 return getCachedWriteLock(key);
+            case SPIN:
+                return getCachedSpinLock(key);
         }
 
         return null;
@@ -158,6 +189,19 @@ public class RedissonLock {
         return lock;
     }
 
+    private RLock getCachedSpinLock(String key) {
+        RLock lock = spinLockMap.get(key);
+        if (lock == null) {
+            RLock newLock = getNewSpinLock(RedissonConstant.SPIN + "-" + key);
+            lock = spinLockMap.putIfAbsent(key, newLock);
+            if (lock == null) {
+                lock = newLock;
+            }
+        }
+
+        return lock;
+    }
+
     private RLock getNewUnfairLock(String key) {
         return redissonClient.getLock(key);
     }
@@ -178,6 +222,10 @@ public class RedissonLock {
         RReadWriteLock readWriteLock = redissonClient.getReadWriteLock(key);
 
         return readWriteLock;
+    }
+
+    private RLock getNewSpinLock(String key) {
+        return redissonClient.getSpinLock(key);
     }
 
     private void addCurrentThreadId(RedissonLockType lockType) {
@@ -247,6 +295,8 @@ public class RedissonLock {
                 return readLockMap;
             case WRITE:
                 return writeLockMap;
+            case SPIN:
+                return spinLockMap;
         }
 
         return null;
@@ -262,6 +312,7 @@ public class RedissonLock {
             destroy(RedissonLockType.FAIR);
             destroy(RedissonLockType.READ);
             destroy(RedissonLockType.WRITE);
+            destroy(RedissonLockType.SPIN);
         } catch (Exception e) {
             LOG.info("Failed to destroy Redisson Held Locks", e);
         }

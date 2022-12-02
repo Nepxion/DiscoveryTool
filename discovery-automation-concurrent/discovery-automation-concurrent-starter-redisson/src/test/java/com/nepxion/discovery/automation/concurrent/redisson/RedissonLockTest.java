@@ -48,14 +48,16 @@ public class RedissonLockTest {
         // testLock4(redissonLock);
         // testLock5(redissonLock);
         // testLock6(redissonLock);
+        // testLock7(redissonLock);
     }
 
     public static void testLock0(RedissonLock redissonLock) {
-        LOG.info("当前被持有的锁列表和线程Id列表 : unfairLocks={}, fairLocks={}, readLocks={}, writeLocks={}",
+        LOG.info("当前被持有的锁列表和线程Id列表 : unfairLocks={}, fairLocks={}, readLocks={}, writeLocks={}, spinLocks={}",
                 redissonLock.getHeldLocks(RedissonLockType.UNFAIR, RedissonLockHeldType.LOCAL),
                 redissonLock.getHeldLocks(RedissonLockType.FAIR, RedissonLockHeldType.LOCAL),
                 redissonLock.getHeldLocks(RedissonLockType.READ, RedissonLockHeldType.LOCAL),
-                redissonLock.getHeldLocks(RedissonLockType.WRITE, RedissonLockHeldType.LOCAL));
+                redissonLock.getHeldLocks(RedissonLockType.WRITE, RedissonLockHeldType.LOCAL),
+                redissonLock.getHeldLocks(RedissonLockType.SPIN, RedissonLockHeldType.LOCAL));
     }
 
     public static void testLock1(RedissonLock redissonLock) {
@@ -264,5 +266,42 @@ public class RedissonLockTest {
         redissonLock.destroy();
 
         System.exit(0);
+    }
+
+    // 当一个线程尝试去获取某一把锁的时候，如果这个锁已经被另外一个线程占有了，那么此线程就无法获取这把锁，该线程会等待，间隔一段时间后再次尝试获取
+    // 这种采用循环加锁，等待锁释放的机制就称为自旋锁
+    public static void testLock7(RedissonLock redissonLock) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                testLock0(redissonLock);
+
+                // 对于一般锁来说，lock不会阻塞线程，而自旋锁需要阻塞才拿到锁
+                // 该测试用例，运行第一遍，可以立刻拿到锁；运行第二遍，需要阻塞，等待第一遍的锁过期
+                redissonLock.lock(RedissonLockType.SPIN, "Discovery", 30, TimeUnit.SECONDS);
+                LOG.info("1.自旋锁 - {}", "☎☎☎ 拿到锁 ☎☎☎...");
+
+                testLock0(redissonLock);
+            }
+        }).start();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                testLock0(redissonLock);
+
+                // tryLock不会阻塞，实时返回（Redisson Bug？）
+                boolean acquired = redissonLock.tryLock(RedissonLockType.SPIN, "Discovery", 0, 30, TimeUnit.SECONDS);
+                LOG.info("2.自旋锁 - {}", acquired ? "☎☎☎ 拿到锁 ☎☎☎..." : "未拿到锁...");
+
+                testLock0(redissonLock);
+            }
+        }).start();
     }
 }

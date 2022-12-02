@@ -22,7 +22,10 @@ public enum RedissonLockType {
     READ(RedissonConstant.READ),
 
     // 写锁
-    WRITE(RedissonConstant.WRITE);
+    WRITE(RedissonConstant.WRITE),
+
+    // 自旋锁
+    SPIN(RedissonConstant.SPIN);
 
     private String value;
 

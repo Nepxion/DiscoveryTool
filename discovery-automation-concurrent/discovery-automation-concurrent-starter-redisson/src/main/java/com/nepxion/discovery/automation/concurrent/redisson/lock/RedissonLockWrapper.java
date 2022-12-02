@@ -61,6 +61,16 @@ public class RedissonLockWrapper implements DiscoveryLock, DisposableBean {
     }
 
     @Override
+    public void lock(String key) {
+        // 默认只实现非公平锁
+        lock(RedissonLockType.UNFAIR, key);
+    }
+
+    public void lock(RedissonLockType lockType, String key) {
+        redissonLock.lock(lockType, key, expireSeconds, TimeUnit.SECONDS);
+    }
+
+    @Override
     public void unlock(String key) {
         // 默认只实现非公平锁
         unlock(RedissonLockType.UNFAIR, key);

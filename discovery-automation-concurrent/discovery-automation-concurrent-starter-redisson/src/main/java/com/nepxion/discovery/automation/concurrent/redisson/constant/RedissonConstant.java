@@ -15,6 +15,7 @@ public class RedissonConstant {
     public static final String READ = "nepxion-lock-read";
     public static final String WRITE = "nepxion-lock-write";
     public static final String READ_WRITE = "nepxion-lock-read-write";
+    public static final String SPIN = "nepxion-lock-spin";
 
     public static final String DISTRIBUTION = "distribution";
     public static final String LOCAL = "local";
