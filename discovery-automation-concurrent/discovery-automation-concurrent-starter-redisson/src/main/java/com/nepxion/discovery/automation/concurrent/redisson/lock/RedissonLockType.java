@@ -13,7 +13,7 @@ import com.nepxion.discovery.automation.concurrent.redisson.constant.RedissonCon
 
 public enum RedissonLockType {
     // 非公平锁
-    UNFAIR(RedissonConstant.UNFAIR),
+    NONFAIR(RedissonConstant.NONFAIR),
 
     // 公平锁
     FAIR(RedissonConstant.FAIR),

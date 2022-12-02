@@ -52,8 +52,8 @@ public class RedissonLockTest {
     }
 
     public static void testLock0(RedissonLock redissonLock) {
-        LOG.info("当前被持有的锁列表和线程Id列表 : unfairLocks={}, fairLocks={}, readLocks={}, writeLocks={}, spinLocks={}",
-                redissonLock.getHeldLocks(RedissonLockType.UNFAIR, RedissonLockHeldType.LOCAL),
+        LOG.info("当前被持有的锁列表和线程Id列表 : nonfairLocks={}, fairLocks={}, readLocks={}, writeLocks={}, spinLocks={}",
+                redissonLock.getHeldLocks(RedissonLockType.NONFAIR, RedissonLockHeldType.LOCAL),
                 redissonLock.getHeldLocks(RedissonLockType.FAIR, RedissonLockHeldType.LOCAL),
                 redissonLock.getHeldLocks(RedissonLockType.READ, RedissonLockHeldType.LOCAL),
                 redissonLock.getHeldLocks(RedissonLockType.WRITE, RedissonLockHeldType.LOCAL),
@@ -70,7 +70,7 @@ public class RedissonLockTest {
                         public void run() {
                             testLock0(redissonLock);
 
-                            boolean acquired = redissonLock.tryLock(RedissonLockType.UNFAIR, "Discovery", 0, 10, TimeUnit.SECONDS);
+                            boolean acquired = redissonLock.tryLock(RedissonLockType.NONFAIR, "Discovery", 0, 10, TimeUnit.SECONDS);
                             LOG.info("{}", acquired ? "☎☎☎ 拿到锁 ☎☎☎..." : "未拿到锁...");
 
                             testLock0(redissonLock);
@@ -83,7 +83,7 @@ public class RedissonLockTest {
                                 }
 
                                 if (acquired) {
-                                    redissonLock.unlock(RedissonLockType.UNFAIR, "Discovery");
+                                    redissonLock.unlock(RedissonLockType.NONFAIR, "Discovery");
                                     LOG.info("{}", "=== 释放锁 ===");
                                 }
                             }
@@ -201,7 +201,7 @@ public class RedissonLockTest {
                 @Override
                 public void run() {
                     // 非公平锁下，8个线程一起去拿锁，“随机”一个拿到，1秒过期后，另外7个去抢占，最后依次拿到锁
-                    boolean acquired = redissonLock.tryLock(RedissonLockType.UNFAIR, "Discovery", 10, 1, TimeUnit.SECONDS);
+                    boolean acquired = redissonLock.tryLock(RedissonLockType.NONFAIR, "Discovery", 10, 1, TimeUnit.SECONDS);
                     LOG.info(i + ".非公平锁 - {}", acquired ? "☎☎☎ 拿到锁 ☎☎☎..." : "未拿到锁...");
                 }
             }).start();
@@ -251,7 +251,7 @@ public class RedissonLockTest {
 
                 @Override
                 public void run() {
-                    boolean acquired = redissonLock.tryLock(RedissonLockType.UNFAIR, "Discovery" + i, 1, 2, TimeUnit.HOURS);
+                    boolean acquired = redissonLock.tryLock(RedissonLockType.NONFAIR, "Discovery" + i, 1, 2, TimeUnit.HOURS);
                     LOG.info(i + ".非公平锁 - {}", acquired ? "☎☎☎ 拿到锁 ☎☎☎..." : "未拿到锁...");
                 }
             }).start();

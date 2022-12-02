@@ -33,7 +33,7 @@ public class RedissonLock {
     private RedissonClient redissonClient;
 
     // 可重入锁可重复使用, 不需要考虑锁删除
-    private volatile Map<String, RLock> unfairLockMap;
+    private volatile Map<String, RLock> nonfairLockMap;
     private volatile Map<String, RLock> fairLockMap;
     private volatile Map<String, RLock> readLockMap;
     private volatile Map<String, RLock> writeLockMap;
@@ -46,13 +46,13 @@ public class RedissonLock {
 
     public RedissonLock(RedissonClient redissonClient) {
         this.redissonClient = redissonClient;
-        this.unfairLockMap = new ConcurrentHashMap<String, RLock>();
+        this.nonfairLockMap = new ConcurrentHashMap<String, RLock>();
         this.fairLockMap = new ConcurrentHashMap<String, RLock>();
         this.readLockMap = new ConcurrentHashMap<String, RLock>();
         this.writeLockMap = new ConcurrentHashMap<String, RLock>();
         this.spinLockMap = new ConcurrentHashMap<String, RLock>();
         this.lockThreadIdMap = new ConcurrentHashMap<RedissonLockType, List<Long>>();
-        this.lockThreadIdMap.put(RedissonLockType.UNFAIR, new CopyOnWriteArrayList<Long>());
+        this.lockThreadIdMap.put(RedissonLockType.NONFAIR, new CopyOnWriteArrayList<Long>());
         this.lockThreadIdMap.put(RedissonLockType.FAIR, new CopyOnWriteArrayList<Long>());
         this.lockThreadIdMap.put(RedissonLockType.READ, new CopyOnWriteArrayList<Long>());
         this.lockThreadIdMap.put(RedissonLockType.WRITE, new CopyOnWriteArrayList<Long>());
@@ -122,8 +122,8 @@ public class RedissonLock {
 
     public RLock getLock(RedissonLockType lockType, String key) {
         switch (lockType) {
-            case UNFAIR:
-                return getCachedUnfairLock(key);
+            case NONFAIR:
+                return getCachedNonfairLock(key);
             case FAIR:
                 return getCachedFairLock(key);
             case READ:
@@ -137,11 +137,11 @@ public class RedissonLock {
         return null;
     }
 
-    private RLock getCachedUnfairLock(String key) {
-        RLock lock = unfairLockMap.get(key);
+    private RLock getCachedNonfairLock(String key) {
+        RLock lock = nonfairLockMap.get(key);
         if (lock == null) {
-            RLock newLock = getNewUnfairLock(RedissonConstant.UNFAIR +  "-" + key);
-            lock = unfairLockMap.putIfAbsent(key, newLock);
+            RLock newLock = getNewNonfairLock(RedissonConstant.NONFAIR +  "-" + key);
+            lock = nonfairLockMap.putIfAbsent(key, newLock);
             if (lock == null) {
                 lock = newLock;
             }
@@ -202,7 +202,7 @@ public class RedissonLock {
         return lock;
     }
 
-    private RLock getNewUnfairLock(String key) {
+    private RLock getNewNonfairLock(String key) {
         return redissonClient.getLock(key);
     }
 
@@ -287,8 +287,8 @@ public class RedissonLock {
 
     private Map<String, RLock> getLockMap(RedissonLockType lockType) {
         switch (lockType) {
-            case UNFAIR:
-                return unfairLockMap;
+            case NONFAIR:
+                return nonfairLockMap;
             case FAIR:
                 return fairLockMap;
             case READ:
@@ -308,7 +308,7 @@ public class RedissonLock {
         }
 
         try {
-            destroy(RedissonLockType.UNFAIR);
+            destroy(RedissonLockType.NONFAIR);
             destroy(RedissonLockType.FAIR);
             destroy(RedissonLockType.READ);
             destroy(RedissonLockType.WRITE);

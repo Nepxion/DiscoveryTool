@@ -53,7 +53,7 @@ public class RedissonLockWrapper implements DiscoveryLock, DisposableBean {
     @Override
     public boolean tryLock(String key) {
         // 默认只实现非公平锁
-        return tryLock(RedissonLockType.UNFAIR, key);
+        return tryLock(RedissonLockType.NONFAIR, key);
     }
 
     public boolean tryLock(RedissonLockType lockType, String key) {
@@ -63,7 +63,7 @@ public class RedissonLockWrapper implements DiscoveryLock, DisposableBean {
     @Override
     public void lock(String key) {
         // 默认只实现非公平锁
-        lock(RedissonLockType.UNFAIR, key);
+        lock(RedissonLockType.NONFAIR, key);
     }
 
     public void lock(RedissonLockType lockType, String key) {
@@ -73,7 +73,7 @@ public class RedissonLockWrapper implements DiscoveryLock, DisposableBean {
     @Override
     public void unlock(String key) {
         // 默认只实现非公平锁
-        unlock(RedissonLockType.UNFAIR, key);
+        unlock(RedissonLockType.NONFAIR, key);
     }
 
     public void unlock(RedissonLockType lockType, String key) {
@@ -83,7 +83,7 @@ public class RedissonLockWrapper implements DiscoveryLock, DisposableBean {
     @Override
     public List<String> getHeldLocks() {
         // 默认只实现非公平锁
-        return getHeldLocks(RedissonLockType.UNFAIR, RedissonLockHeldType.DISTRIBUTION);
+        return getHeldLocks(RedissonLockType.NONFAIR, RedissonLockHeldType.DISTRIBUTION);
     }
 
     public List<String> getHeldLocks(RedissonLockType lockType, RedissonLockHeldType lockHeldType) {
