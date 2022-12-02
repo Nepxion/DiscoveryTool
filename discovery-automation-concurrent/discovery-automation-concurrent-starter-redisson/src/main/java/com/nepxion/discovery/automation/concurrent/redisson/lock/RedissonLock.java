@@ -109,7 +109,7 @@ public class RedissonLock {
     private RLock getCachedUnfairLock(String key) {
         RLock lock = unfairLockMap.get(key);
         if (lock == null) {
-            RLock newLock = getNewUnfairLock(key + "-" + RedissonConstant.UNFAIR);
+            RLock newLock = getNewUnfairLock(RedissonConstant.UNFAIR +  "-" + key);
             lock = unfairLockMap.putIfAbsent(key, newLock);
             if (lock == null) {
                 lock = newLock;
@@ -122,7 +122,7 @@ public class RedissonLock {
     private RLock getCachedFairLock(String key) {
         RLock lock = fairLockMap.get(key);
         if (lock == null) {
-            RLock newLock = getNewFairLock(key + "-" + RedissonConstant.FAIR);
+            RLock newLock = getNewFairLock(RedissonConstant.FAIR +  "-" + key);
             lock = fairLockMap.putIfAbsent(key, newLock);
             if (lock == null) {
                 lock = newLock;
@@ -135,7 +135,7 @@ public class RedissonLock {
     private RLock getCachedReadLock(String key) {
         RLock lock = readLockMap.get(key);
         if (lock == null) {
-            RLock newLock = getNewReadLock(key + "-" + RedissonConstant.READ_WRITE);
+            RLock newLock = getNewReadLock(RedissonConstant.READ_WRITE + "-" + key);
             lock = readLockMap.putIfAbsent(key, newLock);
             if (lock == null) {
                 lock = newLock;
@@ -148,7 +148,7 @@ public class RedissonLock {
     private RLock getCachedWriteLock(String key) {
         RLock lock = writeLockMap.get(key);
         if (lock == null) {
-            RLock newLock = getNewWriteLock(key + "-" + RedissonConstant.READ_WRITE);
+            RLock newLock = getNewWriteLock(RedissonConstant.READ_WRITE +  "-" + key);
             lock = writeLockMap.putIfAbsent(key, newLock);
             if (lock == null) {
                 lock = newLock;
