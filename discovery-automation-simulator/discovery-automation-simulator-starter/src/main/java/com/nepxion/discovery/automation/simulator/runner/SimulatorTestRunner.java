@@ -180,9 +180,12 @@ public class SimulatorTestRunner extends TestRunner {
         SimulatorTestStrategy testStrategy = new SimulatorTestStrategy();
         testStrategy.setTestRestTemplate(testRestTemplate);
         testStrategy.testInitialization(testCaseEntityContent, testCaseReleaseBasicConditionContent, testCaseReleaseFirstConditionContent, testCaseReleaseSecondConditionContent, testCaseConfigWithYaml);
+
         LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
-        LOG.info("【模拟场景{}】* 测试通过...", sceneIndex);
+        testHighlightGreen("测试结果 : 通过");
+
+        LOG.info("【模拟场景{}】结束", sceneIndex);
 
         return testStrategy;
     }
@@ -196,9 +199,12 @@ public class SimulatorTestRunner extends TestRunner {
         SimulatorTestStrategy testStrategy = new SimulatorTestStrategy();
         testStrategy.setTestRestTemplate(testRestTemplate);
         testStrategy.testInitialization(testCaseEntity, testCaseReleaseBasicCondition, testCaseReleaseFirstCondition, testCaseReleaseSecondCondition);
+
         LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
-        LOG.info("【模拟场景{}】* 测试通过...", sceneIndex);
+        testHighlightGreen("测试结果 : 通过");
+
+        LOG.info("【模拟场景{}】结束", sceneIndex);
 
         return testStrategy;
     }
@@ -228,9 +234,12 @@ public class SimulatorTestRunner extends TestRunner {
                 testCases.testNormal(testStrategy);
             }
         }
+
         LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
-        LOG.info("【模拟场景{}】* 测试通过...", sceneIndex);
+        testHighlightGreen("测试结果 : 通过");
+
+        LOG.info("【模拟场景{}】结束", sceneIndex);
     }
 
     public void testVersionBasicRelease(int sceneIndex, int releaseIndex, String input, SimulatorTestStrategy testStrategy) throws Exception {
@@ -255,9 +264,12 @@ public class SimulatorTestRunner extends TestRunner {
         for (int i = 0; i < loopCount; i++) {
             testCases.testBasic(testStrategy);
         }
+
         LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
-        LOG.info("【模拟场景{}】* 测试通过...", sceneIndex);
+        testHighlightGreen("测试结果 : 通过");
+
+        LOG.info("【模拟场景{}】结束", sceneIndex);
     }
 
     public void testVersionBlueGreenGrayRelease(int sceneIndex, int releaseIndex, String input, SimulatorTestStrategy testStrategy) throws Exception {
@@ -285,6 +297,7 @@ public class SimulatorTestRunner extends TestRunner {
             for (int i = 0; i < loopCount; i++) {
                 testCases.testBlueGreen(testStrategy, null);
             }
+
             LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
             List<SimulatorTestCaseConditionData> testCaseBlueGreenConditionDataList = Arrays.asList(testStrategy.getTestCaseGreenConditionData(), testStrategy.getTestCaseBlueConditionData());
@@ -324,9 +337,11 @@ public class SimulatorTestRunner extends TestRunner {
                 }
                 LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
             }
-
-            LOG.info("【模拟场景{}】* 测试通过...", sceneIndex);
         }
+
+        testHighlightGreen("测试结果 : 通过");
+
+        LOG.info("【模拟场景{}】结束", sceneIndex);
     }
 
     public void testResetRelease(int sceneIndex, int releaseIndex, SimulatorTestStrategy testStrategy) throws Exception {
@@ -352,9 +367,12 @@ public class SimulatorTestRunner extends TestRunner {
                 testCases.testNormal(testStrategy);
             }
         }
+
         LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
-        LOG.info("【模拟场景{}】* 测试通过...", sceneIndex);
+        testHighlightGreen("测试结果 : 通过");
+
+        LOG.info("【模拟场景{}】结束", sceneIndex);
     }
 
     @Override

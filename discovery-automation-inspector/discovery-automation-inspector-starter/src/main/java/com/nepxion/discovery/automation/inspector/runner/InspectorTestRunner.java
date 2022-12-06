@@ -77,7 +77,10 @@ public class InspectorTestRunner extends TestRunner {
         long startTime = System.currentTimeMillis();
         InspectorTestStrategy testStrategy = new InspectorTestStrategy();
         testStrategy.testInitialization(testCaseEntityContent, testCaseConditionContent, testCaseConfigWithYaml);
+
         LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
+
+        LOG.info("【侦测场景{}】结束", sceneIndex);
 
         return testStrategy;
     }
@@ -90,7 +93,10 @@ public class InspectorTestRunner extends TestRunner {
         long startTime = System.currentTimeMillis();
         InspectorTestStrategy testStrategy = new InspectorTestStrategy();
         testStrategy.testInitialization(testCaseEntity, testCaseCondition);
+
         LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
+
+        LOG.info("【侦测场景{}】结束", sceneIndex);
 
         return testStrategy;
     }
@@ -102,7 +108,10 @@ public class InspectorTestRunner extends TestRunner {
 
         long startTime = System.currentTimeMillis();
         testCases.testInspection(testStrategy);
+
         LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
+
+        LOG.info("【侦测场景{}】结束", sceneIndex);
     }
 
     @Override
