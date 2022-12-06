@@ -183,7 +183,7 @@ public class SimulatorTestRunner extends TestRunner {
 
         LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
-        testHighlightGreen("测试结果 : 通过");
+        testHighlightGreen("测试结果 : * 通过");
 
         LOG.info("【模拟场景{}】结束", sceneIndex);
 
@@ -202,7 +202,7 @@ public class SimulatorTestRunner extends TestRunner {
 
         LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
-        testHighlightGreen("测试结果 : 通过");
+        testHighlightGreen("测试结果 : * 通过");
 
         LOG.info("【模拟场景{}】结束", sceneIndex);
 
@@ -237,7 +237,7 @@ public class SimulatorTestRunner extends TestRunner {
 
         LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
-        testHighlightGreen("测试结果 : 通过");
+        testHighlightGreen("测试结果 : * 通过");
 
         LOG.info("【模拟场景{}】结束", sceneIndex);
     }
@@ -267,7 +267,7 @@ public class SimulatorTestRunner extends TestRunner {
 
         LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
-        testHighlightGreen("测试结果 : 通过");
+        testHighlightGreen("测试结果 : * 通过");
 
         LOG.info("【模拟场景{}】结束", sceneIndex);
     }
@@ -339,7 +339,7 @@ public class SimulatorTestRunner extends TestRunner {
             }
         }
 
-        testHighlightGreen("测试结果 : 通过");
+        testHighlightGreen("测试结果 : * 通过");
 
         LOG.info("【模拟场景{}】结束", sceneIndex);
     }
@@ -370,7 +370,7 @@ public class SimulatorTestRunner extends TestRunner {
 
         LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
-        testHighlightGreen("测试结果 : 通过");
+        testHighlightGreen("测试结果 : * 通过");
 
         LOG.info("【模拟场景{}】结束", sceneIndex);
     }

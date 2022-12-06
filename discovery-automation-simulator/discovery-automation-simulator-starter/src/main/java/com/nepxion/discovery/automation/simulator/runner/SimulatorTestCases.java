@@ -57,7 +57,7 @@ public class SimulatorTestCases extends TestCases {
             TestAssertLogger.assertThat(LOG, "服务实例【" + key + "】的命中次数=" + value + ", 不符合预期", value, OrderingComparison.greaterThanOrEqualTo(1));
         }
 
-        // LOG.info("测试结果 : 通过");
+        // LOG.info("测试结果 : * 通过");
     }
 
     // 测试蓝绿灰度兜底场景
@@ -84,7 +84,7 @@ public class SimulatorTestCases extends TestCases {
             }
         }
 
-        // LOG.info("测试结果 : 通过");
+        // LOG.info("测试结果 : * 通过");
     }
 
     // 测试蓝绿场景
@@ -123,7 +123,7 @@ public class SimulatorTestCases extends TestCases {
             }
         }
 
-        // LOG.info("测试结果 : 通过");
+        // LOG.info("测试结果 : * 通过");
     }
 
     // 测试灰度场景
@@ -186,14 +186,13 @@ public class SimulatorTestCases extends TestCases {
         double oldResultWeight = Double.valueOf(format.format((double) oldResultCount * 100 / graySampleCount));
         double newResultWeight = Double.valueOf(format.format((double) newResultCount * 100 / graySampleCount));
 
-        LOG.info("权重结果偏差值={}%", grayWeightOffset);
         LOG.info("期望结果 : 旧版本路由权重={}%, 新版本路由权重={}%", oldDesireWeight, newDesireWeight);
         LOG.info("最终结果 : 旧版本路由权重={}%, 新版本路由权重={}%", oldResultWeight, newResultWeight);
 
         TestAssertLogger.assertEquals(LOG, "【旧版本】链路中，路由权重结果超出设定值，不符合预期", oldResultWeight > oldDesireWeight - grayWeightOffset && oldResultWeight < oldDesireWeight + grayWeightOffset, true);
         TestAssertLogger.assertEquals(LOG, "【新版本】链路中，路由权重结果超出设定值，不符合预期", newResultWeight > newDesireWeight - grayWeightOffset && newResultWeight < newDesireWeight + grayWeightOffset, true);
 
-        // LOG.info("测试结果 : 通过");
+        // LOG.info("测试结果 : * 通过");
     }
 
     private Map<String, Integer> testInspection(SimulatorTestStrategy testStrategy, int sampleCount, Map<String, String> parameter, boolean isolationAssert, boolean progressShown) {
