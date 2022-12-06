@@ -20,13 +20,14 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 
+import com.nepxion.discovery.automation.common.runner.TestCases;
 import com.nepxion.discovery.automation.common.util.TestUtil;
 import com.nepxion.discovery.automation.inspector.entity.InspectorTestCaseEntity;
 import com.nepxion.discovery.automation.inspector.strategy.InspectorTestStrategy;
 import com.nepxion.discovery.common.entity.InspectorEntity;
 import com.nepxion.discovery.common.util.PluginInfoUtil;
 
-public class InspectorTestCases {
+public class InspectorTestCases extends TestCases {
     private static final Logger LOG = LoggerFactory.getLogger(InspectorTestCases.class);
 
     @Autowired
@@ -74,5 +75,10 @@ public class InspectorTestCases {
 
             throw e;
         }
+    }
+
+    @Override
+    public Logger getLogger() {
+        return LOG;
     }
 }

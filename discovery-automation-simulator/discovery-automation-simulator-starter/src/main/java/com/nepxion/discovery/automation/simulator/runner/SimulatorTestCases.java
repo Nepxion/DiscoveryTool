@@ -25,6 +25,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 
 import com.nepxion.discovery.automation.common.logger.TestAssertLogger;
+import com.nepxion.discovery.automation.common.runner.TestCases;
 import com.nepxion.discovery.automation.common.util.TestUtil;
 import com.nepxion.discovery.automation.simulator.constant.SimulatorTestConstant;
 import com.nepxion.discovery.automation.simulator.data.SimulatorTestCaseConditionDataResolver;
@@ -34,7 +35,7 @@ import com.nepxion.discovery.automation.simulator.strategy.SimulatorTestStrategy
 import com.nepxion.discovery.common.entity.InspectorEntity;
 import com.nepxion.discovery.common.util.PluginInfoUtil;
 
-public class SimulatorTestCases {
+public class SimulatorTestCases extends TestCases {
     private static final Logger LOG = LoggerFactory.getLogger(SimulatorTestCases.class);
 
     @Autowired
@@ -56,7 +57,7 @@ public class SimulatorTestCases {
             TestAssertLogger.assertThat(LOG, "服务实例【" + key + "】的命中次数=" + value + ", 不符合预期", value, OrderingComparison.greaterThanOrEqualTo(1));
         }
 
-        LOG.info("测试结果 : 通过");
+        // LOG.info("测试结果 : 通过");
     }
 
     // 测试蓝绿灰度兜底场景
@@ -83,7 +84,7 @@ public class SimulatorTestCases {
             }
         }
 
-        LOG.info("测试结果 : 通过");
+        // LOG.info("测试结果 : 通过");
     }
 
     // 测试蓝绿场景
@@ -122,7 +123,7 @@ public class SimulatorTestCases {
             }
         }
 
-        LOG.info("测试结果 : 通过");
+        // LOG.info("测试结果 : 通过");
     }
 
     // 测试灰度场景
@@ -192,7 +193,7 @@ public class SimulatorTestCases {
         TestAssertLogger.assertEquals(LOG, "【旧版本】链路中，路由权重结果超出设定值，不符合预期", oldResultWeight > oldDesireWeight - grayWeightOffset && oldResultWeight < oldDesireWeight + grayWeightOffset, true);
         TestAssertLogger.assertEquals(LOG, "【新版本】链路中，路由权重结果超出设定值，不符合预期", newResultWeight > newDesireWeight - grayWeightOffset && newResultWeight < newDesireWeight + grayWeightOffset, true);
 
-        LOG.info("测试结果 : 通过");
+        // LOG.info("测试结果 : 通过");
     }
 
     private Map<String, Integer> testInspection(SimulatorTestStrategy testStrategy, int sampleCount, Map<String, String> parameter, boolean isolationAssert, boolean progressShown) {
@@ -314,5 +315,10 @@ public class SimulatorTestCases {
         LOG.debug("侦测版本分析结果 : {}", versionResultList);
 
         return versionResultList;
+    }
+
+    @Override
+    public Logger getLogger() {
+        return LOG;
     }
 }
