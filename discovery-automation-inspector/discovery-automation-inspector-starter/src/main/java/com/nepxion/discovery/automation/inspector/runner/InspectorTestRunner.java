@@ -72,7 +72,8 @@ public class InspectorTestRunner extends TestRunner {
     public InspectorTestStrategy testInitialization(int sceneIndex, String testCaseEntityContent, String testCaseConditionContent, boolean testCaseConfigWithYaml) throws Exception {
         LOG.info("-------------------------------------------------");
 
-        LOG.info("【侦测场景{}】初始化上下文...", sceneIndex);
+        testHighlightGreen("【侦测场景{}】初始化上下文...", sceneIndex);
+
         long startTime = System.currentTimeMillis();
         InspectorTestStrategy testStrategy = new InspectorTestStrategy();
         testStrategy.testInitialization(testCaseEntityContent, testCaseConditionContent, testCaseConfigWithYaml);
@@ -84,7 +85,8 @@ public class InspectorTestRunner extends TestRunner {
     public InspectorTestStrategy testInitialization(int sceneIndex, InspectorTestCaseEntity testCaseEntity, InspectorTestCaseCondition testCaseCondition) throws Exception {
         LOG.info("-------------------------------------------------");
 
-        LOG.info("【侦测场景{}】初始化上下文...", sceneIndex);
+        testHighlightGreen("【侦测场景{}】初始化上下文...", sceneIndex);
+
         long startTime = System.currentTimeMillis();
         InspectorTestStrategy testStrategy = new InspectorTestStrategy();
         testStrategy.testInitialization(testCaseEntity, testCaseCondition);
@@ -96,9 +98,15 @@ public class InspectorTestRunner extends TestRunner {
     public void testInspection(int sceneIndex, InspectorTestStrategy testStrategy) throws Exception {
         LOG.info("-------------------------------------------------");
 
-        LOG.info("【侦测场景{}】测试全链路侦测...", sceneIndex);
+        testHighlightGreen("【侦测场景{}】测试全链路侦测...", sceneIndex);
+
         long startTime = System.currentTimeMillis();
         testCases.testInspection(testStrategy);
         LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
+    }
+
+    @Override
+    public Logger getLogger() {
+        return LOG;
     }
 }

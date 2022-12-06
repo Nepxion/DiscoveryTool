@@ -9,9 +9,10 @@ package com.nepxion.discovery.automation.common.runner;
  * @version 1.0
  */
 
+import com.nepxion.discovery.automation.common.logger.TestHighlightLogger;
 import com.nepxion.discovery.automation.common.strategy.TestStrategy;
 
-public class TestRunner {
+public abstract class TestRunner extends TestHighlightLogger {
     public void beforeTest(TestStrategy testStrategy) {
         testStrategy.beforeTest();
     }

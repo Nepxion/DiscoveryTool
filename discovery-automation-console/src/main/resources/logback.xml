@@ -1,8 +1,9 @@
 <configuration>
     <conversionRule conversionWord="levelColor" converterClass="com.nepxion.discovery.common.logback.LevelColorConverter" />
+    <conversionRule conversionWord="mdcColor" converterClass="com.nepxion.discovery.common.logback.MdcColorConverter" />
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %levelColor(%5p) %magenta(${PID:- }) --- [%15.15t] %levelColor(%X{testcase-id}) %cyan(%-40.40logger{39}) : %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %levelColor(%5p) %magenta(${PID:- }) --- [%15.15t] %levelColor(%X{testcase-id}) %cyan(%-40.40logger{39}) : %mdcColor(%msg%n)</pattern>
         </encoder>
     </appender>
 
