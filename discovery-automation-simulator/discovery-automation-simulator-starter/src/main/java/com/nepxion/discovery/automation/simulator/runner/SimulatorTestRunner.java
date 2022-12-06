@@ -174,7 +174,7 @@ public class SimulatorTestRunner extends TestRunner {
     public SimulatorTestStrategy testInitialization(int sceneIndex, String testCaseEntityContent, String testCaseReleaseBasicConditionContent, String testCaseReleaseFirstConditionContent, String testCaseReleaseSecondConditionContent, boolean testCaseConfigWithYaml) throws Exception {
         LOG.info("-------------------------------------------------");
 
-        testHighlightGreen("【模拟场景{}】初始化上下文...", sceneIndex);
+        LOG.info("【模拟场景{}】初始化上下文...", sceneIndex);
 
         long startTime = System.currentTimeMillis();
         SimulatorTestStrategy testStrategy = new SimulatorTestStrategy();
@@ -182,7 +182,7 @@ public class SimulatorTestRunner extends TestRunner {
         testStrategy.testInitialization(testCaseEntityContent, testCaseReleaseBasicConditionContent, testCaseReleaseFirstConditionContent, testCaseReleaseSecondConditionContent, testCaseConfigWithYaml);
         LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
-        testHighlightGreen("【模拟场景{}】* 测试通过...", sceneIndex);
+        LOG.info("【模拟场景{}】* 测试通过...", sceneIndex);
 
         return testStrategy;
     }
@@ -190,7 +190,7 @@ public class SimulatorTestRunner extends TestRunner {
     public SimulatorTestStrategy testInitialization(int sceneIndex, SimulatorTestCaseEntity testCaseEntity, SimulatorTestCaseReleaseBasicCondition testCaseReleaseBasicCondition, SimulatorTestCaseReleaseFirstCondition testCaseReleaseFirstCondition, SimulatorTestCaseReleaseSecondCondition testCaseReleaseSecondCondition) throws Exception {
         LOG.info("-------------------------------------------------");
 
-        testHighlightGreen("【模拟场景{}】初始化上下文...", sceneIndex);
+        LOG.info("【模拟场景{}】初始化上下文...", sceneIndex);
 
         long startTime = System.currentTimeMillis();
         SimulatorTestStrategy testStrategy = new SimulatorTestStrategy();
@@ -198,7 +198,7 @@ public class SimulatorTestRunner extends TestRunner {
         testStrategy.testInitialization(testCaseEntity, testCaseReleaseBasicCondition, testCaseReleaseFirstCondition, testCaseReleaseSecondCondition);
         LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
-        testHighlightGreen("【模拟场景{}】* 测试通过...", sceneIndex);
+        LOG.info("【模拟场景{}】* 测试通过...", sceneIndex);
 
         return testStrategy;
     }
@@ -210,13 +210,13 @@ public class SimulatorTestRunner extends TestRunner {
 
         LOG.info("-------------------------------------------------");
 
-        testHighlightGreen("【模拟场景{}】无蓝绿灰度发布场景...", sceneIndex);
+        LOG.info("【模拟场景{}】无蓝绿灰度发布场景...", sceneIndex);
 
-        testHighlightGreen("【模拟场景{}】清除蓝绿灰度发布策略...", sceneIndex);
+        LOG.info("【模拟场景{}】清除蓝绿灰度发布策略...", sceneIndex);
 
         testStrategy.resetRelease();
 
-        testHighlightGreen("【模拟场景{}】测试全链路侦测...", sceneIndex);
+        LOG.info("【模拟场景{}】测试全链路侦测...", sceneIndex);
 
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < loopCount; i++) {
@@ -230,7 +230,7 @@ public class SimulatorTestRunner extends TestRunner {
         }
         LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
-        testHighlightGreen("【模拟场景{}】* 测试通过...", sceneIndex);
+        LOG.info("【模拟场景{}】* 测试通过...", sceneIndex);
     }
 
     public void testVersionBasicRelease(int sceneIndex, int releaseIndex, String input, SimulatorTestStrategy testStrategy) throws Exception {
@@ -239,7 +239,7 @@ public class SimulatorTestRunner extends TestRunner {
 
         LOG.info("-------------------------------------------------");
 
-        testHighlightGreen("【模拟场景{}】第{}次蓝绿灰度发布场景，启动兜底策略...", sceneIndex, releaseIndex);
+        LOG.info("【模拟场景{}】第{}次蓝绿灰度发布场景，启动兜底策略...", sceneIndex, releaseIndex);
 
         if (releaseIndex == 1) {
             // 第一次蓝绿灰度兜底策略，用创建方式
@@ -249,7 +249,7 @@ public class SimulatorTestRunner extends TestRunner {
             testStrategy.recreateVersionRelease(input);
         }
 
-        testHighlightGreen("【模拟场景{}】兜底策略，测试全链路侦测...", sceneIndex);
+        LOG.info("【模拟场景{}】兜底策略，测试全链路侦测...", sceneIndex);
 
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < loopCount; i++) {
@@ -257,7 +257,7 @@ public class SimulatorTestRunner extends TestRunner {
         }
         LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
-        testHighlightGreen("【模拟场景{}】* 测试通过...", sceneIndex);
+        LOG.info("【模拟场景{}】* 测试通过...", sceneIndex);
     }
 
     public void testVersionBlueGreenGrayRelease(int sceneIndex, int releaseIndex, String input, SimulatorTestStrategy testStrategy) throws Exception {
@@ -268,7 +268,7 @@ public class SimulatorTestRunner extends TestRunner {
         SimulatorTestCaseEntity testCaseEntity = testStrategy.getTestCaseEntity();
         int loopCount = testCaseEntity.getLoopCount();
 
-        testHighlightGreen("【模拟场景{}】第{}次蓝绿灰度发布场景，启动蓝绿灰度发布策略...", sceneIndex, releaseIndex);
+        LOG.info("【模拟场景{}】第{}次蓝绿灰度发布场景，启动蓝绿灰度发布策略...", sceneIndex, releaseIndex);
 
         if (releaseIndex == 1) {
             // 第一次蓝绿灰度发布策略，用创建方式
@@ -279,7 +279,7 @@ public class SimulatorTestRunner extends TestRunner {
         }
 
         if (hasBlueGreen) {
-            testHighlightGreen("【模拟场景{}】蓝绿策略，测试全链路侦测，Header : {}...", sceneIndex, "无");
+            LOG.info("【模拟场景{}】蓝绿策略，测试全链路侦测，Header : {}...", sceneIndex, "无");
 
             long startTime = System.currentTimeMillis();
             for (int i = 0; i < loopCount; i++) {
@@ -292,7 +292,7 @@ public class SimulatorTestRunner extends TestRunner {
             for (SimulatorTestCaseConditionData testCaseConditionData : testCaseBlueGreenConditionDataList) {
                 Map<String, String> blueGreenParameter = testCaseConditionData.getParameter();
 
-                testHighlightGreen("【模拟场景{}】蓝绿策略，测试全链路侦测，Header : {}...", sceneIndex, MapUtils.isNotEmpty(blueGreenParameter) ? blueGreenParameter : "无");
+                LOG.info("【模拟场景{}】蓝绿策略，测试全链路侦测，Header : {}...", sceneIndex, MapUtils.isNotEmpty(blueGreenParameter) ? blueGreenParameter : "无");
 
                 startTime = System.currentTimeMillis();
                 for (int i = 0; i < loopCount; i++) {
@@ -303,7 +303,7 @@ public class SimulatorTestRunner extends TestRunner {
         }
 
         if (hasGray) {
-            testHighlightGreen("【模拟场景{}】灰度策略，测试全链路侦测，Header : {}...", sceneIndex, "无");
+            LOG.info("【模拟场景{}】灰度策略，测试全链路侦测，Header : {}...", sceneIndex, "无");
 
             long startTime = System.currentTimeMillis();
             for (int i = 0; i < loopCount; i++) {
@@ -316,7 +316,7 @@ public class SimulatorTestRunner extends TestRunner {
             for (SimulatorTestCaseGrayConditionData testCaseGrayConditionData : testCaseGrayConditionDataList) {
                 Map<String, String> grayParameter = testCaseGrayConditionData.getParameter();
 
-                testHighlightGreen("【模拟场景{}】灰度策略，测试全链路侦测，Header : {}...", sceneIndex, MapUtils.isNotEmpty(grayParameter) ? grayParameter : "无");
+                LOG.info("【模拟场景{}】灰度策略，测试全链路侦测，Header : {}...", sceneIndex, MapUtils.isNotEmpty(grayParameter) ? grayParameter : "无");
 
                 startTime = System.currentTimeMillis();
                 for (int i = 0; i < loopCount; i++) {
@@ -325,7 +325,7 @@ public class SimulatorTestRunner extends TestRunner {
                 LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
             }
 
-            testHighlightGreen("【模拟场景{}】* 测试通过...", sceneIndex);
+            LOG.info("【模拟场景{}】* 测试通过...", sceneIndex);
         }
     }
 
@@ -336,11 +336,11 @@ public class SimulatorTestRunner extends TestRunner {
 
         LOG.info("-------------------------------------------------");
 
-        testHighlightGreen("【模拟场景{}】第{}次蓝绿灰度发布场景，重置并停止蓝绿灰度发布策略...", sceneIndex, releaseIndex);
+        LOG.info("【模拟场景{}】第{}次蓝绿灰度发布场景，重置并停止蓝绿灰度发布策略...", sceneIndex, releaseIndex);
 
         testStrategy.resetRelease();
 
-        testHighlightGreen("【模拟场景{}】测试全链路侦测...", sceneIndex);
+        LOG.info("【模拟场景{}】测试全链路侦测...", sceneIndex);
 
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < loopCount; i++) {
@@ -354,7 +354,7 @@ public class SimulatorTestRunner extends TestRunner {
         }
         LOG.info("测试耗时 : {} 秒", (System.currentTimeMillis() - startTime) / 1000);
 
-        testHighlightGreen("【模拟场景{}】* 测试通过...", sceneIndex);
+        LOG.info("【模拟场景{}】* 测试通过...", sceneIndex);
     }
 
     @Override
