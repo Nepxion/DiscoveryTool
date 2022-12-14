@@ -12,7 +12,7 @@ echo '============================================================='
 
 echo -n $'\e'"]0;Nepxion Discovery Console"$'\a'
 
-java -jar -Dfile.encoding=UTF-8 -Dnepxion.banner.shown.ansi.mode=true discovery-console-1.0.0.jar --spring.cloud.nacos.discovery.server-addr=localhost:8848 --spring.cloud.nacos.config.server-addr=localhost:8848
+java -jar -Dfile.encoding=UTF-8 -Dnepxion.banner.shown.ansi.mode=true discovery-console.jar --spring.cloud.nacos.discovery.server-addr=localhost:8848 --spring.cloud.nacos.config.server-addr=localhost:8848
 
 function pause(){
   echo 'Press any key to continue...'
