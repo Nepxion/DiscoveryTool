@@ -10,7 +10,7 @@ echo '$  Copyright (C) 2017-2050                                  $'
 echo '$                                                           $'
 echo '============================================================='
 
-echo -n $'\e'"]0;Nepxion Discovery Console"$'\a' 
+echo -n $'\e'"]0;Nepxion Discovery Console"$'\a'
 
 java -jar -Dfile.encoding=UTF-8 -Dnepxion.banner.shown.ansi.mode=true discovery-console.jar --spring.cloud.nacos.discovery.server-addr=localhost:8848 --spring.cloud.nacos.config.server-addr=localhost:8848
 
