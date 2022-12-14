@@ -5,9 +5,9 @@ name: build
 
 on:
   push:
-    branches: [ automation ]
+    branches: [ automation-springboot-2.x.x ]
   pull_request:
-    branches: [ automation ]
+    branches: [ automation-springboot-2.x.x ]
 
 jobs:
   build:
