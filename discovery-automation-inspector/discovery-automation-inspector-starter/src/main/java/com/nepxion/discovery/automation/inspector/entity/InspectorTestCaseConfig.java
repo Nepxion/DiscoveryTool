@@ -14,8 +14,8 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.nepxion.discovery.automation.common.entity.TestCaseConfig;
-import com.nepxion.discovery.automation.common.util.TestParserUtil;
 import com.nepxion.discovery.automation.inspector.constant.InspectorTestConstant;
+import com.nepxion.discovery.common.util.ConfigurationUtil;
 
 public class InspectorTestCaseConfig extends TestCaseConfig implements InspectorTestCaseEntity {
     private static final long serialVersionUID = -8654886373593752202L;
@@ -50,7 +50,7 @@ public class InspectorTestCaseConfig extends TestCaseConfig implements Inspector
     public static InspectorTestCaseConfig fromYamlText(String input) throws Exception {
         Map<String, String> map = null;
         try {
-            map = TestParserUtil.parseYaml(input);
+            map = ConfigurationUtil.parseYaml(input);
         } catch (Exception e) {
             throw e;
         }
@@ -61,7 +61,7 @@ public class InspectorTestCaseConfig extends TestCaseConfig implements Inspector
     public static InspectorTestCaseConfig fromPropertiesText(String input) throws Exception {
         Map<String, String> map = null;
         try {
-            map = TestParserUtil.parseProperties(input);
+            map = ConfigurationUtil.parseProperties(input);
         } catch (Exception e) {
             throw e;
         }
