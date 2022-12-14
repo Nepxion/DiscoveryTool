@@ -12,7 +12,7 @@ echo '============================================================='
 
 echo -n $'\e'"]0;Nepxion Discovery Automation Console"$'\a'
 
-java -jar -Dfile.encoding=UTF-8 -Dnepxion.banner.shown.ansi.mode=true discovery-automation-console-1.1.0.jar
+java -jar -Dfile.encoding=UTF-8 -Dnepxion.banner.shown.ansi.mode=true discovery-automation-console.jar
 
 function pause(){
   echo 'Press any key to continue...'
