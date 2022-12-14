@@ -1,5 +1,2 @@
 org.springframework.boot.env.EnvironmentPostProcessor=\
 com.nepxion.discovery.automation.common.context.TestEnvironmentPostProcessor
-
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.nepxion.discovery.automation.common.configuration.TestAutoConfiguration
