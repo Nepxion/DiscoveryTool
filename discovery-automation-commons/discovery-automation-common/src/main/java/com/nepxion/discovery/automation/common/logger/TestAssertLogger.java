@@ -11,13 +11,13 @@ package com.nepxion.discovery.automation.common.logger;
 
 import org.hamcrest.Matcher;
 import org.hamcrest.MatcherAssert;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.slf4j.Logger;
 
 public class TestAssertLogger {
     public static void assertEquals(Logger logger, String message, long expected, long actual) {
         try {
-            Assert.assertEquals(expected, actual);
+            Assertions.assertEquals(expected, actual);
         } catch (Throwable e) {
             logger.error(message, e);
 
@@ -27,7 +27,7 @@ public class TestAssertLogger {
 
     public static void assertEquals(Logger logger, String message, Object expected, Object actual) {
         try {
-            Assert.assertEquals(expected, actual);
+            Assertions.assertEquals(expected, actual);
         } catch (Throwable e) {
             logger.error(message, e);
 

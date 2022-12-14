@@ -9,15 +9,15 @@ package com.nepxion.discovery.automation.inspector.test;
  * @version 1.0
  */
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.nepxion.discovery.automation.common.application.TestApplication;
 import com.nepxion.discovery.automation.inspector.entity.InspectorTestCaseCondition;
@@ -25,9 +25,9 @@ import com.nepxion.discovery.automation.inspector.entity.InspectorTestCaseProper
 import com.nepxion.discovery.automation.inspector.runner.InspectorTestRunner;
 import com.nepxion.discovery.automation.inspector.strategy.InspectorTestStrategy;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = { TestApplication.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@TestMethodOrder(MethodOrderer.MethodName.class)
 public class InspectorTest {
     @Autowired
     private InspectorTestCaseProperty testCaseProperty;
@@ -40,12 +40,12 @@ public class InspectorTest {
 
     private static InspectorTestStrategy testStrategy;
 
-    @BeforeClass
+    @BeforeAll
     public static void beforeTest() {
 
     }
 
-    @AfterClass
+    @AfterAll
     public static void afterTest() {
         testStrategy.afterTest();
     }

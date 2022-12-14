@@ -9,10 +9,6 @@ package com.nepxion.discovery.automation.simulator.console.endpoint;
  * @version 1.0
  */
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,27 +24,23 @@ import com.nepxion.discovery.common.util.ResponseUtil;
 
 @RestController
 @RequestMapping(path = "/simulator-test")
-@Api(tags = { "自动化模拟流程测试接口" })
 public class SimulatorConsoleEndpoint {
     @Autowired
     private SimulatorConsoleResource simulatorConsoleResource;
 
     @RequestMapping(path = "/test-config-yaml", method = RequestMethod.POST)
-    @ApiOperation(value = "全链路自动化模拟流程测试", notes = "", response = ResponseEntity.class, httpMethod = "POST")
     @ResponseBody
-    public ResponseEntity<?> testConfigYaml(@RequestBody @ApiParam(value = "测试配置文本，按照次序，由application.yaml、mock-version-release-basic.yaml、mock-version-release-1.yaml、mock-version-release-2.yaml组成，中间用10个\"-\"组成换行分隔", required = true) String testConfig) {
+    public ResponseEntity<?> testConfigYaml(@RequestBody String testConfig) {
         return doTest(testConfig, true);
     }
 
     @RequestMapping(path = "/test-config-properties", method = RequestMethod.POST)
-    @ApiOperation(value = "全链路自动化模拟流程测试", notes = "", response = ResponseEntity.class, httpMethod = "POST")
     @ResponseBody
-    public ResponseEntity<?> testConfigProperties(@RequestBody @ApiParam(value = "测试配置文本，按照次序，由application.properties、mock-version-release-basic.yaml、mock-version-release-1.yaml、mock-version-release-2.yaml组成，中间用10个\"-\"组成换行分隔", required = true) String testConfig) {
+    public ResponseEntity<?> testConfigProperties(@RequestBody String testConfig) {
         return doTest(testConfig, false);
     }
 
     @RequestMapping(path = "/testcases-running", method = RequestMethod.GET)
-    @ApiOperation(value = "获取当前正在运行的测试用例列表", notes = "", response = ResponseEntity.class, httpMethod = "GET")
     @ResponseBody
     public ResponseEntity<?> testcasesRunning() {
         return doGetRunningTestCases();

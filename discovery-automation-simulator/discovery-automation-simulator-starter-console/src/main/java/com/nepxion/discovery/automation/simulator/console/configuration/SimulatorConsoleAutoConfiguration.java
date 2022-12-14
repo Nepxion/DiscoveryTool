@@ -11,14 +11,12 @@ package com.nepxion.discovery.automation.simulator.console.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
 import com.nepxion.discovery.automation.simulator.console.endpoint.SimulatorConsoleEndpoint;
 import com.nepxion.discovery.automation.simulator.console.resource.SimulatorConsoleResource;
 import com.nepxion.discovery.automation.simulator.console.resource.SimulatorConsoleResourceImpl;
 
 @Configuration
-@Import({ SimulatorConsoleSwaggerConfiguration.class })
 public class SimulatorConsoleAutoConfiguration {
     protected static class ConsoleEndpointConfiguration {
         @Bean
