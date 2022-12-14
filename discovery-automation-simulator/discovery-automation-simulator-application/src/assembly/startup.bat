@@ -15,6 +15,6 @@
 @title Nepxion Discovery Simulator
 @color 0a
 
-call java -jar -Dnepxion.banner.shown.ansi.mode=true discovery-automation-simulator-1.1.0.jar --spring.config.location=./
+call java -jar -Dnepxion.banner.shown.ansi.mode=true discovery-automation-simulator.jar --spring.config.location=./
 
 pause

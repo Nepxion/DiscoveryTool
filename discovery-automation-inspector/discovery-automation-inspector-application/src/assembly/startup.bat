@@ -15,6 +15,6 @@
 @title Nepxion Discovery Inspector
 @color 0a
 
-call java -jar -Dnepxion.banner.shown.ansi.mode=true discovery-automation-inspector-1.1.0.jar --spring.config.location=./
+call java -jar -Dnepxion.banner.shown.ansi.mode=true discovery-automation-inspector.jar --spring.config.location=./
 
 pause

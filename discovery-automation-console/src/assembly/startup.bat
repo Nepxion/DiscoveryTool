@@ -15,6 +15,6 @@
 @title Nepxion Discovery Automation Console
 @color 0a
 
-call java -jar -Dnepxion.banner.shown.ansi.mode=true discovery-automation-console-1.1.0.jar
+call java -jar -Dnepxion.banner.shown.ansi.mode=true discovery-automation-console.jar
 
 pause
