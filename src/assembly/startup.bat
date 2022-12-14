@@ -15,6 +15,6 @@
 @title Nepxion Discovery Console
 @color 0a
 
-call java -jar -Dnepxion.banner.shown.ansi.mode=true discovery-console-1.1.0.jar --spring.cloud.nacos.discovery.server-addr=localhost:8848 --spring.cloud.nacos.config.server-addr=localhost:8848
+call java -jar -Dnepxion.banner.shown.ansi.mode=true discovery-console-1.0.0.jar --spring.cloud.nacos.discovery.server-addr=localhost:8848 --spring.cloud.nacos.config.server-addr=localhost:8848
 
 pause
