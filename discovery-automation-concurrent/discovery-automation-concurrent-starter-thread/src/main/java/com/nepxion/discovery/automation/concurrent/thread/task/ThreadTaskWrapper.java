@@ -28,7 +28,7 @@ public class ThreadTaskWrapper {
     private ThreadProperties threadProperties;
 
     @PostConstruct
-    private void initialize() {
+    public void initialize() {
         LOG.info("Start to initialize ThreadPoolTaskExecutor...");
 
         int corePoolSize = threadProperties.getCorePoolSize();

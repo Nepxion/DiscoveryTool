@@ -33,7 +33,7 @@ public class CaffeineLockWrapper implements DiscoveryLock, DisposableBean {
     private CaffeineLock caffeineLock;
 
     @PostConstruct
-    private void initialize() {
+    public void initialize() {
         LOG.info("Start to initialize CaffeineLock...");
 
         int initialCapacity = caffeineProperties.getInitialCapacity();
