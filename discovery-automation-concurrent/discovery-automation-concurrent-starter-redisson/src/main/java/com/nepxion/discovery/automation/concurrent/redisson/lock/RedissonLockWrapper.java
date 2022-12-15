@@ -38,7 +38,7 @@ public class RedissonLockWrapper implements DiscoveryLock, DisposableBean {
     private int expireSeconds;
 
     @PostConstruct
-    private void initialize() {
+    public void initialize() {
         LOG.info("Start to initialize RedissonLock...");
 
         this.waitSeconds = redissonProperties.getWaitSeconds();

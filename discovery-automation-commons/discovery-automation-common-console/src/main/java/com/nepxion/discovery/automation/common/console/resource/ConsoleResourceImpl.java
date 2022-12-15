@@ -38,7 +38,7 @@ public abstract class ConsoleResourceImpl implements ConsoleResource {
     private Boolean loggerMdcKeyShown;
 
     @PostConstruct
-    private void initialize() {
+    public void initialize() {
         String testThreadNamePrefix = getTestName() + "-";
 
         taskExecutor.setThreadNamePrefix(testThreadNamePrefix);
