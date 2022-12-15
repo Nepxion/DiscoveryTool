@@ -15,6 +15,9 @@
 @title Nepxion Discovery
 @color 0a
 
+set JAVA_HOME=E:\Tool\Graalvm-JDK17-22.3.0
+set PATH=%JAVA_HOME%\bin;%PATH%
+
 call mvn clean install -DskipTests
 
 pause
