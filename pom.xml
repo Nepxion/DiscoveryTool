@@ -7,7 +7,7 @@
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
     <version>1.0.0</version>
-    <description> Nepxion Discovery Console is a console for Nepxion Discovery with service governance, release orchestration, traffic inspection, instance blacklist, gateway route</description>
+    <description>Nepxion Discovery Console is a console for Nepxion Discovery with service governance, release orchestration, traffic inspection, instance blacklist, gateway route</description>
     <url>http://www.nepxion.com</url>
 
     <properties>
