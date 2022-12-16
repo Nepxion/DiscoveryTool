@@ -14,7 +14,7 @@
 - 自动化测试端本地化，网关和服务非本地化，`Spring Boot 3` + `Java 17`，自动化测试耗时`80-83`秒
 - 全套本地化，未测试，原因是网关和服务所依赖的所有第三方包都需要支持`Spring Boot 3`，目前业界尚未达到这个阶段
 
-下面阐述一下，Windows 10操作系统下基于Java 17 + Spring Boot 3 + GraalVM实现服务本地镜像化的简单步骤
+下面阐述一下，Windows 10操作系统下基于`Java 17` + `Spring Boot 3` + `GraalVM`实现服务本地镜像化（Native Image）的简单步骤
 
 ## 安装GraalVM
 下载`https://www.graalvm.org/downloads/`，解压安装
@@ -86,7 +86,7 @@ PATH=E:\Tool\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\bi
 java -Dspring.aot.enabled=true -agentlib:native-image-agent=config-output-dir=discovery-automation-console/src/main/resources/META-INF/native-image -jar discovery-automation-console/target/discovery-automation-console.jar
 ```
 
-或者直接运行根目录下`install-agent.bat`，注意`bat`中GraalVM的路径
+或者直接运行根目录下`install-agent.bat`，注意`bat`中`GraalVM`的路径
 
 如果应用中包含的包，是`Java 8`编译出来的，里面还有一些需要通过`Json`序列化和反序列化的实体类，需要对该包对应的源码用`Java 17`再编译一次，然后在执行反射代理的步骤
 
@@ -103,7 +103,7 @@ x64 Native Tools Command Prompt for VS 2022
 mvn -Pnative native:compile -DskipTests
 ```
 
-或者直接运行根目录下`install-native.bat`，注意`bat`中GraalVM的路径
+或者直接运行根目录下`install-native.bat`，注意`bat`中`GraalVM`的路径
 
 ## 总结
 `Java 17` + `Spring Boot 3` + `GraalVM`实现服务本地镜像化，执行过程遇到的坑不少。例如
