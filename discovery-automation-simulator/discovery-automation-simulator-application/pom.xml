@@ -100,6 +100,9 @@
             <plugin>
                 <groupId>org.graalvm.buildtools</groupId>
                 <artifactId>native-maven-plugin</artifactId>
+                <configuration>
+                    <imageName>discovery-automation-simulator</imageName>
+                </configuration>
             </plugin>
 
             <plugin>
