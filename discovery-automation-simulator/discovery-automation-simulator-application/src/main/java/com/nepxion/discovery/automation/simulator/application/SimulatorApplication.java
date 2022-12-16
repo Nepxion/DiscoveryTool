@@ -40,10 +40,16 @@ public class SimulatorApplication {
             testRunner.testSecondVersionBlueGreenGrayRelease(testStrategy);
             testRunner.testSecondResetRelease(testStrategy);
             testRunner.afterTest(testStrategy);
-            System.exit(0);
+            // System.exit(0);
         } catch (Throwable e) {
             e.printStackTrace();
-            System.exit(-1);
+            // System.exit(-1);
+        }
+
+        try {
+            System.in.read();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

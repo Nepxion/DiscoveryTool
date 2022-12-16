@@ -30,10 +30,16 @@ public class InspectorApplication {
             InspectorTestStrategy testStrategy = testRunner.testInitialization(testCaseProperty, testCaseCondition);
             testRunner.testInspection(testStrategy);
             testRunner.afterTest(testStrategy);
-            System.exit(0);
+            // System.exit(0);
         } catch (Throwable e) {
             e.printStackTrace();
-            System.exit(-1);
+            // System.exit(-1);
+        }
+
+        try {
+            System.in.read();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
