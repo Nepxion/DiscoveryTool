@@ -19,7 +19,7 @@
     </modules>
 
     <properties>
-        <discovery.version>9.0.0</discovery.version>
+        <discovery.version>6.20.0-SNAPSHOT</discovery.version>
 
         <commons.configuration2.version>2.8.0</commons.configuration2.version>
         <redisson.spring.boot.version>3.18.1</redisson.spring.boot.version>
