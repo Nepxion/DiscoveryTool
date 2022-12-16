@@ -6,6 +6,8 @@
 ## 安装Visual Studio
 下载`https://visualstudio.microsoft.com/zh-hans/downloads/`，在线安装
 
+一般选择`使用 C++ 的桌面开发` -> `MSVC v143 - VS 2022 C++ x64/x86 生成工具`和`Windows 11 SDK`即可
+
 步骤参考`https://blog.csdn.net/qq10940370/article/details/128064384`
 
 ## 设置环境变量
@@ -71,3 +73,5 @@ x64 Native Tools Command Prompt for VS 2022
 ```
 mvn -Pnative native:compile -DskipTests
 ```
+
+或者直接运行根目录下`install-native.bat`，注意`bat`中GraalVM的路径
