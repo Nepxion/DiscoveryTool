@@ -131,6 +131,10 @@
   ]
 },
 {
+  "name":"com.fasterxml.jackson.databind.ext.Java7HandlersImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
   "name":"com.fasterxml.jackson.databind.ext.Java7SupportImpl",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
@@ -481,6 +485,45 @@
 },
 {
   "name":"com.nepxion.discovery.common.entity.ConditionStrategyCustomizer"
+},
+{
+  "name":"com.nepxion.discovery.common.entity.InspectorEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":[] }, 
+    {"name":"getResult","parameterTypes":[] }, 
+    {"name":"getServiceIdList","parameterTypes":[] }, 
+    {"name":"setResult","parameterTypes":["java.lang.String"] }, 
+    {"name":"setServiceIdList","parameterTypes":["java.util.List"] }
+  ]
+},
+{
+  "name":"com.nepxion.discovery.common.entity.InstanceEntity",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":[] }, 
+    {"name":"setActive","parameterTypes":["boolean"] }, 
+    {"name":"setContextPath","parameterTypes":["java.lang.String"] }, 
+    {"name":"setEnvironment","parameterTypes":["java.lang.String"] }, 
+    {"name":"setFormatContextPath","parameterTypes":["java.lang.String"] }, 
+    {"name":"setGroup","parameterTypes":["java.lang.String"] }, 
+    {"name":"setHost","parameterTypes":["java.lang.String"] }, 
+    {"name":"setMetadata","parameterTypes":["java.util.Map"] }, 
+    {"name":"setPlugin","parameterTypes":["java.lang.String"] }, 
+    {"name":"setPort","parameterTypes":["int"] }, 
+    {"name":"setProtocol","parameterTypes":["java.lang.String"] }, 
+    {"name":"setRegion","parameterTypes":["java.lang.String"] }, 
+    {"name":"setServiceAppId","parameterTypes":["java.lang.String"] }, 
+    {"name":"setServiceId","parameterTypes":["java.lang.String"] }, 
+    {"name":"setServiceType","parameterTypes":["java.lang.String"] }, 
+    {"name":"setServiceUUId","parameterTypes":["java.lang.String"] }, 
+    {"name":"setVersion","parameterTypes":["java.lang.String"] }, 
+    {"name":"setZone","parameterTypes":["java.lang.String"] }
+  ]
 },
 {
   "name":"com.nepxion.discovery.common.logback.LevelColorConverter",

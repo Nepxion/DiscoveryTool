@@ -385,8 +385,11 @@
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
   "methods":[
+    {"name":"<init>","parameterTypes":[] }, 
     {"name":"getResult","parameterTypes":[] }, 
-    {"name":"getServiceIdList","parameterTypes":[] }
+    {"name":"getServiceIdList","parameterTypes":[] }, 
+    {"name":"setResult","parameterTypes":["java.lang.String"] }, 
+    {"name":"setServiceIdList","parameterTypes":["java.util.List"] }
   ]
 },
 {
