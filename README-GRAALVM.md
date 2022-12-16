@@ -3,11 +3,11 @@
 ## 前言
 访问`https://github.com/Nepxion/DiscoveryTool/tree/automation-springboot-3.x.x`获取代码
 
-`Nepxion`社区对相对简单的自动化测试模块尝试进行本地化，的确启动速度提升`10`倍甚至更多，内存占用少了`1/2 ~ 2/3`甚至更多，网络吞吐量也有不少提升。最终成果通过`Windows 10`的可执行文件`EXE`呈现，从下面图片可以看到，启动控制台，只耗费`0.24`秒
+`Nepxion`社区对相对简单的全链路自动化模拟流程测试和全链路自动化流量侦测测试模块尝试进行本地化，的确启动速度提升`10`倍甚至更多，内存占用少了`1/2 ~ 2/3`甚至更多，网络吞吐量也有不少提升。最终成果通过`Windows 10`的可执行文件`EXE`呈现，从下面图片可以看到，启动控制台，只耗费`0.24`秒
 
 ![](http://nepxion.gitee.io/discovery/docs/discovery-doc/NativeImage.jpg)
 
-`Nepxion`社区分别对`Java 8`、`Java1 7`和`Spring Boot 2`、`Spring Boot 3`组合场景下，对Spring Cloud Gateway、2个A服务、2个B服务做自动化模拟蓝绿灰度发布测试，得出如下结论：
+`Nepxion`社区分别对`Java 8`、`Java1 7`和`Spring Boot 2`、`Spring Boot 3`组合场景下，对Spring Cloud Gateway、2个A服务、2个B服务做全链路自动化蓝绿灰度发布模拟流程测试，得出如下结论：
 - 全套非本地化，`Spring Boot 2` + `Java 8`，自动化测试耗时`180-200`秒
 - 全套非本地化，`Spring Boot 2` + `Java 17`，自动化测试耗时`109-115`秒
 - 全套非本地化，`Spring Boot 3` + `Java 17`，自动化测试耗时`93-97`秒
