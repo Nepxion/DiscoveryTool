@@ -1,5 +1,6 @@
 # Windows 10操作系统下基于Java 17 + Spring Boot 3 + GraalVM实现本地镜像化
 
+## 前言
 访问`https://github.com/Nepxion/DiscoveryTool/tree/automation-springboot-3.x.x`获取代码
 
 `Nepxion`社区对相对简单的自动化测试模块尝试进行本地化，的确启动速度提升`10`倍甚至更多，内存占用少了`1/2 ~ 2/3`甚至更多，网络吞吐量也有不少提升。最终成果通过`Windows 10`的可执行文件`EXE`呈现，从下面图片可以看到，启动控制台，只耗费`0.24`秒
