@@ -37,24 +37,12 @@
             <groupId>com.nepxion</groupId>
             <artifactId>discovery-automation-concurrent-starter-caffeine</artifactId>
             <version>${discovery.automation.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- <dependency>
             <groupId>com.nepxion</groupId>
             <artifactId>discovery-automation-concurrent-starter-redisson</artifactId>
             <version>${discovery.automation.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency> -->
     </dependencies>
 
