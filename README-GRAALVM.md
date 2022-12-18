@@ -135,7 +135,7 @@ PATH=E:\Tool\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\bi
 
 ② 执行本地化打包
 
-运行打包命令
+在根目录，运行打包命令
 ```
 mvn -Pnative native:compile -DskipTests
 ```
@@ -251,7 +251,7 @@ java -Dspring.aot.enabled=true -agentlib:native-image-agent=config-output-dir=di
 x64 Native Tools Command Prompt for VS 2022
 ```
 
-运行打包命令
+在根目录，运行打包命令
 ```
 mvn -Pnative native:compile -DskipTests
 ```
