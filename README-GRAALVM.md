@@ -46,7 +46,7 @@ PATH=E:\Tool\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\bi
     <version>3.0.0</version>
 </parent>
 ```
-其它方式，参考Spring官方文档 `https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html#native-image.testing.with-native-build-tools.maven`
+其它方式，参考Spring官方文档 `https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html#native-image.developing-your-first-application.buildpacks.maven`
 
 打包插件引入
 ```
