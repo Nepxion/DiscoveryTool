@@ -1,48 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <groupId>com.nepxion</groupId>
     <artifactId>discovery-automation-console</artifactId>
     <name>Nepxion Discovery Automation Console</name>
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
-    <version>2.0.0</version>
     <description>Nepxion Discovery Automation is a tool for Spring Cloud with blue green, gray inspection and simulation testing</description>
     <url>http://www.nepxion.com</url>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.0</version>
+        <groupId>com.nepxion</groupId>
+        <artifactId>discovery-automation</artifactId>
+        <version>2.0.0</version>
     </parent>
-
-    <properties>
-        <discovery.automation.version>2.0.0</discovery.automation.version>
-    </properties>
 
     <dependencies>
         <dependency>
-            <groupId>com.nepxion</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>discovery-automation-inspector-starter-console</artifactId>
-            <version>${discovery.automation.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.nepxion</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>discovery-automation-simulator-starter-console</artifactId>
-            <version>${discovery.automation.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.nepxion</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>discovery-automation-concurrent-starter-caffeine</artifactId>
-            <version>${discovery.automation.version}</version>
         </dependency>
 
         <!-- <dependency>
-            <groupId>com.nepxion</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>discovery-automation-concurrent-starter-redisson</artifactId>
-            <version>${discovery.automation.version}</version>
         </dependency> -->
     </dependencies>
 
@@ -81,6 +71,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.0.0</version>
                 <configuration>
                     <mainClass>com.nepxion.discovery.automation.console.AutomationConsole</mainClass>
                     <layout>JAR</layout>
@@ -90,6 +81,7 @@
                 </configuration>
                 <executions>
                     <execution>
+                        <id>process-package</id>
                         <goals>
                             <goal>repackage</goal>
                         </goals>
@@ -97,12 +89,25 @@
                             <attach>false</attach>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>process-aot</id>
+                        <goals>
+                            <goal>process-aot</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
 
             <plugin>
                 <groupId>org.graalvm.buildtools</groupId>
                 <artifactId>native-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>add-reachability-metadata</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
