@@ -240,6 +240,8 @@ java -Dspring.aot.enabled=true -agentlib:native-image-agent=config-output-dir=di
 ```
 或者直接运行根目录下`install-agent.bat`，注意`bat`中`GraalVM`的路径
 
+> 注意：由于反射代理需要在`Spring Boot 3.0`应用的运行期创建相关文件，所以需要手工通过`CTRL + C`方式结束应用进程后才能创建那些文件，`GraalVM`官方插件有提供`config-write-period-secs`和`config-write-initial-delay-secs`的超时结束线程参数，请自行研究
+
 如果应用中包含的包，是`Java 8`编译出来的，里面还有一些需要通过`Json`序列化和反序列化的实体类，需要对该包对应的源码用`Java 17`再编译一次，然后在执行反射代理的步骤
 
 > 注意：`discovery-automation-console`模块已经创建好`native-image`的反射文件，该步骤不需要运行，本文只介绍其用法
@@ -259,3 +261,7 @@ mvn -Pnative native:compile -DskipTests
 
 ## 参考资料
 ① `Spring Boot`官方文档 `https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html#native-image.developing-your-first-application.buildpacks.maven`
+
+② `GraalVM`官方文档 `https://www.graalvm.org/22.3/reference-manual/native-image/metadata/AutomaticMetadataCollection/#tracing-agent`
+
+③ `GraalVM`官方示例 `https://github.com/graalvm/native-build-tools/blob/master/samples/java-application-with-reflection/pom.xml`
