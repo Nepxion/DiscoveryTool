@@ -39,6 +39,8 @@ PATH=E:\Tool\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\bi
 
 ## 执行本地化
 
+本地化分为非`spring-boot-starter-parent`和`spring-boot-starter-parent`两种模式，源代码中实现的是非`spring-boot-starter-parent`模式
+
 ### 非`spring-boot-starter-parent`模式
 
 ① 编写`pom.xml`
@@ -137,10 +139,9 @@ PATH=E:\Tool\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\bi
 ```
 mvn -Pnative native:compile -DskipTests
 ```
-
 或者直接运行根目录下`install-native.bat`，注意`bat`中`GraalVM`的路径
 
-请注意，由于事先已经生成了反射、JNI等类的`Json`信息，所以可以跳过`执行反射代理`步骤，具体可参考`spring-boot-starter-parent`模式下的相关介绍
+> 请注意，由于事先已经生成了反射、`JNI`等类的`Json`信息，可以跳过`执行反射代理`步骤，具体可参考`spring-boot-starter-parent`模式下的相关介绍
 
 ### `spring-boot-starter-parent`模式
 
@@ -229,21 +230,22 @@ mvn -Pnative native:compile -DskipTests
 </project>
 ```
 
-## 执行反射代理
-由于`Java17`的反射机制进行了变更，需要实现把反射、JNI等类通过`-agentlib`命令生成这些类的`Json`形式的信息，创建到`src\main\resources\META-INF\native-image\`目录下
+② 执行反射代理
+
+由于`Java17`的反射机制进行了变更，需要实现把反射、`JNI`等类通过`-agentlib`命令生成这些类的`Json`形式的信息，创建到`src\main\resources\META-INF\native-image\`目录下
 
 在根目录，运行反射命令
 ```
 java -Dspring.aot.enabled=true -agentlib:native-image-agent=config-output-dir=discovery-automation-console/src/main/resources/META-INF/native-image -jar discovery-automation-console/target/discovery-automation-console.jar
 ```
-
 或者直接运行根目录下`install-agent.bat`，注意`bat`中`GraalVM`的路径
 
 如果应用中包含的包，是`Java 8`编译出来的，里面还有一些需要通过`Json`序列化和反序列化的实体类，需要对该包对应的源码用`Java 17`再编译一次，然后在执行反射代理的步骤
 
-> 注意：discovery-automation-console模块已经创建好native-image的反射文件，该步骤不需要运行，本文只介绍其用法
+> 注意：`discovery-automation-console`模块已经创建好`native-image`的反射文件，该步骤不需要运行，本文只介绍其用法
 
-## 执行本地化打包
+③ 执行本地化打包
+
 必须通过`开始菜单`中的如下命令行，执行本地化打包操作。这跟非`spring-boot-starter-parent`模式下的执行步骤有所区别
 ```
 x64 Native Tools Command Prompt for VS 2022
@@ -253,8 +255,7 @@ x64 Native Tools Command Prompt for VS 2022
 ```
 mvn -Pnative native:compile -DskipTests
 ```
-
 或者直接运行根目录下`install-native.bat`，注意`bat`中`GraalVM`的路径
 
 ## 参考资料
-`Spring Boot`官方文档 `https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html#native-image.developing-your-first-application.buildpacks.maven`
+① `Spring Boot`官方文档 `https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html#native-image.developing-your-first-application.buildpacks.maven`
