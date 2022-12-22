@@ -9,13 +9,19 @@ package com.nepxion.discovery.automation.inspector.entity;
  * @version 1.0
  */
 
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+
 import com.nepxion.discovery.automation.common.util.TestUtil;
 import com.nepxion.discovery.automation.inspector.constant.InspectorTestConstant;
 import com.nepxion.discovery.common.entity.ConditionStrategy;
 import com.nepxion.discovery.common.util.YamlUtil;
+import com.nepxion.discovery.common.yaml.YamlSafeConstructor;
 
 public class InspectorTestCaseCondition extends ConditionStrategy {
     private static final long serialVersionUID = -7987731761366380912L;
+
+    private static YamlSafeConstructor yamlSafeConstructor = new YamlSafeConstructor(new LinkedHashSet<Class<?>>(Arrays.asList(InspectorTestCaseCondition.class)));
 
     public static InspectorTestCaseCondition fromFile() {
         String input = getFile();
@@ -34,7 +40,7 @@ public class InspectorTestCaseCondition extends ConditionStrategy {
     }
 
     public static InspectorTestCaseCondition fromText(String input) {
-        return YamlUtil.fromYaml(input, InspectorTestCaseCondition.class);
+        return YamlUtil.fromYaml(yamlSafeConstructor, input, InspectorTestCaseCondition.class);
     }
 
     public static String getFile(String file) {
