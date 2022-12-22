@@ -9,13 +9,19 @@ package com.nepxion.discovery.automation.simulator.entity;
  * @version 1.0
  */
 
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+
 import com.nepxion.discovery.automation.common.util.TestUtil;
 import com.nepxion.discovery.automation.simulator.constant.SimulatorTestConstant;
 import com.nepxion.discovery.common.entity.ConditionRouteStrategy;
 import com.nepxion.discovery.common.util.YamlUtil;
+import com.nepxion.discovery.common.yaml.YamlSafeConstructor;
 
 public class SimulatorTestCaseReleaseSecondCondition extends ConditionRouteStrategy {
     private static final long serialVersionUID = 7160851936643268682L;
+
+    private static YamlSafeConstructor yamlSafeConstructor = new YamlSafeConstructor(new LinkedHashSet<Class<?>>(Arrays.asList(SimulatorTestCaseReleaseSecondCondition.class)));
 
     public static SimulatorTestCaseReleaseSecondCondition fromFile() {
         String input = getFile();
@@ -34,7 +40,7 @@ public class SimulatorTestCaseReleaseSecondCondition extends ConditionRouteStrat
     }
 
     public static SimulatorTestCaseReleaseSecondCondition fromText(String input) {
-        return YamlUtil.fromYaml(input, SimulatorTestCaseReleaseSecondCondition.class);
+        return YamlUtil.fromYaml(yamlSafeConstructor, input, SimulatorTestCaseReleaseSecondCondition.class);
     }
 
     public static String getFile(String file) {
