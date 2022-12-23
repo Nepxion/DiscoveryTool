@@ -38,6 +38,7 @@ PATH=E:\Tool\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\bi
 > 注意：版本号和目录，不同的机器上有所区别，请自行更改
 
 ## 执行本地化
+> 本地化插件的编写方式，请访问`https://github.com/Nepxion/DiscoveryTool/blob/automation-springboot-3.x.x/pom.xml`，参考`profile`为`<id>native</id>`部分
 
 ### 搭建工程
 - `https://github.com/Nepxion/DiscoveryTool/tree/automation-springboot-3.x.x`，访问并获取代码
@@ -77,9 +78,6 @@ mvn -Pnative native:compile -DskipTests
 或者直接运行根目录下`install-native.bat`，注意`bat`中`GraalVM`的路径
 
 ② 等待`1 ~ 2`分钟（取决于计算机的配置优劣），在`target`目录下，会创建`discovery-automation-console.exe`，可以直接运行，或者也可以通过`startup.exe.bat`来运行
-
-### 编写本地化插件
-访问`https://github.com/Nepxion/DiscoveryTool/blob/automation-springboot-3.x.x/pom.xml`，参考`profile`为`<id>native</id>`部分
 
 ## 参考资料
 ① `Spring Boot`官方文档 `https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html#native-image.developing-your-first-application.buildpacks.maven`
