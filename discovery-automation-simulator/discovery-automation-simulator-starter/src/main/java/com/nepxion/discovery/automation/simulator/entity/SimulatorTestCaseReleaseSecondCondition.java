@@ -12,6 +12,8 @@ package com.nepxion.discovery.automation.simulator.entity;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.nepxion.discovery.automation.common.util.TestUtil;
 import com.nepxion.discovery.automation.simulator.constant.SimulatorTestConstant;
 import com.nepxion.discovery.common.entity.ConditionRouteStrategy;
@@ -30,7 +32,7 @@ public class SimulatorTestCaseReleaseSecondCondition extends ConditionRouteStrat
     }
 
     public static String getFile() {
-        return getFile(SimulatorTestConstant.FILE_PATH_VERSION_RELEASE_2);
+        return getFile(System.getProperty(SimulatorTestConstant.TESTCASE_CONFIG_LOCATION, StringUtils.EMPTY) + SimulatorTestConstant.FILE_PATH_VERSION_RELEASE_2);
     }
 
     public static SimulatorTestCaseReleaseSecondCondition fromFile(String file) {

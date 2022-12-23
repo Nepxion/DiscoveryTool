@@ -100,6 +100,8 @@ public class SimulatorTestStrategy extends TestStrategy {
         LOG.info("侦测入口地址 : {}", testCaseEntity.getInspectUrl());
         LOG.info("侦测入口转发服务 : {}", testCaseEntity.getInspectContextService());
 
+        LOG.info("配置文件外置路径 : {}", StringUtils.isNotEmpty(System.getProperty(SimulatorTestConstant.TESTCASE_CONFIG_LOCATION)) ? System.getProperty(SimulatorTestConstant.TESTCASE_CONFIG_LOCATION) : "未配置");
+
         LOG.info("测试用例执行循环次数 : {}", testCaseEntity.getLoopCount());
 
         LOG.info("蓝绿发布采样总数 : {}", testCaseEntity.getBlueGreenSampleCount());
