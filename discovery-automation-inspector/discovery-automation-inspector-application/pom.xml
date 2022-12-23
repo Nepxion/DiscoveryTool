@@ -71,7 +71,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.0.0</version>
                 <configuration>
                     <mainClass>com.nepxion.discovery.automation.inspector.application.InspectorApplication</mainClass>
                     <layout>JAR</layout>
@@ -89,12 +88,6 @@
                             <attach>false</attach>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>process-aot</id>
-                        <goals>
-                            <goal>process-aot</goal>
-                        </goals>
-                    </execution>
                 </executions>
             </plugin>
 
@@ -104,13 +97,6 @@
                 <configuration>
                     <imageName>discovery-automation-inspector</imageName>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>add-reachability-metadata</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
             <plugin>
