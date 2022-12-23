@@ -25,6 +25,9 @@
       "name":"ch.qos.logback.core.model.NamedComponentModel"
     },
     {
+      "name":"java.lang.String"
+    },
+    {
       "name":"java.util.ArrayList"
     }
   ],

@@ -14,6 +14,9 @@
       "pattern":"\\QMETA-INF/spring.factories\\E"
     }, 
     {
+      "pattern":"\\QMETA-INF/spring/aot.factories\\E"
+    }, 
+    {
       "pattern":"\\QMETA-INF/spring/logback-model\\E"
     }, 
     {
@@ -21,6 +24,9 @@
     }, 
     {
       "pattern":"\\QMETA-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports\\E"
+    }, 
+    {
+      "pattern":"\\Q\\E"
     }, 
     {
       "pattern":"\\Qapplication.properties\\E"
@@ -252,6 +258,9 @@
     }, 
     {
       "pattern":"\\Qorg/springframework/core/Ordered.class\\E"
+    }, 
+    {
+      "pattern":"\\Qorg/springframework/web/util/HtmlCharacterEntityReferences.properties\\E"
     }
   ]},
   "bundles":[]
