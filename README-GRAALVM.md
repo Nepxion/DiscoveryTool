@@ -38,226 +38,36 @@ PATH=E:\Tool\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\bi
 > 注意：版本号和目录，不同的机器上有所区别，请自行更改
 
 ## 执行本地化
+以`discovery-automation-console`模块为例，进入`discovery-automation-console`目录
 
-本地化分为非`spring-boot-starter-parent`和`spring-boot-starter-parent`两种模式，源代码中实现的是非`spring-boot-starter-parent`模式
-
-### 非`spring-boot-starter-parent`模式
-
-① 编写`pom.xml`
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <artifactId>discovery-automation-console</artifactId>
-    <name>Nepxion Discovery Automation Console</name>
-    <packaging>jar</packaging>
-    <modelVersion>4.0.0</modelVersion>
-    <description>Nepxion Discovery Automation is a tool for Spring Cloud with blue green, gray inspection and simulation testing</description>
-    <url>http://www.nepxion.com</url>
-
-    <parent>
-        <groupId>com.nepxion</groupId>
-        <artifactId>discovery-automation</artifactId>
-        <version>2.0.0</version>
-    </parent>
-
-    <dependencies>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>discovery-automation-inspector-starter-console</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>discovery-automation-simulator-starter-console</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>discovery-automation-concurrent-starter-caffeine</artifactId>
-        </dependency>
-
-        <!-- <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>discovery-automation-concurrent-starter-redisson</artifactId>
-        </dependency> -->
-    </dependencies>
-
-    <build>
-        <finalName>${project.artifactId}</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <mainClass>com.nepxion.discovery.automation.console.AutomationConsole</mainClass>
-                    <layout>JAR</layout>
-                    <layers>
-                        <enabled>true</enabled>
-                    </layers>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>process-package</id>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                        <configuration>
-                            <attach>false</attach>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>process-aot</id>
-                        <goals>
-                            <goal>process-aot</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.graalvm.buildtools</groupId>
-                <artifactId>native-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>add-reachability-metadata</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-</project>
-```
-
-② 执行本地化打包
-
-在根目录，运行打包命令
-```
-mvn -Pnative native:compile -DskipTests
-```
-或者直接运行根目录下`install-native.bat`，注意`bat`中`GraalVM`的路径
-
-> 请注意，由于事先已经生成了反射、`JNI`等类的`Json`信息，可以跳过`执行反射代理`步骤，具体可参考`spring-boot-starter-parent`模式下的相关介绍
-
-### `spring-boot-starter-parent`模式
-
-① 编写`pom.xml`
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <groupId>com.nepxion</groupId>
-    <artifactId>discovery-automation-console</artifactId>
-    <name>Nepxion Discovery Automation Console</name>
-    <packaging>jar</packaging>
-    <modelVersion>4.0.0</modelVersion>
-    <version>2.0.0</version>
-    <description>Nepxion Discovery Automation is a tool for Spring Cloud with blue green, gray inspection and simulation testing</description>
-    <url>http://www.nepxion.com</url>
-
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.0</version>
-    </parent>
-
-    <properties>
-        <discovery.automation.version>2.0.0</discovery.automation.version>
-    </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.nepxion</groupId>
-            <artifactId>discovery-automation-inspector-starter-console</artifactId>
-            <version>${discovery.automation.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.nepxion</groupId>
-            <artifactId>discovery-automation-simulator-starter-console</artifactId>
-            <version>${discovery.automation.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.nepxion</groupId>
-            <artifactId>discovery-automation-concurrent-starter-caffeine</artifactId>
-            <version>${discovery.automation.version}</version>
-        </dependency>
-
-        <!-- <dependency>
-            <groupId>com.nepxion</groupId>
-            <artifactId>discovery-automation-concurrent-starter-redisson</artifactId>
-            <version>${discovery.automation.version}</version>
-        </dependency> -->
-    </dependencies>
-
-    <build>
-        <finalName>${project.artifactId}</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>com.nepxion.discovery.automation.console.AutomationConsole</mainClass>
-                    <layout>JAR</layout>
-                    <layers>
-                        <enabled>true</enabled>
-                    </layers>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                        <configuration>
-                            <attach>false</attach>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.graalvm.buildtools</groupId>
-                <artifactId>native-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-</project>
-```
-
-② 执行反射代理
-
-由于`Java17`的反射机制进行了变更，需要实现把反射、`JNI`等类通过`-agentlib`命令生成这些类的`Json`形式的信息，创建到`src\main\resources\META-INF\native-image\`目录下
-
-在根目录，运行反射命令
-```
-java -Dspring.aot.enabled=true -agentlib:native-image-agent=config-output-dir=discovery-automation-console/src/main/resources/META-INF/native-image -jar discovery-automation-console/target/discovery-automation-console.jar
-```
-或者直接运行根目录下`install-agent.bat`，注意`bat`中`GraalVM`的路径
-
-> 注意：由于反射代理需要在`Spring Boot 3.0`应用的运行期创建相关文件，所以需要手工通过`CTRL + C`方式结束应用进程后才能创建那些文件，`GraalVM`官方插件有提供`config-write-period-secs`和`config-write-initial-delay-secs`的超时结束线程参数，请自行研究
-
-如果应用中包含的包，是`Java 8`编译出来的，里面还有一些需要通过`Json`序列化和反序列化的实体类，需要对该包对应的源码用`Java 17`再编译一次，然后在执行反射代理的步骤
-
+### 执行`Hint`命令
 > 注意：`discovery-automation-console`模块已经创建好`native-image`的反射文件，该步骤不需要运行，本文只介绍其用法
 
-③ 执行本地化打包
+本地化之前需要把反射、`JNI`等类通过`-agentlib`命令生成这些类的`Json`形式的信息，创建到`src\main\resources\META-INF\native-image\`目录下
 
-必须通过`开始菜单`中的如下命令行，执行本地化打包操作。这跟非`spring-boot-starter-parent`模式下的执行步骤有所区别
+① 在`discovery-automation-console`目录下，运行如下命令
 ```
-x64 Native Tools Command Prompt for VS 2022
+mvn -Pnative clean spring-boot:run
 ```
+或者直接运行根目录下`install-hint.bat`，注意`bat`中`GraalVM`的路径
 
-在根目录，运行打包命令
+② 应用启动后，等待一段时间（`5`秒或者`10`秒，或者更长），执行`CTRL + C`快捷键结束应用进程后，自动创建`Hint`相关文件
+
+`Hint`命令执行过程中，需要注意：
+- `Hint`相关文件需要在`Spring Boot 3.0`应用的运行期创建相关文件，所以需要手工通过`CTRL + C`方式结束应用进程后才能创建那些文件，`GraalVM`官方插件有提供`config-write-period-secs`和`config-write-initial-delay-secs`的超时结束线程参数，请自行研究
+- 如果应用中包含的包，是`Java 8`编译出来的，里面还有一些需要通过`Json`序列化和反序列化的实体类，需要对该包对应的源码用`Java 17`再编译一次，然后再执行`Hint`命令
+
+### 执行`Native`命令
+① 在`discovery-automation-console`目录下，运行如下命令
 ```
 mvn -Pnative native:compile -DskipTests
 ```
 或者直接运行根目录下`install-native.bat`，注意`bat`中`GraalVM`的路径
+
+② 等待`1 ~  2`分钟（取决于计算机的配置优劣），在`target`目录下，会创建`discovery-automation-console.exe`，可以直接运行，或者也可以通过`startup.exe.bat`来运行
+
+### 编写本地化插件
+访问`https://github.com/Nepxion/DiscoveryTool/blob/automation-springboot-3.x.x/pom.xml`，参考`profile`为`<id>native</id>`部分
 
 ## 参考资料
 ① `Spring Boot`官方文档 `https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html#native-image.developing-your-first-application.buildpacks.maven`
