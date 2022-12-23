@@ -12,6 +12,8 @@ package com.nepxion.discovery.automation.inspector.entity;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.nepxion.discovery.automation.common.util.TestUtil;
 import com.nepxion.discovery.automation.inspector.constant.InspectorTestConstant;
 import com.nepxion.discovery.common.entity.ConditionStrategy;
@@ -30,7 +32,7 @@ public class InspectorTestCaseCondition extends ConditionStrategy {
     }
 
     public static String getFile() {
-        return getFile(InspectorTestConstant.FILE_PATH_INSPECTOR);
+        return getFile(System.getProperty(InspectorTestConstant.TESTCASE_CONFIG_LOCATION, StringUtils.EMPTY) + InspectorTestConstant.FILE_PATH_INSPECTOR);
     }
 
     public static InspectorTestCaseCondition fromFile(String file) {

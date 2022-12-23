@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import com.nepxion.discovery.automation.common.logger.TestAssertLogger;
 import com.nepxion.discovery.automation.common.strategy.TestStrategy;
+import com.nepxion.discovery.automation.inspector.constant.InspectorTestConstant;
 import com.nepxion.discovery.automation.inspector.entity.InspectorTestCaseCondition;
 import com.nepxion.discovery.automation.inspector.entity.InspectorTestCaseConfig;
 import com.nepxion.discovery.automation.inspector.entity.InspectorTestCaseEntity;
@@ -54,6 +55,8 @@ public class InspectorTestStrategy extends TestStrategy {
 
         LOG.info("侦测入口地址 : {}", testCaseEntity.getInspectUrl());
         LOG.info("侦测入口转发服务 : {}", testCaseEntity.getInspectContextService());
+
+        LOG.info("配置文件外置路径 : {}", StringUtils.isNotEmpty(System.getProperty(InspectorTestConstant.TESTCASE_CONFIG_LOCATION)) ? System.getProperty(InspectorTestConstant.TESTCASE_CONFIG_LOCATION) : "未配置");
 
         LOG.info("采样总数 : {}", testCaseEntity.getSampleCount());
 

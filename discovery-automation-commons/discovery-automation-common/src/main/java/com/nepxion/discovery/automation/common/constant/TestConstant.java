@@ -10,6 +10,8 @@ package com.nepxion.discovery.automation.common.constant;
  */
 
 public class TestConstant {
+    public static final String TESTCASE_CONFIG_LOCATION = "testcase.config.location";
+
     public static final String TESTCASE_INSPECT_URL = "testcase.inspect.url";
     public static final String TESTCASE_INSPECT_CONTEXT_SERVICE = "testcase.inspect.context.service";
 
