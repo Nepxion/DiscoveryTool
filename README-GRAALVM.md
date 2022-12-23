@@ -3,7 +3,7 @@
 ## 前言
 访问`https://github.com/Nepxion/DiscoveryTool/tree/automation-springboot-3.x.x`获取代码
 
-`Nepxion`社区对相对简单的全链路自动化模拟流程测试和全链路自动化流量侦测测试模块尝试进行本地化，的确启动速度提升`10`倍甚至更多，内存占用少了`1/2 ~ 2/3`甚至更多，网络吞吐量也有不少提升。最终成果通过`Windows 10`的可执行文件`EXE`呈现，从下面图片可以看到，启动控制台，只耗费`0.24`秒
+`Nepxion`社区对相对简单的全链路自动化模拟流程测试和全链路自动化流量侦测测试模块尝试进行本地化，的确启动速度提升`10`倍甚至更多，内存占用少了`1/2 ~ 2/3`甚至更多，网络吞吐量也有不少提升。最终成果通过`Windows 10`的可执行文件`EXE`呈现，从下面图片可以看到，启动控制台，只耗费`0.2`秒
 
 ![](http://nepxion.gitee.io/discovery/docs/discovery-doc/NativeImage.jpg)
 
@@ -64,7 +64,7 @@ mvn -Pnative native:compile -DskipTests
 ```
 或者直接运行根目录下`install-native.bat`，注意`bat`中`GraalVM`的路径
 
-② 等待`1 ~  2`分钟（取决于计算机的配置优劣），在`target`目录下，会创建`discovery-automation-console.exe`，可以直接运行，或者也可以通过`startup.exe.bat`来运行
+② 等待`1 ~ 2`分钟（取决于计算机的配置优劣），在`target`目录下，会创建`discovery-automation-console.exe`，可以直接运行，或者也可以通过`startup.exe.bat`来运行
 
 ### 编写本地化插件
 访问`https://github.com/Nepxion/DiscoveryTool/blob/automation-springboot-3.x.x/pom.xml`，参考`profile`为`<id>native</id>`部分
