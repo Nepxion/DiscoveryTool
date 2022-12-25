@@ -142,8 +142,13 @@
                             <artifactId>spring-boot-maven-plugin</artifactId>
                             <version>3.0.1</version>
                             <configuration>
-                                <jvmArguments>-agentlib:native-image-agent=config-merge-dir=src/main/resources/META-INF/native-image/ -Dtestcase.config.location=src/test/resources/</jvmArguments>
-                                <arguments>--spring.config.location=src/test/resources/</arguments>
+                                <jvmArguments>
+                                    -agentlib:native-image-agent=config-merge-dir=src/main/resources/META-INF/native-image/
+                                    -Dtestcase.config.location=src/test/resources/
+                                </jvmArguments>
+                                <arguments>
+                                    --spring.config.location=src/test/resources/
+                                </arguments>
                                 <image>
                                     <builder>paketobuildpacks/builder:tiny</builder>
                                     <env>
