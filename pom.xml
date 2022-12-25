@@ -170,7 +170,9 @@
                             <artifactId>spring-boot-maven-plugin</artifactId>
                             <version>3.0.1</version>
                             <configuration>
-                                <jvmArguments>-agentlib:native-image-agent=config-merge-dir=src/main/resources/META-INF/native-image/</jvmArguments>
+                                <jvmArguments>
+                                    -agentlib:native-image-agent=config-merge-dir=src/main/resources/META-INF/native-image/
+                                </jvmArguments>
                                 <image>
                                     <builder>paketobuildpacks/builder:tiny</builder>
                                     <env>
