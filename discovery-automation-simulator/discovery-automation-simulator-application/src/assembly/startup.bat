@@ -1,7 +1,7 @@
 @echo on
 @echo =============================================================
 @echo $                                                           $
-@echo $                Nepxion Discovery Simulator                $
+@echo $           Nepxion Discovery Automation Simulator          $
 @echo $                                                           $
 @echo $                                                           $
 @echo $                                                           $
@@ -12,7 +12,7 @@
 @echo.
 @echo off
 
-@title Nepxion Discovery Simulator
+@title Nepxion Discovery Automation Simulator
 @color 0a
 
 call java -jar -Dnepxion.banner.shown.ansi.mode=true discovery-automation-simulator.jar --spring.config.location=./

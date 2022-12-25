@@ -1,7 +1,7 @@
 echo -e '\033[32m'
 echo '============================================================='
 echo '$                                                           $'
-echo '$                Nepxion Discovery Inspector                $'
+echo '$           Nepxion Discovery Automation Inspector          $'
 echo '$                                                           $'
 echo '$                                                           $'
 echo '$                                                           $'
@@ -10,7 +10,7 @@ echo '$  Copyright (C) 2017-2050                                  $'
 echo '$                                                           $'
 echo '============================================================='
 
-echo -n $'\e'"]0;Nepxion Discovery Inspector"$'\a'
+echo -n $'\e'"]0;Nepxion Discovery Automation Inspector"$'\a'
 
 java -jar -Dfile.encoding=UTF-8 -Dnepxion.banner.shown.ansi.mode=true discovery-automation-inspector.jar --spring.config.location=./
 

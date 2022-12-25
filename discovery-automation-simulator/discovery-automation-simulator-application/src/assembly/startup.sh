@@ -1,7 +1,7 @@
 echo -e '\033[32m'
 echo '============================================================='
 echo '$                                                           $'
-echo '$                Nepxion Discovery Simulator                $'
+echo '$           Nepxion Discovery Automation Simulator          $'
 echo '$                                                           $'
 echo '$                                                           $'
 echo '$                                                           $'
@@ -10,7 +10,7 @@ echo '$  Copyright (C) 2017-2050                                  $'
 echo '$                                                           $'
 echo '============================================================='
 
-echo -n $'\e'"]0;Nepxion Discovery Simulator"$'\a'
+echo -n $'\e'"]0;Nepxion Discovery Automation Simulator"$'\a'
 
 java -jar -Dfile.encoding=UTF-8 -Dnepxion.banner.shown.ansi.mode=true discovery-automation-simulator.jar --spring.config.location=./
 
