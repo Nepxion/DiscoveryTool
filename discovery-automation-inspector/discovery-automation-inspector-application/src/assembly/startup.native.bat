@@ -1,7 +1,7 @@
 @echo on
 @echo =============================================================
 @echo $                                                           $
-@echo $            Nepxion Discovery Inspector (Native)           $
+@echo $      Nepxion Discovery Automation Inspector (Native)      $
 @echo $                                                           $
 @echo $                                                           $
 @echo $                                                           $
@@ -12,7 +12,7 @@
 @echo.
 @echo off
 
-@title Nepxion Discovery Inspector (Native)
+@title Nepxion Discovery Automation Inspector (Native)
 @color 0a
 
 call discovery-automation-inspector.exe -Dnepxion.banner.shown.ansi.mode=true
