@@ -1,7 +1,7 @@
 @echo on
 @echo =============================================================
 @echo $                                                           $
-@echo $            Nepxion Discovery Automation Console           $
+@echo $            Nepxion Discovery Simulator (Native)           $
 @echo $                                                           $
 @echo $                                                           $
 @echo $                                                           $
@@ -12,9 +12,9 @@
 @echo.
 @echo off
 
-@title Nepxion Discovery Automation Console
+@title Nepxion Discovery Simulator (Native)
 @color 0a
 
-call discovery-automation-console.exe -Dnepxion.banner.shown.ansi.mode=true
+call discovery-automation-simulator.exe -Dnepxion.banner.shown.ansi.mode=true
 
 pause
