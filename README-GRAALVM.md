@@ -6,11 +6,11 @@
 ![](http://nepxion.gitee.io/discovery/docs/discovery-doc/NativeImage.jpg)
 
 `Nepxion`社区分别对`Java 8`、`Java1 7`和`Spring Boot 2`、`Spring Boot 3`组合场景下，对Spring Cloud Gateway、2个A服务、2个B服务做全链路自动化蓝绿灰度发布模拟流程测试，得出如下结论：
-- 全套非本地化，`Spring Boot 2` + `Java 8`，自动化测试耗时`180-200`秒
-- 全套非本地化，`Spring Boot 2` + `Java 17`，自动化测试耗时`109-115`秒
-- 全套非本地化，`Spring Boot 3` + `Java 17`，自动化测试耗时`93-97`秒
-- 自动化测试端本地化，网关和服务非本地化，`Spring Boot 3` + `Java 17`，自动化测试耗时`80-83`秒
-- 全套本地化，未测试，原因是网关和服务所依赖的所有第三方包都需要支持`Spring Boot 3`，目前业界尚未达到这个阶段
+- 全套非本地化，`Spring Boot 2` + `Spring Boot Cloud Hoxton` + `Java 8`，自动化测试耗时`180-200`秒
+- 全套非本地化，`Spring Boot 2` + `Spring Boot Cloud Hoxton` + `Java 17`，自动化测试耗时`109-115`秒
+- 全套非本地化，`Spring Boot 3` + `Spring Boot Cloud 2022` + `Java 17`，自动化测试耗时`93-97`秒
+- 自动化测试端本地化，网关和服务非本地化，`Spring Boot 3` + `Spring Boot Cloud 2022` + `Java 17`，自动化测试耗时`80-83`秒
+- 全套本地化，`Spring Boot 3` + `Spring Boot Cloud 2022` + `Java 17`，未测试
 
 下面阐述一下，Windows 10操作系统下基于`Java 17` + `Spring Boot 3` + `GraalVM`实现服务本地镜像化（Native Image）的简单步骤
 
