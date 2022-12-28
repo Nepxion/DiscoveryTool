@@ -198,6 +198,13 @@
                                     <enabled>true</enabled>
                                 </metadataRepository>
                                 <requiredVersion>22.3</requiredVersion>
+                                <buildArgs>
+                                    --no-fallback
+                                    --report-unsupported-elements-at-runtime
+                                    --allow-incomplete-classpath
+                                    --enable-url-protocols=http
+                                    -H:+ReportExceptionStackTraces
+                                </buildArgs>
                             </configuration>
                             <executions>
                                 <execution>
