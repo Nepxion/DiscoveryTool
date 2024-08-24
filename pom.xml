@@ -19,12 +19,12 @@
     </modules>
 
     <properties>
-        <discovery.version>9.0.0</discovery.version>
+        <discovery.version>10.0.0</discovery.version>
 
         <commons.configuration2.version>2.8.0</commons.configuration2.version>
         <redisson.spring.boot.version>3.20.0</redisson.spring.boot.version>
 
-        <spring.boot.version>3.0.1</spring.boot.version>
+        <spring.boot.version>3.3.3</spring.boot.version>
 
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
